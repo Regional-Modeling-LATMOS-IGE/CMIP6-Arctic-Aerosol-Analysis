@@ -37,4 +37,4 @@ We use two experiments realized for the Coupled Model Intercomparison Project ph
 
 ## Content of the repository
 
-We produce a jupyter notebook called **NaN** in order to assess the total ERF due to the aerosols' concentrations change between the two experiments. 
+The folder */utilities* holds the different scripts used to download and pre-treat the CMIP6 data used for this analysis.
