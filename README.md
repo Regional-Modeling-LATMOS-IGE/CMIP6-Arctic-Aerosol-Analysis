@@ -16,7 +16,22 @@ We use two experiments realized for the Coupled Model Intercomparison Project ph
 
 ### Variables used
 
-**NaN**
+- **clt**  : Total cloud area fraction (%) for the whole atmospheric column
+
+- **rsdt** : Shortwave radiation ($W/m^{2}$) **incident** at the TOA
+ 
+- **rsut**: Shortwave radiation ($W/m^{2}$) **going out**  at the TOA
+
+- **rsutcs** : Shortwave radiation ($W/m^{2}$) **going out**  at TOA for **clear-sky conditions**
+
+- **rsds** : Shortwave **downwelling** radiation ($W/m^{2}$) at the surface
+ 
+- **rsdscs**  : Shortwave **downwelling** radiation ($W/m^{2}$) at the surface for **clear-sky conditions**
+
+- **rsus** : Shortwave **upwelling** radiation ($W/m^{2}$) at the surface
+
+- **rsuscs** : Shortwave **upwelling** radiation ($W/m^{2}$) at the surface for **clear-sky conditions**
+
 
 ### References 
 
