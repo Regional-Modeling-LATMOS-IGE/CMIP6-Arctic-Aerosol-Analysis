@@ -12,5 +12,5 @@ We are coding the example held in /utilities that is named *download-cmip6-examp
 Coding a loop over all the needed models and experiments.\
 Making the example more readable.\
 Move the data to a not temporary folder and clean the mess I've made FROM PYTHON.
-
+Start from a txt file that can be read by python.
 
