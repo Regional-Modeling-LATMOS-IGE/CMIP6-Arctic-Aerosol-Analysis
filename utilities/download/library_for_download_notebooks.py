@@ -21,7 +21,7 @@ import subprocess  # to run the wget code from python
 ### DEFINITION OF THE SPECIFIC EXCEPTIONS ###
 #############################################
 
-class InputPathError(ValueError):
+class InputPathError(Exception):
     ''' Raise when the parent path ends with a '/' or the child path starts with a '/' '''
 
 ###################################
