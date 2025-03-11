@@ -1,5 +1,4 @@
 project;variable;table_id;source_id;variant_label;experiment_id
-CMIP6;"[""clt"",""rsdt"",""rsut"",""rsutcs"",""rsds"",""rsus"",""rsdscs"",""rsuscs"",""rlut"",""rlutcs"",""rlds"",""rlus""]";Amon;ACCESS-CM2;r1i1p1f1;piClim-control
 CMIP6;"[""clt"",""rsdt"",""rsut"",""rsutcs"",""rsds"",""rsus"",""rsdscs"",""rsuscs"",""rlut"",""rlutcs"",""rlds"",""rlus""]";Amon;ACCESS-ESM1-5;r1i1p1f1;piClim-control
 CMIP6;"[""clt"",""rsdt"",""rsut"",""rsutcs"",""rsds"",""rsus"",""rsdscs"",""rsuscs"",""rlut"",""rlutcs"",""rlds"",""rlus""]";Amon;BCC-ESM1;r1i1p1f1;piClim-control
 CMIP6;"[""clt"",""rsdt"",""rsut"",""rsutcs"",""rsds"",""rsus"",""rsdscs"",""rsuscs"",""rlut"",""rlutcs"",""rlds"",""rlus""]";Amon;CESM2;r1i1p1f1;piClim-control
@@ -25,7 +24,6 @@ CMIP6;"[""clt"",""rsdt"",""rsut"",""rsutcs"",""rsds"",""rsus"",""rsdscs"",""rsus
 CMIP6;"[""clt"",""rsdt"",""rsut"",""rsutcs"",""rsds"",""rsus"",""rsdscs"",""rsuscs"",""rlut"",""rlutcs"",""rlds"",""rlus""]";Amon;NorESM2-LM;r1i1p2f1;piClim-control
 CMIP6;"[""clt"",""rsdt"",""rsut"",""rsutcs"",""rsds"",""rsus"",""rsdscs"",""rsuscs"",""rlut"",""rlutcs"",""rlds"",""rlus""]";Amon;NorESM2-MM;r1i1p1f1;piClim-control
 CMIP6;"[""clt"",""rsdt"",""rsut"",""rsutcs"",""rsds"",""rsus"",""rsdscs"",""rsuscs"",""rlut"",""rlutcs"",""rlds"",""rlus""]";Amon;UKESM1-0-LL;r1i1p1f4;piClim-control
-CMIP6;"[""clt"",""rsdt"",""rsut"",""rsutcs"",""rsds"",""rsus"",""rsdscs"",""rsuscs"",""rlut"",""rlutcs"",""rlds"",""rlus""]";Amon;ACCESS-CM2;r1i1p1f1;piClim-aer
 CMIP6;"[""clt"",""rsdt"",""rsut"",""rsutcs"",""rsds"",""rsus"",""rsdscs"",""rsuscs"",""rlut"",""rlutcs"",""rlds"",""rlus""]";Amon;ACCESS-ESM1-5;r1i1p1f1;piClim-aer
 CMIP6;"[""clt"",""rsdt"",""rsut"",""rsutcs"",""rsds"",""rsus"",""rsdscs"",""rsuscs"",""rlut"",""rlutcs"",""rlds"",""rlus""]";Amon;BCC-ESM1;r1i1p1f1;piClim-aer
 CMIP6;"[""clt"",""rsdt"",""rsut"",""rsutcs"",""rsds"",""rsus"",""rsdscs"",""rsuscs"",""rlut"",""rlutcs"",""rlds"",""rlus""]";Amon;CESM2;r1i1p1f1;piClim-aer
