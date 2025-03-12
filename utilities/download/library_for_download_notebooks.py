@@ -31,33 +31,19 @@ class InputPathError(ValueError):
 
 # ================ CREATE_DIR ================ #
 def create_dir(parent_path: str, name: str, clear: bool = False) -> str:
-    """Create the entire chain of folders and optionally empty the contents of the last one or delete the file with this name.
+    """Create the entire chain of folders and optionally empty the contents of the last one or delete the file with this name."""
     
-    Some thoughts to delete:
-    - The function now handles cases where a file or symbolic link exists at the folder creation location
-    - The function now returns an error if the path already exists but points to a socket, pipe, device, etc.
-    - The function now has an optional parameter to confirm the deletion of an existing folder/file (rm -rf is a nuclear bomb)
-    - The function now handles the presence of leading or trailing slashes in folder paths thanks to os.path.join()
-    - The function now handles folder manipulation on Windows OS thanks to standard libs 'os' and 'shutil'
-    - The function now directly handles errors via the internal operation of the 'os' and 'shutil' methods
-    - The function now specifies the return type in its signature '-> str:'
-    """
-
-    # https://docs.python.org/3/library/os.path.html#os.path.join
     path = os.path.join(parent_path, name)
-    if clear:
+    if clear and os.path.exists(path):
         if os.path.isfile(path) or os.path.islink(path):
-            # https://docs.python.org/3/library/os.html#os.remove
             os.remove(path)
             
         else if os.path.isdir(path):
-            # https://docs.python.org/3/library/shutil.html#shutil.rmtree
             shutil.rmtree(path)
 
         else
             raise FileExistsError("Path already exists and isn't a regular file or folder")
 
-    # https://docs.python.org/3/library/os.html#os.makedirs
     os.makedirs(path, exist_ok = True)
 
     return path
