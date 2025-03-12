@@ -34,7 +34,7 @@ def create_dir(parent_path: str, name: str, clear: bool = False) -> str:
     """Create the entire chain of folders and optionally empty the contents of the last one or delete the file with this name."""
     
     path = os.path.join(parent_path, name)
-    if clear and os.path.exists(path):
+    if clear and os.path.lexists(path):
         if os.path.isfile(path) or os.path.islink(path):
             os.remove(path)
             
