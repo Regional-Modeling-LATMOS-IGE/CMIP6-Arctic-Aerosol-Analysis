@@ -21,6 +21,7 @@ import shutil # to handle the removal of a folder tree
 #############################################
 
 class FileExistsError(Exception):
+    
     ''' Raise when the path already exists and isn't a regular file or folder '''
 
 ###################################
@@ -69,12 +70,12 @@ def create_dir(parent_path: str, name: str, clear: bool = True) -> str:
 
         ## If it is a path we remove all the tree ##
         
-        else if os.path.isdir(path):
+        elif os.path.isdir(path):
             shutil.rmtree(path)
 
         ## If we do not know what this is ##
         
-        else
+        else:
             raise FileExistsError("Path already exists and isn't a regular file or folder")
 
     ### MAKE THE DIRECTORY ###
