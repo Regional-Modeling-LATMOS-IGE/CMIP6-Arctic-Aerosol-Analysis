@@ -6,6 +6,6 @@ This folder holds the *environment.yml* file that allows you to replicate the en
 
 ## Use of the file
 
-You can recreate my own environment by running "conda env create -f environment.yml" after having downloaded the  *environment.yml* file.
+You can recreate my own environment by running "conda env create --name "cmip6-download" --file=environment.yml" after having downloaded the  *environment.yml* file.
 
 
