@@ -1,13 +1,24 @@
-# Downloading script's dev branch
+# Download
 
-Developing a downloading script for the whole CMIP6 data and an example for reproducibility.
+This folder contains the downloading and loading routines of the CMIP6 ensemble we use. The intake-esgf package (https://github.com/esgf2-us/intake-esgf?tab=readme-ov-file) is employed to download and load the CMIP6 datasets we need.
 
-## Content of the repository for this branch
+## Content
 
-The folder */utilities* holds the different scripts used to download, pre-treat and analyse the CMIP6 data used.\
-The notebook held in */utilities/download/* that is named *download_cmip6.ipynb* shows how we use the **intake-esgf** package ([https://github.com/esgf2-us/intake-esgf?tab=readme-ov-file](https://github.com/esgf2-us/intake-esgf)) to download and load the CMIP6 datasets we need. 
+### download_cmip6.ipynb
 
-What's more, the notebook holds a routine that allows for a fast downloading and loading of the areacella variable for every single downloaded model entry. Indeed, the package tends to be quit slow when doing it natively on the large model ensemble we need.
+This notebook shows how we download and load our data for reproducibility. What's more it holds a routine that allows for a fast downloading and loading of the areacella variable for every single downloaded model entry. Indeed, the intake-esgf tends to be quit slow when doing it natively on the large model ensemble we need.
+
+### load_cmip6.py
+
+This python script allows to call the routines introduced in the download_cmip6.ipynb notebook to load the dictionnary variable which holds all of the datasets and the areacella dictionnary associated to it.
+
+### folders_handle
+
+This folder includes functions we use to directly create and clean folders from python for the downloading procedure.
+
+### downloading-environment
+
+This folder holds the conda environment used to run the notebook.
 
 ## Reference of the downloaded data
 
