@@ -1,3 +1,4 @@
+name: cmip6-download
 channels:
   - conda-forge
 dependencies:
@@ -6,3 +7,5 @@ dependencies:
   - pandas
   - python
   - xarray
+  - ipywidgets
+  - tabulate
