@@ -13,6 +13,7 @@ Feel free to copy, adapt and modify it under the provided license on github.
 ##################################
 
 import os  # to handle path's management
+
 import shutil  # to handle the removal of a folder tree
 
 
@@ -35,11 +36,11 @@ class FileExistsError(Exception):
 
 def create_dir(parent_path: str, name: str, clear: bool = True) -> str:
     """
-    ### DEFINITION
+    ### DEFINITION ###
 
     Create the entire chain of folders and optionally empty the contents of the last one or delete the file with this name.
 
-    ### INPUTS
+    ### INPUTS ###
 
     PARENT_PATH : STR | path of the parent directory of the to be created structure
 
@@ -49,7 +50,7 @@ def create_dir(parent_path: str, name: str, clear: bool = True) -> str:
     CLEAR : STR | boolean to define if we clear the structure if it already exists.
     default : True
 
-    ### OUTPUT
+    ### OUTPUT ###
 
     PATH : STR | the full path of the folders and maybe subfolders created.
     """
@@ -88,6 +89,10 @@ def create_dir(parent_path: str, name: str, clear: bool = True) -> str:
 
     return path
 
+
+######################
+### USED FOR TESTS ###
+######################
 
 if __name__ == "__main__":
     pass
