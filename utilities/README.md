@@ -1,6 +1,6 @@
 # Utilities
 
-This folder holds the different scripts used to download, pre-treat and analyse the CMIP6 data used.\
+This folder holds the different scripts used to download, pre-treat and analyse the CMIP6 data used.
 
 ## Content of subfolders
 
