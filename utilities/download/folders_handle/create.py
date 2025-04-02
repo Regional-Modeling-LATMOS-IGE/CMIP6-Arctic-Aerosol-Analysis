@@ -74,7 +74,7 @@ def create_dir(parent_path: str, name: str, clear: bool = True) -> str:
         ## If it is a path we remove all the tree ##
 
         elif os.path.isdir(path):
-            
+
             shutil.rmtree(path)
 
         ## If we do not know what this is ##
