@@ -157,10 +157,6 @@ def get_areacella_apart(catalog):
 
     ### INITIALISATION  ###
 
-    ## Looking at all nodes ##
-
-    intake_esgf.conf.set(all_indices=True)
-
     ## Initialise the full dictionnary ##
 
     dict_areacella = {}
@@ -191,32 +187,43 @@ def get_areacella_apart(catalog):
 
         full_key = source_id + "." + member_id + "." + grid_label
 
+        ## Special case for the IPSL-CM6A-LR-INCA model ##
+
+        if source_id == "IPSL-CM6A-LR-INCA":
+
+            source_id = "IPSL-CM6A-LR"
+
         ## Do the full search ##
 
         areacella_search_full = catalog.search(
-            source_id=source_id, grid_label=grid_label, variable_id="areacella", quiet=True
+        source_id=source_id, grid_label=grid_label, variable_id="areacella", quiet=True
         ).df  # silence the progress bar
 
         ## Extract the first experiment id that gives an areacella entry ##
 
         only_first_exp_id = areacella_search_full.experiment_id.values[0]
 
+        ## Extract the first member id that gives an areacella entry ##
+
+        only_first_member_id = areacella_search_full.member_id.values[0]
+
         ## Get the areacella for the given row ##
 
         # Search and download it #
 
         areacella_ii = catalog.search(
-            source_id=source_id,
-            grid_label=grid_label,
-            variable_id="areacella",
-            experiment_id=only_first_exp_id,
-            quiet=True,
+        source_id=source_id,
+        grid_label=grid_label,
+        variable_id="areacella",
+        experiment_id= only_first_exp_id,
+        member_id = only_first_member_id,
+        quiet=True,
         ).to_dataset_dict(
-            add_measures=False, quiet=True
+        add_measures=False, quiet=True
         )  # silence the progress bar
 
         # Store it in dictionnary #
-
+        
         dict_areacella[full_key] = areacella_ii["areacella"]
 
     return dict_areacella
@@ -255,13 +262,13 @@ def loading_cmip6(parent_path : str, downloading_folder_name : str, do_we_clear 
 
     catalog = intake_esgf.ESGFCatalog()
 
-    print("The search criterias are : {}\n{}\n{}\n".format(experiment_id, variable_id, table_id))
+    print("The search criterias are :\n{}\n{}\n{}\n".format(experiment_id, variable_id, table_id))
 
     ### SET THE SEARCH CRITERIAS (defined globally in this script) ###
 
-    print("Filling the catalog with the search criterias...")
+    print("Filling the catalog with the search criterias...\n")
 
-    catalog.search(experiment_id=experiment_id, variable_id=variable_id, table_id=table_id)
+    catalog.search(experiment_id=experiment_id, variable_id=variable_id, table_id=table_id, quiet=True)
 
     ### REMOVE THE INCOMPLETE ENTRIES ###
 
@@ -273,15 +280,16 @@ def loading_cmip6(parent_path : str, downloading_folder_name : str, do_we_clear 
 
     ### LOAD THE DICTIONNARY INTO MEMORY WITHOUT AREACELLA ###
 
-    print("Downloading and/or loading the data dictionnary")
+    print("Downloading and/or loading the data dictionnar\n")
 
     dict_cmip6 = catalog.to_dataset_dict(
-    add_measures=False, ignore_facets=["activtity_drs", "institution_id, table_id"]
+    add_measures=False, ignore_facets=["activtity_drs", "institution_id, table_id"], quiet=True,
 )
 
     ### LOAD THE AREACELLA DICTIONNARY APART THANKS TO THE CATALOG ###
 
-    print("Downloading and/or loading the areacella dictionnary")
+    print("Downloading and/or loading the areacella dictionnary\n")
+
     dict_areacella = get_areacella_apart(catalog)
 
     return dict_cmip6, dict_areacella
