@@ -298,11 +298,7 @@ def loading_cmip6(parent_path : str, downloading_folder_name : str, do_we_clear 
 
     dict_areacella = get_areacella_apart(catalog)
 
-    ### PROVIDE THE RESULTING PANDAS DATAFRAME TO EXTRACT ALL NEEDED INFORMATION ###
-
-    search_df = catalog.df
-
-    return dict_cmip6, search_df,  dict_areacella
+    return dict_cmip6, dict_areacella
 
 ######################
 ### USED FOR TESTS ###
