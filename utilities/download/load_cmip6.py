@@ -34,7 +34,6 @@ from utilities.download.folders_handle.create import (
 )  # function to create a cleaned downloading directory
 
 
-
 #######################
 #### INITIALISATION ###
 #######################
@@ -77,19 +76,22 @@ expected_number_of_files = np.size(experiment_id) * np.size(variable_id)
 #### SET THE DOWNLOADING FOLDER ###
 ###################################
 
-def set_downloading_folder(parent_path : str, downloading_folder_name : str, do_we_clear : bool = False):
+
+def set_downloading_folder(
+    parent_path: str, downloading_folder_name: str, do_we_clear: bool = False
+):
     """
 
     ### DEFINITION ###
 
-    This function prepares the downloading folder and sets it. It will create or check if a download folder exists at 
+    This function prepares the downloading folder and sets it. It will create or check if a download folder exists at
     the path download_folder_path. It will erase a pre-existing folder if the do_we_clear option is set to True.
     This can be quite slow if the data folder is already holding some heavy data. Then, it will configure the intake-esgf catalog
     to look there for the data.
 
     ### INPUTS ###
 
-    PARENT_PATH : STR | path of the parent directory of the download folder 
+    PARENT_PATH : STR | path of the parent directory of the download folder
 
     DOWNLOADING_FOLDER_NAME : STR | name to be given to the download folder
 
@@ -115,12 +117,14 @@ def set_downloading_folder(parent_path : str, downloading_folder_name : str, do_
             intake_esgf.conf["local_cache"]
         )
     )
-    
+
     return
+
 
 #######################################################
 #### FILTERING FUNCTION DEFINING INCOMPLETE ENTRIES ###
 #######################################################
+
 
 def filtering_function(model_group):
     """
@@ -136,13 +140,13 @@ def filtering_function(model_group):
 
         return True
 
+
 ##########################################
 #### GETTING THE AREACELLA DICTIONNARY ###
 ##########################################
 
 
 def get_areacella_apart(catalog):
-
     """
 
     ### DEFINITION ###
@@ -200,7 +204,10 @@ def get_areacella_apart(catalog):
         ## Do the full search ##
 
         areacella_search_full = catalog.search(
-        source_id=source_id, grid_label=grid_label, variable_id="areacella", quiet=True
+            source_id=source_id,
+            grid_label=grid_label,
+            variable_id="areacella",
+            quiet=True,
         ).df  # silence the progress bar
 
         ## Extract the first experiment id that gives an areacella entry ##
@@ -216,27 +223,31 @@ def get_areacella_apart(catalog):
         # Search and download it #
 
         areacella_ii = catalog.search(
-        source_id=source_id,
-        grid_label=grid_label,
-        variable_id="areacella",
-        experiment_id= only_first_exp_id,
-        member_id = only_first_member_id,
-        quiet=True,
+            source_id=source_id,
+            grid_label=grid_label,
+            variable_id="areacella",
+            experiment_id=only_first_exp_id,
+            member_id=only_first_member_id,
+            quiet=True,
         ).to_dataset_dict(
-        add_measures=False, quiet=True
+            add_measures=False, quiet=True
         )  # silence the progress bar
 
         # Store it in dictionnary #
-        
+
         dict_areacella[full_key] = areacella_ii["areacella"]
 
     return dict_areacella
+
 
 ###########################
 #### LOADING CMIP6 DATA ###
 ###########################
 
-def loading_cmip6(parent_path : str, downloading_folder_name : str, do_we_clear : bool = False):
+
+def loading_cmip6(
+    parent_path: str, downloading_folder_name: str, do_we_clear: bool = False
+):
     """
 
     ### DEFINITION ###
@@ -245,7 +256,7 @@ def loading_cmip6(parent_path : str, downloading_folder_name : str, do_we_clear 
 
     ### INPUTS ###
 
-    PARENT_PATH : STR | path of the parent directory of the download folder 
+    PARENT_PATH : STR | path of the parent directory of the download folder
 
     DOWNLOADING_FOLDER_NAME : STR | name to be given to the download folder
 
@@ -255,26 +266,39 @@ def loading_cmip6(parent_path : str, downloading_folder_name : str, do_we_clear 
 
     DICT_CMIP6 : dictionnary | hold a xarray data array for every variable of every single entry in the catalog
 
-    SEARCH_DATAFRAME : pandas dataframe | hold all the information about the found entries 
+    SEARCH_DATAFRAME : pandas dataframe | hold all the information about the found entries
 
     DICT_AREACELLA : dictionnary | hold an areacella xarray data array for every entry in the catalog
     """
 
     ### SET THE DOWNLOADING FOLDER ###
 
-    set_downloading_folder(parent_path = parent_path, downloading_folder_name = downloading_folder_name, do_we_clear = do_we_clear)
+    set_downloading_folder(
+        parent_path=parent_path,
+        downloading_folder_name=downloading_folder_name,
+        do_we_clear=do_we_clear,
+    )
 
     ### INITIALIZE THE CATALOG ###
 
     catalog = intake_esgf.ESGFCatalog()
 
-    print("The search criterias are : {}\n{}\n{}\n".format(experiment_id, variable_id, table_id))
+    print(
+        "The search criterias are : {}\n{}\n{}\n".format(
+            experiment_id, variable_id, table_id
+        )
+    )
 
     ### SET THE SEARCH CRITERIAS (defined globally in this script) ###
 
     print("Filling the catalog with the search criterias...\n")
 
-    catalog.search(experiment_id=experiment_id, variable_id=variable_id, table_id=table_id, quiet=True)
+    catalog.search(
+        experiment_id=experiment_id,
+        variable_id=variable_id,
+        table_id=table_id,
+        quiet=True,
+    )
 
     ### REMOVE THE INCOMPLETE ENTRIES ###
 
@@ -289,8 +313,10 @@ def loading_cmip6(parent_path : str, downloading_folder_name : str, do_we_clear 
     print("Downloading and/or loading the data dictionnary\n")
 
     dict_cmip6 = catalog.to_dataset_dict(
-    add_measures=False, ignore_facets=["activtity_drs", "institution_id, table_id"], quiet=True,
-)
+        add_measures=False,
+        ignore_facets=["activtity_drs", "institution_id, table_id"],
+        quiet=True,
+    )
 
     ### LOAD THE AREACELLA DICTIONNARY APART THANKS TO THE CATALOG ###
 
@@ -299,6 +325,7 @@ def loading_cmip6(parent_path : str, downloading_folder_name : str, do_we_clear 
     dict_areacella = get_areacella_apart(catalog)
 
     return dict_cmip6, dict_areacella
+
 
 ######################
 ### USED FOR TESTS ###
