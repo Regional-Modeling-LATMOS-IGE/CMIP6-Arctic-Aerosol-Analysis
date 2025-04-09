@@ -1,0 +1,9 @@
+[submodule "utilities/aprp"]
+	path = utilities/aprp
+	url = https://github.com/mzelinka/aprp.git
+[submodule "utilities/utilities/aprp_library"]
+	path = utilities/utilities/aprp_library
+	url = https://github.com/mzelinka/aprp.git
+[submodule "utilities/aprp_library"]
+	path = utilities/aprp_library
+	url = https://github.com/mzelinka/aprp.git
