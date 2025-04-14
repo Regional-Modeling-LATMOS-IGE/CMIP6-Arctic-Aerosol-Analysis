@@ -25,14 +25,9 @@ import numpy as np  # to manage the pandas arrays
 
 import os  # to get access to commands related to path setting and creation of directories
 
-### in theory now uselesss
-# os.environ["TQDM_DISABLE"] = "1"
-###
-
 from utilities.download.folders_handle.create import (
     create_dir,
 )  # function to create a cleaned downloading directory
-
 
 #######################
 #### INITIALISATION ###
@@ -77,9 +72,7 @@ expected_number_of_files = np.size(experiment_id) * np.size(variable_id)
 ###################################
 
 
-def set_downloading_folder(
-    parent_path: str, downloading_folder_name: str, do_we_clear: bool = False
-):
+def set_downloading_folder(parent_path: str, downloading_folder_name: str, do_we_clear: bool = False):
     """
 
     ### DEFINITION ###
@@ -126,7 +119,7 @@ def set_downloading_folder(
 #######################################################
 
 
-def filtering_function(model_group):
+def filtering_function(model_group) -> bool:
     """
 
     ### DEFINITION ###
@@ -146,7 +139,7 @@ def filtering_function(model_group):
 ##########################################
 
 
-def get_areacella_apart(catalog):
+def get_areacella_apart(catalog) -> dict:
     """
 
     ### DEFINITION ###
@@ -245,9 +238,7 @@ def get_areacella_apart(catalog):
 ###########################
 
 
-def loading_cmip6(
-    parent_path: str, downloading_folder_name: str, do_we_clear: bool = False
-):
+def loading_cmip6(parent_path: str, downloading_folder_name: str, do_we_clear: bool = False) -> dict:
     """
 
     ### DEFINITION ###
