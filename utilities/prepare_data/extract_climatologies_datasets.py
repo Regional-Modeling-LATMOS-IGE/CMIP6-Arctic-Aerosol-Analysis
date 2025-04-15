@@ -4,6 +4,8 @@
 This small script is used to treat the raw CMIP6 data we have downloaded. We transfom the single variable datasets that span over the 30-year simulation period
 into monthly climatologies that are regrouped under the same model.variant hood.
 
+!!! THE VARIABLE LIST IS DEFINED GLOBALLY WITHIN THIS SCRIPT AS IT IS NOT EXPECTED TO CHANGE FOR THE ANALYSIS !!!
+
 Author : GIBONI Lucas
 
 Feel free to copy, adapt and modify it under the provided license on github.
@@ -37,56 +39,9 @@ from utilities.download.load_cmip6 import loading_cmip6 # function to load the r
 
 from utilities.download.folders_handle.create import create_dir  # function to create a cleaned downloading directory
 
-#######################
-#### INITIALISATION ###
-#######################
-
-# ================ DEFINE THE FOLDERS WHERE IS STORED THE DATA ================ #
-
-### DEFINE THE HOME DIRECTORY ###
-
-## Home directory ##
-
-homedir_path = os.path.expanduser("~")
-
-### DEFINE WHERE IS THE DOWNLOADED RAW DATA ###
-
-## Parent directory ##
-
-parent_path_download = homedir_path + "/certainty-data"
-
-## Name of the created folder ##
-
-download_folder_name = "CMIP6-DATA"
-
-### DEFINE WHERE TO SAVE THE CLIMATOLOGIES ###
-
-## Parent directory ##
-
-parent_path_save = homedir_path + "/certainty-data/CMIP6-DATA/"
-
-## Name of the created folder ##
-
-saving_folder_name = "treated-data"
-
 # ================ SEARCH CRITERIAS FOR OUR ANALYSIS ================ #
 
-### VARIABLES ###
-
-variable_id = [
-    "clt",
-    "rsdt",
-    "rsut",
-    "rsutcs",
-    "rsds",
-    "rsus",
-    "rsdscs",
-    "rsuscs",
-    "rlut",
-    "rlutcs",
-    "rlds",
-    "rlus",
-]
+from utilities.download.load_cmip6 import variable_id # variable search criteria globally defined in load_cmip6
 
 #######################################################
 ### GENERATE DICTIONNARY KEYS WITHOUT THE VARIABLES ###
@@ -216,3 +171,153 @@ def add_one_variable_to_dataset(variable_name: str, var_datarray, modify_data:bo
             dataset["clt"] = dataset["clt"] / 100.0
 
     return dataset
+
+##########################################
+### CREATE THE CLIMATOLOGY DICTIONNARY ###
+##########################################
+
+
+def create_climatology_dict(parent_path : str, data_folder_name : str) -> dict:
+
+    """
+    ### DEFINITION
+
+    This function generates the dictionnary of the xarray datasets holding every monthly climatology of the loaded raw variables.
+
+    ### INPUTS
+
+    PARENT_PATH : STR | path of the parent directory of the raw data folder
+
+    DOWNLOADING_FOLDER_NAME : STR | name of the raw data folder
+
+    ### OUPUTS
+
+    DICT_CMIP6_CLIM : DICTIONNARY XARRAY DATASETS | dataset with the new variable 
+
+    """
+
+    ### INITIALIZATION ###
+
+    ## Load the raw data##
+
+    dict_cmip6, dict_areacella = loading_cmip6(
+    parent_path=parent_path,
+    downloading_folder_name=data_folder_name,
+    do_we_clear=False,
+    )
+
+    ## Create the dictionnary ##
+
+    dict_cmip6_clim = {}
+
+    ## Generate the general key associated to each model.variant and experiment ##
+
+    keys_without_variable_unique = generate_per_model_dict_key(dict_cmip6)
+
+    ### GO THROUGH EACH MODEL.VARIANT AND EXPERIMENT ###
+
+    for key in keys_without_variable_unique:
+
+        ## Initialize the dataset with the first variable ##
+
+        # Define the variable #
+
+        var = variable_id[0]
+
+        # Define that the dataset does not exist yet #
+
+        modify_data = False
+
+        # Copy the key without variable #
+
+        key_with_var = key
+
+        # Add the variable name #
+
+        key_with_var[-2] = var
+
+        # Generate the key by joining the str list with "." #
+
+        key_with_var_full = ".".join(key_with_var)
+
+        # Retrieve the variable data array #
+
+        var_datarray = dict_cmip6[key_with_var_full]
+
+        # Generate or update the dataset for the given model.variant and experiment #
+
+        dataset_given_exp = add_one_variable_to_dataset(
+            variable_name=var, var_datarray=var_datarray, modify_data=modify_data
+        )
+
+        # Set that now the dataset already exists #
+
+        modify_data = True
+
+        ## Go through the rest of the variables ##
+
+        for var in variable_id[1:]:
+
+            # Copy the key without variable #
+
+            key_with_var = key
+
+            # Add the variable name #
+
+            key_with_var[-2] = var
+
+            # Generate the key by joining the str list with "." #
+
+            key_with_var_full = ".".join(key_with_var)
+
+            # Retrieve the variable data array #
+
+            var_datarray = dict_cmip6[key_with_var_full]
+
+            # Update the dataset with the climatology of this variable #
+
+            add_one_variable_to_dataset(
+                variable_name=var,
+                var_datarray=var_datarray,
+                modify_data=modify_data,
+                dataset=dataset_given_exp,
+            )
+
+        ## Generate a new simpler key for dict_cmip6_clim ##
+
+        # Retrieving the key information #
+
+        source_id = key[2]
+
+        experiment_id = key[3]
+
+        member_id = key[4]
+
+        grid_label = key[-1]
+
+        # Create the new key #
+
+        new_simpler_key_given_exp = ".".join([source_id, member_id, experiment_id])
+
+        ## Use the gathered information to get the areacella entry of the given model.variant and experiment ##
+
+        # Build the areacella key #
+
+        key_areacella = ".".join([source_id, member_id, grid_label])
+
+        # Retrieve the given areacella #
+
+        areacella_datarray = dict_areacella[key_areacella]
+
+        # Update the dataset of the given model.variant and experiment with the associated areacella #
+
+        dataset_given_exp["areacella"] = (
+                ("lat", "lon"),
+                areacella_datarray["areacella"].values,
+            )
+
+        ## Add the dataset to the output dictionnary ##
+
+        dict_cmip6_clim[new_simpler_key_given_exp] = dataset_given_exp
+
+    return dict_cmip6_clim
