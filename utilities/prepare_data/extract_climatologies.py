@@ -187,7 +187,7 @@ def create_climatology_dict(data_path: str, data_folder_name: str, save_path: st
 
     DATA_FOLDER_NAME : STR | name of the raw data folder
 
-    SAVE_PATH : STR | path of the parent directory of the save folder
+    SAVE_PATH : STR | path of the directory of the save folder
 
     DO_WE_CLEAR : BOOL | option to clear the save folder if it already exists : default is True
 
@@ -198,7 +198,7 @@ def create_climatology_dict(data_path: str, data_folder_name: str, save_path: st
 
     ### INITIALIZATION ###
 
-    ## Load the raw data##
+    ## Load the raw data ##
 
     dict_cmip6, dict_areacella = loading_cmip6(
         parent_path=data_path,
@@ -206,7 +206,11 @@ def create_climatology_dict(data_path: str, data_folder_name: str, save_path: st
         do_we_clear=False,
     )
 
+    print("Data dictionnary loaded\n")
+    
     ## Create the dictionnary ##
+
+    print("Generating the climatologies' dictionnary\n")
 
     dict_cmip6_clim = {}
 
@@ -321,6 +325,8 @@ def create_climatology_dict(data_path: str, data_folder_name: str, save_path: st
         dict_cmip6_clim[new_simpler_key_given_exp] = dataset_given_exp
 
         ### SAVE THE GENERATED DICTIONNARY ###
+
+        print("Saving the climatologies' dictionnary\n")
 
         dict_to_netcdf(dataset_dict = dict_cmip6_clim, save_path = save_path, do_we_clear = True)
 
