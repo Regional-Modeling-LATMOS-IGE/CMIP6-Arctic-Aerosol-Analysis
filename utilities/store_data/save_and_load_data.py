@@ -128,7 +128,7 @@ def dict_to_netcdf(
 
     # Save it as a pickle file #
 
-    key_paths_table.to_pickle(save_path + "/" + "key_paths_table.pkl")
+    key_paths_table.to_pickle(save_path + "/tables/" + "key_paths_table.pkl")
 
     return
 
@@ -138,7 +138,7 @@ def dict_to_netcdf(
 ####################################################
 
 
-def netcdf_to_dict(save_path: str):
+def netcdf_to_dict(save_path: str, save_folder_name: str):
     """
     ### DEFINITION ###
 
@@ -148,6 +148,8 @@ def netcdf_to_dict(save_path: str):
     ### INPUTS ###
 
     SAVE_PATH : STR | path of the directory where the data was saved
+
+    SAVE_FOLDER_NAME : STR | name to be given to the save folder
 
     ### OUTPUTS ###
 
@@ -164,7 +166,7 @@ def netcdf_to_dict(save_path: str):
 
     # Load the dataframe #
 
-    key_paths_table = pd.read_pickle(save_path + "/" + "key_paths_table.pkl")
+    key_paths_table = pd.read_pickle(save_path + save_folder_name + "/tables/" + "key_paths_table.pkl")
 
     # Extract the keys #
 

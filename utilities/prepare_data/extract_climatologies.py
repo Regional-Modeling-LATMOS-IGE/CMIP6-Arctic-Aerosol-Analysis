@@ -27,6 +27,8 @@ import xcdat as xc  # to handle climate model outputs with xarray
 
 from utilities.download.load_cmip6 import loading_cmip6  # function to load the raw data
 
+from utilities.store_data.save_and_load_data import dict_to_netcdf # function to save the generated climatology
+
 # ================ SEARCH CRITERIAS FOR OUR ANALYSIS ================ #
 
 from utilities.download.load_cmip6 import (
@@ -171,11 +173,13 @@ def add_one_variable_to_dataset(
 ##########################################
 
 
-def create_climatology_dict(data_path: str, data_folder_name: str) -> dict:
+def create_climatology_dict(data_path: str, data_folder_name: str, save_path: str, do_we_clear: bool = True) -> dict:
+
     """
     ### DEFINITION
 
     This function generates the dictionnary of the xarray datasets holding every monthly climatology of the loaded raw variables.
+    It then saves it as netcdf files for the provided save_path within the folder named save_folder_name.
 
     ### INPUTS
 
@@ -183,10 +187,13 @@ def create_climatology_dict(data_path: str, data_folder_name: str) -> dict:
 
     DATA_FOLDER_NAME : STR | name of the raw data folder
 
-    ### OUPUTS
+    SAVE_PATH : STR | path of the parent directory of the save folder
 
-    DICT_CMIP6_CLIM : DICTIONNARY OF XARRAY DATASETS | dataset with the new variable
+    DO_WE_CLEAR : BOOL | option to clear the save folder if it already exists : default is True
 
+    ### OUTPUTS
+
+    nothing.
     """
 
     ### INITIALIZATION ###
@@ -313,7 +320,11 @@ def create_climatology_dict(data_path: str, data_folder_name: str) -> dict:
 
         dict_cmip6_clim[new_simpler_key_given_exp] = dataset_given_exp
 
-    return dict_cmip6_clim
+        ### SAVE THE GENERATED DICTIONNARY ###
+
+        dict_to_netcdf(dataset_dict = dict_cmip6_clim, save_path = save_path, do_we_clear = True)
+
+    return
 
 
 ######################
