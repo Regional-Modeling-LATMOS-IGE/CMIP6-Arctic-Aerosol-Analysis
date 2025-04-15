@@ -4,7 +4,7 @@
 This small script is used to load the CMIP6 data used for the analysis.
 For more details on the methods employed in the script, please refer to the download_cmip6.ipynb notebook in the same folder.
 
-!!! THE SEARCH CRITERIAS ARED DEFINED GLOBALLY  WITHIN THIS SCRIPT AS THEY ARE NOT EXPECTED TO CHANGE FOR THE ANALYSIS !!!
+!!! THE SEARCH CRITERIAS ARE DEFINED GLOBALLY  WITHIN THIS SCRIPT AS THEY ARE NOT EXPECTED TO CHANGE FOR THE ANALYSIS !!!
 
 Author : GIBONI Lucas
 
