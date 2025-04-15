@@ -126,7 +126,7 @@ def dict_to_netcdf(
 
     # Save it as a pickle file #
 
-    key_paths_table.to_pickle(save_path + "/tables/" + "key_paths_table.pkl")
+    key_paths_table.to_pickle(save_path + "/table/" + "key_paths_table.pkl")
 
     return
 
@@ -162,7 +162,7 @@ def netcdf_to_dict(save_path: str):
 
     # Load the dataframe #
 
-    key_paths_table = pd.read_pickle(save_path + "/tables/" + "key_paths_table.pkl")
+    key_paths_table = pd.read_pickle(save_path + "/table/" + "key_paths_table.pkl")
 
     # Extract the keys #
 
