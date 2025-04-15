@@ -17,13 +17,15 @@ Feel free to copy, adapt and modify it under the provided license on github.
 
 # ================ IMPORTATIONS ================ #
 
+### LOAD AND NAVIGATE THROUGH THE DATA ###
+
 import intake_esgf  # this gives us access to the ESGF catalog to make queries
 
-import pandas as pd  # to manage the product of the search
+### DATA OBJECTS AND ASSOCIATED COMPUTATION ###
 
 import numpy as np  # to manage the pandas arrays
 
-import os  # to get access to commands related to path setting and creation of directories
+### HOMEMADE LIBRARIES ###
 
 from utilities.download.folders_handle.create import (
     create_dir,

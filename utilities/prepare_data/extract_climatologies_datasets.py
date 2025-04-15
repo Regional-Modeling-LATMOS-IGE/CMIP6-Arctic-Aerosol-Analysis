@@ -15,12 +15,6 @@ Feel free to copy, adapt and modify it under the provided license on github.
 
 # ================ IMPORTATIONS ================ #
 
-### LOAD AND NAVIGATE THROUGH THE DATA ###
-
-import os  # to get access to commands related to path setting and creation of directories
-
-import intake_esgf  # this gives us access to the ESGF catalog to make queries
-
 ### DATA OBJECTS AND ASSOCIATED COMPUTATION ###
 
 import numpy as np  # to handle numpy arrays and the associated tools
@@ -29,13 +23,9 @@ import xarray as xr  # to manage the data
 
 import xcdat as xc  # to handle climate model outputs with xarray
 
-import pandas as pd  # to create and handle tables in python
-
 ### HOMEMADE LIBRARIES ###
 
 from utilities.download.load_cmip6 import loading_cmip6 # function to load the raw data
-
-from utilities.download.folders_handle.create import create_dir  # function to create a cleaned downloading directory
 
 # ================ SEARCH CRITERIAS FOR OUR ANALYSIS ================ #
 
