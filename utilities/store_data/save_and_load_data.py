@@ -124,9 +124,17 @@ def dict_to_netcdf(
 
     key_paths_table = pd.DataFrame(key_paths_dict)
 
-    # Save it as a pickle file #
+    ## Save the pandas dataframe ##
 
-    key_paths_table.to_pickle(save_path + "/table/" + "key_paths_table.pkl")
+    # Create the table folder to hold it #
+
+    saving_path_table = create_dir(
+        parent_path=save_path, name="table", clear=do_we_clear
+    )
+
+    # Save it #
+
+    key_paths_table.to_pickle(saving_path_table + "/key_paths_table.pkl")
 
     return
 
