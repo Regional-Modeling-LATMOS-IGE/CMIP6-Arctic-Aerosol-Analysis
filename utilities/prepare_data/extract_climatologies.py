@@ -326,9 +326,9 @@ def create_climatology_dict(data_path: str, data_folder_name: str, save_path: st
 
         ### SAVE THE GENERATED DICTIONNARY ###
 
-        print("Saving the climatologies' dictionnary\n")
-
         dict_to_netcdf(dataset_dict = dict_cmip6_clim, save_path = save_path, do_we_clear = True)
+
+    print("Saving the climatologies' dictionnary\n")
 
     return
 
