@@ -35,7 +35,7 @@ from utilities.download.folders_handle.create import (
 
 
 def dict_to_netcdf(
-    dataset_dict: dict, save_path: str, save_folder_name: str, do_we_clear: bool = True
+    dataset_dict: dict, save_path: str, do_we_clear: bool = True
 ):
     """
     ### DEFINITION ###
@@ -48,8 +48,6 @@ def dict_to_netcdf(
     DATASET_DICT : DICTIONNARY OF XARRAY DATASETS | dictionnary of the datasets we want to save
 
     SAVE_PATH : STR | path of the parent directory of the save folder
-
-    SAVE_FOLDER_NAME : STR | name to be given to the save folder
 
     DO_WE_CLEAR : BOOL | option to clear the save folder if it already exists : default is True
 
@@ -138,7 +136,7 @@ def dict_to_netcdf(
 ####################################################
 
 
-def netcdf_to_dict(save_path: str, save_folder_name: str):
+def netcdf_to_dict(save_path: str):
     """
     ### DEFINITION ###
 
@@ -148,8 +146,6 @@ def netcdf_to_dict(save_path: str, save_folder_name: str):
     ### INPUTS ###
 
     SAVE_PATH : STR | path of the directory where the data was saved
-
-    SAVE_FOLDER_NAME : STR | name to be given to the save folder
 
     ### OUTPUTS ###
 
@@ -166,7 +162,7 @@ def netcdf_to_dict(save_path: str, save_folder_name: str):
 
     # Load the dataframe #
 
-    key_paths_table = pd.read_pickle(save_path + save_folder_name + "/tables/" + "key_paths_table.pkl")
+    key_paths_table = pd.read_pickle(save_path + "/tables/" + "key_paths_table.pkl")
 
     # Extract the keys #
 
