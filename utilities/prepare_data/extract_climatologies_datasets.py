@@ -165,7 +165,7 @@ def add_one_variable_to_dataset(variable_name: str, var_datarray, modify_data:bo
 ##########################################
 
 
-def create_climatology_dict(parent_path : str, data_folder_name : str) -> dict:
+def create_climatology_dict(data_path : str, data_folder_name : str) -> dict:
 
     """
     ### DEFINITION
@@ -174,13 +174,13 @@ def create_climatology_dict(parent_path : str, data_folder_name : str) -> dict:
 
     ### INPUTS
 
-    PARENT_PATH : STR | path of the parent directory of the raw data folder
+    DATA_PATH : STR | path of the parent directory of the raw data folder
 
-    DOWNLOADING_FOLDER_NAME : STR | name of the raw data folder
+    DATA_FOLDER_NAME : STR | name of the raw data folder
 
     ### OUPUTS
 
-    DICT_CMIP6_CLIM : DICTIONNARY XARRAY DATASETS | dataset with the new variable 
+    DICT_CMIP6_CLIM : DICTIONNARY OF XARRAY DATASETS | dataset with the new variable 
 
     """
 
@@ -189,7 +189,7 @@ def create_climatology_dict(parent_path : str, data_folder_name : str) -> dict:
     ## Load the raw data##
 
     dict_cmip6, dict_areacella = loading_cmip6(
-    parent_path=parent_path,
+    parent_path=data_path,
     downloading_folder_name=data_folder_name,
     do_we_clear=False,
     )
