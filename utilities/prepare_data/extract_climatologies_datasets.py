@@ -25,19 +25,20 @@ import xcdat as xc  # to handle climate model outputs with xarray
 
 ### HOMEMADE LIBRARIES ###
 
-from utilities.download.load_cmip6 import loading_cmip6 # function to load the raw data
+from utilities.download.load_cmip6 import loading_cmip6  # function to load the raw data
 
 # ================ SEARCH CRITERIAS FOR OUR ANALYSIS ================ #
 
-from utilities.download.load_cmip6 import variable_id # variable search criteria globally defined in load_cmip6
+from utilities.download.load_cmip6 import (
+    variable_id,
+)  # variable search criteria globally defined in load_cmip6
 
 #######################################################
 ### GENERATE DICTIONNARY KEYS WITHOUT THE VARIABLES ###
 #######################################################
 
 
-def generate_per_model_dict_key(dict_cmip6 : dict):
-
+def generate_per_model_dict_key(dict_cmip6: dict):
     """
 
     ### DEFINITION ###
@@ -67,7 +68,9 @@ def generate_per_model_dict_key(dict_cmip6 : dict):
 
     ## Generate the output array with the known number of keys ###
 
-    keys_without_variable = np.empty(n_keys, dtype=object)  # dtype = object otherwise it truncates the str
+    keys_without_variable = np.empty(
+        n_keys, dtype=object
+    )  # dtype = object otherwise it truncates the str
 
     ### LOOP OVER THE DICTIONNARY KEYS ###
 
@@ -95,16 +98,19 @@ def generate_per_model_dict_key(dict_cmip6 : dict):
 
     return keys_without_variable_unique
 
+
 ############################################
 ### ADD ONE VARIABLE TO A XARRAY DATASET ###
 ############################################
 
-def add_one_variable_to_dataset(variable_name: str, var_datarray, modify_data:bool=False, dataset:bool=None):
 
+def add_one_variable_to_dataset(
+    variable_name: str, var_datarray, modify_data: bool = False, dataset: bool = None
+):
     """
     ### DEFINITION
 
-    This function adds the variable_name variable to a xarray dataset with the var_datarray data array. 
+    This function adds the variable_name variable to a xarray dataset with the var_datarray data array.
     If no datasets are provided, it will initialize them provided that modify_data is set to True.
 
     ### INPUTS
@@ -119,7 +125,7 @@ def add_one_variable_to_dataset(variable_name: str, var_datarray, modify_data:bo
 
     ### OUPUTS
 
-    DATASET : XARRAY DATASET | dataset with the new variable 
+    DATASET : XARRAY DATASET | dataset with the new variable
 
     """
 
@@ -130,7 +136,6 @@ def add_one_variable_to_dataset(variable_name: str, var_datarray, modify_data:bo
     var_climatology = var_datarray.temporal.climatology(
         variable_name, "month", weighted=True
     )  # we generate a monthly climatology
-
 
     ### ADDING THE VARIABLE TO THE DATASET ###
 
@@ -160,13 +165,13 @@ def add_one_variable_to_dataset(variable_name: str, var_datarray, modify_data:bo
 
     return dataset
 
+
 ##########################################
 ### CREATE THE CLIMATOLOGY DICTIONNARY ###
 ##########################################
 
 
-def create_climatology_dict(data_path : str, data_folder_name : str) -> dict:
-
+def create_climatology_dict(data_path: str, data_folder_name: str) -> dict:
     """
     ### DEFINITION
 
@@ -180,7 +185,7 @@ def create_climatology_dict(data_path : str, data_folder_name : str) -> dict:
 
     ### OUPUTS
 
-    DICT_CMIP6_CLIM : DICTIONNARY OF XARRAY DATASETS | dataset with the new variable 
+    DICT_CMIP6_CLIM : DICTIONNARY OF XARRAY DATASETS | dataset with the new variable
 
     """
 
@@ -189,9 +194,9 @@ def create_climatology_dict(data_path : str, data_folder_name : str) -> dict:
     ## Load the raw data##
 
     dict_cmip6, dict_areacella = loading_cmip6(
-    parent_path=data_path,
-    downloading_folder_name=data_folder_name,
-    do_we_clear=False,
+        parent_path=data_path,
+        downloading_folder_name=data_folder_name,
+        do_we_clear=False,
     )
 
     ## Create the dictionnary ##
@@ -300,15 +305,16 @@ def create_climatology_dict(data_path : str, data_folder_name : str) -> dict:
         # Update the dataset of the given model.variant and experiment with the associated areacella #
 
         dataset_given_exp["areacella"] = (
-                ("lat", "lon"),
-                areacella_datarray["areacella"].values,
-            )
+            ("lat", "lon"),
+            areacella_datarray["areacella"].values,
+        )
 
         ## Add the dataset to the output dictionnary ##
 
         dict_cmip6_clim[new_simpler_key_given_exp] = dataset_given_exp
 
     return dict_cmip6_clim
+
 
 ######################
 ### USED FOR TESTS ###

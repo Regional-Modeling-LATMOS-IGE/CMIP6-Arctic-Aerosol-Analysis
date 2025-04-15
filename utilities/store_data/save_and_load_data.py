@@ -1,9 +1,9 @@
 #!/usr/bin/env python3
 
 """
-This small script is used to treat the save and load the data we have prepared for analysis. 
+This small script is used to treat the save and load the data we have prepared for analysis.
 We transform a dictionnary structure into a series of netcdf files for every single model, variant and experiment.
-We are able to reload the same structure from the netcdf files. To do so, we generate a dataframe associating each entry to its path and save it 
+We are able to reload the same structure from the netcdf files. To do so, we generate a dataframe associating each entry to its path and save it
 as a pickle file.
 
 Author : GIBONI Lucas
@@ -21,7 +21,7 @@ import numpy as np  # to handle numpy arrays and the associated tools
 
 import xarray as xr  # to manage the data
 
-import pandas as pd # to create and handle tables in python
+import pandas as pd  # to create and handle tables in python
 
 ### HOMEMADE LIBRARIES ###
 
@@ -33,17 +33,19 @@ from utilities.download.folders_handle.create import (
 ### SAVE EVERY DATASET OF THE DICTIONNARY AS NETCDF FILES ###
 #############################################################
 
-def dict_to_netcdf(dataset_dict : dict, save_path : str, save_folder_name : str, do_we_clear:bool = True):
-    
+
+def dict_to_netcdf(
+    dataset_dict: dict, save_path: str, save_folder_name: str, do_we_clear: bool = True
+):
     """
     ### DEFINITION ###
 
-    This function save every dataset entry of the dictionnary and save them as netcdf files. It also generates a pandas dataframe associating every single key 
+    This function save every dataset entry of the dictionnary and save them as netcdf files. It also generates a pandas dataframe associating every single key
     of the dictionnary with the path of the corresponding saved netcdf file. This dataframe is saved as a pickle file.
 
     ### INPUTS ###
 
-    DATASET_DICT : DICTIONNARY OF XARRAY DATASETS | dictionnary of the datasets we want to save 
+    DATASET_DICT : DICTIONNARY OF XARRAY DATASETS | dictionnary of the datasets we want to save
 
     SAVE_PATH : STR | path of the parent directory of the save folder
 
@@ -55,7 +57,7 @@ def dict_to_netcdf(dataset_dict : dict, save_path : str, save_folder_name : str,
 
     nothing.
     """
-    
+
     ### INITIALISATION ###
 
     ## Get the list of the keys of the dictionnary #
@@ -70,7 +72,9 @@ def dict_to_netcdf(dataset_dict : dict, save_path : str, save_folder_name : str,
 
     ## Generate the array of the paths ##
 
-    paths = np.empty(n_keys, dtype=object)  # dtype = object otherwise it truncates the str
+    paths = np.empty(
+        n_keys, dtype=object
+    )  # dtype = object otherwise it truncates the str
 
     ### GO THROUGH THE ENTRIES ###
 
@@ -93,7 +97,7 @@ def dict_to_netcdf(dataset_dict : dict, save_path : str, save_folder_name : str,
         ## Create the directory associated to the entry and keep its path ##
 
         saving_path_given_entry = create_dir(
-            parent_path= save_path, name=full_name, clear=do_we_clear
+            parent_path=save_path, name=full_name, clear=do_we_clear
         )
 
         ## Generate the full path with the filename ##
@@ -126,7 +130,7 @@ def dict_to_netcdf(dataset_dict : dict, save_path : str, save_folder_name : str,
 
     key_paths_table.to_pickle(save_path + "/" + "key_paths_table.pkl")
 
-    return 
+    return
 
 
 ####################################################
@@ -134,8 +138,7 @@ def dict_to_netcdf(dataset_dict : dict, save_path : str, save_folder_name : str,
 ####################################################
 
 
-def netcdf_to_dict(save_path : str):
-    
+def netcdf_to_dict(save_path: str):
     """
     ### DEFINITION ###
 
@@ -166,7 +169,7 @@ def netcdf_to_dict(save_path : str):
     # Extract the keys #
 
     list_keys = key_paths_table["key"].to_list()
-    
+
     # Extract the associated paths #
 
     paths = key_paths_table["path"].to_list()
@@ -182,5 +185,14 @@ def netcdf_to_dict(save_path : str):
         ## Load the netcdf file into the dictionnary #
 
         generated_data_dict[key] = xr.open_dataset(path_to_nc)
-    
+
     return generated_data_dict
+
+
+######################
+### USED FOR TESTS ###
+######################
+
+if __name__ == "__main__":
+
+    pass

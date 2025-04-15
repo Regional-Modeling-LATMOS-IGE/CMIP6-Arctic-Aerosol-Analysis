@@ -74,9 +74,10 @@ expected_number_of_files = np.size(experiment_id) * np.size(variable_id)
 ###################################
 
 
-def set_downloading_folder(parent_path: str, downloading_folder_name: str, do_we_clear: bool = False):
+def set_downloading_folder(
+    parent_path: str, downloading_folder_name: str, do_we_clear: bool = False
+):
     """
-
     ### DEFINITION ###
 
     This function prepares the downloading folder and sets it. It will create or check if a download folder exists at
@@ -240,7 +241,9 @@ def get_areacella_apart(catalog) -> dict:
 ###########################
 
 
-def loading_cmip6(parent_path: str, downloading_folder_name: str, do_we_clear: bool = False) -> dict:
+def loading_cmip6(
+    parent_path: str, downloading_folder_name: str, do_we_clear: bool = False
+) -> dict:
     """
 
     ### DEFINITION ###
