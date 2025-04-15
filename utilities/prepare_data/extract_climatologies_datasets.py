@@ -4,8 +4,6 @@
 This small script is used to treat the raw CMIP6 data we have downloaded. We transfom the single variable datasets that span over the 30-year simulation period
 into monthly climatologies that are regrouped under the same model.variant hood.
 
-!!! THE VARIABLE LIST IS DEFINED GLOBALLY WITHIN THIS SCRIPT AS IT IS NOT EXPECTED TO CHANGE FOR THE ANALYSIS !!!
-
 Author : GIBONI Lucas
 
 Feel free to copy, adapt and modify it under the provided license on github.
@@ -321,3 +319,11 @@ def create_climatology_dict(parent_path : str, data_folder_name : str) -> dict:
         dict_cmip6_clim[new_simpler_key_given_exp] = dataset_given_exp
 
     return dict_cmip6_clim
+
+######################
+### USED FOR TESTS ###
+######################
+
+if __name__ == "__main__":
+
+    pass
