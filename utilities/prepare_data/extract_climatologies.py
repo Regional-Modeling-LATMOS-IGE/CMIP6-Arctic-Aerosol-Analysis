@@ -4,6 +4,8 @@
 This small script is used to treat the raw CMIP6 data we have downloaded. We transfom the single variable datasets that span over the 30-year simulation period
 into monthly climatologies that are regrouped under the same model.variant hood.
 
+We also build some tools to handle more easily the data structure.
+
 Author : GIBONI Lucas
 
 Feel free to copy, adapt and modify it under the provided license on github.
@@ -42,19 +44,26 @@ from utilities.download.load_cmip6 import (
 
 def generate_per_model_dict_key(dict_cmip6: dict):
     """
+    ---
 
     ### DEFINITION ###
 
     This function receives the dictionnary keys from the raw loaded data dictionnary and change the variables with a *.
     It thens proceeds to make a unique key per model.variant couple and save them into a numpy array.
 
+    ---
+
     ### INPUTS ###
 
     DICT_CMIP6 : DICT | dictionnary holding the raw loaded data
 
+    ---
+
     ### OUTPUTS ###
 
     KEY_WITHOUT_VARIABLE_UNIQUE : NUMPY ARRAY OF STR | array with the one key per model with a * where the variables are written
+
+    ---
 
     """
 
@@ -176,10 +185,14 @@ def add_one_variable_to_dataset(
 def create_climatology_dict(data_path: str, data_folder_name: str, save_path: str, do_we_clear: bool = True) -> dict:
 
     """
+    ---
+
     ### DEFINITION
 
     This function generates the dictionnary of the xarray datasets holding every monthly climatology of the loaded raw variables.
     It then saves it as netcdf files for the provided save_path within the folder named save_folder_name.
+
+    ---
 
     ### INPUTS
 
@@ -191,9 +204,13 @@ def create_climatology_dict(data_path: str, data_folder_name: str, save_path: st
 
     DO_WE_CLEAR : BOOL | option to clear the save folder if it already exists : default is True
 
+    ---
+
     ### OUTPUTS
 
     nothing.
+
+    ---
     """
 
     ### INITIALIZATION ###
@@ -332,6 +349,46 @@ def create_climatology_dict(data_path: str, data_folder_name: str, save_path: st
 
     return
 
+
+####################################################
+### GENERATE THE ENTRIES WITHOUT THE EXPERIMENTS ###
+####################################################
+
+def get_model_entries__only_from_clim(key_with_exp : str) -> str:
+
+    """
+    ---
+    ### DEFINITION ###
+
+    This function receives a key from the climatology dictionnary and removes the experiment at the end to generate an only model and variants list.
+
+    ---
+    ### INPUTS ###
+
+    KEY_WITH_EXP : STR | key of the climatology dictionnary holding the experiment specification at the end.
+
+    ---
+    ### OUTPUTS ###
+
+    KEY_WITHOUT_EXP : STR | input key deprived of the experiment specification
+    ---
+    """
+
+    ### REMOVE THE EXPERIMENT ###
+
+    ## Split the key into a list of str ##
+
+    splitted_key = key_with_exp.split(".")
+
+    ## Remove the experiment specification at the end ##
+
+    splitted_key_without_exp = splitted_key[:-1]
+
+    ## Rejoin the newly formed key ##
+
+    key_without_exp = ".".join(splitted_key_without_exp)
+
+    return key_without_exp
 
 ######################
 ### USED FOR TESTS ###
