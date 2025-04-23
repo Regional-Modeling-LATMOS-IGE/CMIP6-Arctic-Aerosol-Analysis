@@ -116,7 +116,7 @@ def generate_per_model_dict_key(dict_cmip6: dict):
 
 
 def add_one_variable_to_dataset(
-    variable_name: str, var_datarray, modify_data: bool = False, dataset: bool = None
+    variable_name: str, var_datarray, modify_data: bool = False, dataset: bool = None, do_clim = True
 ):
     """
     ### DEFINITION
@@ -134,19 +134,29 @@ def add_one_variable_to_dataset(
 
     DATASET : XARRAY DATASET | dataset without the new variable
 
+    DO_CLIM : BOOL | bool defining if we compute the climatology or not by default set to True
+
     ### OUPUTS
 
     DATASET : XARRAY DATASET | dataset with the new variable
 
     """
 
-    ### MAKE CLIMATOLOGIES ###
+    ### PREPARE THE VARIABLE TO ADD ###
 
-    ## Produce the climatology ##
+    ## Produce the climatology if needed ##
 
-    var_climatology = var_datarray.temporal.climatology(
-        variable_name, "month", weighted=True
-    )  # we generate a monthly climatology
+    if do_clim:
+
+        var_to_add = var_datarray.temporal.climatology(
+            variable_name, "month", weighted=True
+        )  # we generate a monthly climatology
+
+    ## Otherwise we just add the variable ##
+    
+    else :
+
+        var_to_add = var_datarray
 
     ### ADDING THE VARIABLE TO THE DATASET ###
 
@@ -154,13 +164,13 @@ def add_one_variable_to_dataset(
 
     if not modify_data:
 
-        dataset = var_climatology
+        dataset = var_to_add
 
     else:
 
         dataset[variable_name] = (
             ("time", "lat", "lon"),
-            var_climatology[variable_name].values,
+            var_to_add[variable_name].values,
         )
 
     ### DIFFERENT CORRECTIONS ###
