@@ -34,9 +34,7 @@ from utilities.download.folders_handle.create import (
 #############################################################
 
 
-def dict_to_netcdf(
-    dataset_dict: dict, save_path: str, do_we_clear: bool = True
-):
+def dict_to_netcdf(dataset_dict: dict, save_path: str, do_we_clear: bool = True):
     """
     ### DEFINITION ###
 

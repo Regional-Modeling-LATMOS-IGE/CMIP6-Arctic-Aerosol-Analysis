@@ -29,7 +29,9 @@ import xcdat as xc  # to handle climate model outputs with xarray
 
 from utilities.download.load_cmip6 import loading_cmip6  # function to load the raw data
 
-from utilities.store_data.save_and_load_data import dict_to_netcdf # function to save the generated climatology
+from utilities.store_data.save_and_load_data import (
+    dict_to_netcdf,
+)  # function to save the generated climatology
 
 # ================ SEARCH CRITERIAS FOR OUR ANALYSIS ================ #
 
@@ -116,7 +118,11 @@ def generate_per_model_dict_key(dict_cmip6: dict):
 
 
 def add_one_variable_to_dataset(
-    variable_name: str, var_datarray, modify_data: bool = False, dataset: bool = None, do_clim = False
+    variable_name: str,
+    var_datarray,
+    modify_data: bool = False,
+    dataset: bool = None,
+    do_clim=False,
 ):
     """
     ### DEFINITION
@@ -153,8 +159,8 @@ def add_one_variable_to_dataset(
         )  # we generate a monthly climatology
 
     ## Otherwise we just add the variable ##
-    
-    else :
+
+    else:
 
         var_to_add = var_datarray
 
@@ -192,8 +198,9 @@ def add_one_variable_to_dataset(
 ##########################################
 
 
-def create_climatology_dict(data_path: str, data_folder_name: str, save_path: str, do_we_clear: bool = True) -> dict:
-
+def create_climatology_dict(
+    data_path: str, data_folder_name: str, save_path: str, do_we_clear: bool = True
+) -> dict:
     """
     ---
 
@@ -234,7 +241,7 @@ def create_climatology_dict(data_path: str, data_folder_name: str, save_path: st
     )
 
     print("Data dictionnary loaded\n")
-    
+
     ## Create the dictionnary ##
 
     print("Generating the climatologies' dictionnary\n")
@@ -278,7 +285,10 @@ def create_climatology_dict(data_path: str, data_folder_name: str, save_path: st
         # Generate or update the dataset for the given model.variant and experiment #
 
         dataset_given_exp = add_one_variable_to_dataset(
-            variable_name=var, var_datarray=var_datarray, modify_data=modify_data, do_clim = True
+            variable_name=var,
+            var_datarray=var_datarray,
+            modify_data=modify_data,
+            do_clim=True,
         )
 
         # Set that now the dataset already exists #
@@ -312,7 +322,7 @@ def create_climatology_dict(data_path: str, data_folder_name: str, save_path: st
                 var_datarray=var_datarray,
                 modify_data=modify_data,
                 dataset=dataset_given_exp,
-                do_clim = True
+                do_clim=True,
             )
 
         ## Generate a new simpler key for dict_cmip6_clim ##
@@ -354,7 +364,9 @@ def create_climatology_dict(data_path: str, data_folder_name: str, save_path: st
 
         ### SAVE THE GENERATED DICTIONNARY ###
 
-        dict_to_netcdf(dataset_dict = dict_cmip6_clim, save_path = save_path, do_we_clear = True)
+        dict_to_netcdf(
+            dataset_dict=dict_cmip6_clim, save_path=save_path, do_we_clear=True
+        )
 
     print("Saving the climatologies' dictionnary\n")
 
@@ -365,8 +377,8 @@ def create_climatology_dict(data_path: str, data_folder_name: str, save_path: st
 ### GENERATE THE ENTRIES WITHOUT THE EXPERIMENTS ###
 ####################################################
 
-def get_model_entries__only_from_clim(key_with_exp : str) -> str:
 
+def get_model_entries__only_from_clim(key_with_exp: str) -> str:
     """
     ---
     ### DEFINITION ###
@@ -400,6 +412,7 @@ def get_model_entries__only_from_clim(key_with_exp : str) -> str:
     key_without_exp = ".".join(splitted_key_without_exp)
 
     return key_without_exp
+
 
 ######################
 ### USED FOR TESTS ###
