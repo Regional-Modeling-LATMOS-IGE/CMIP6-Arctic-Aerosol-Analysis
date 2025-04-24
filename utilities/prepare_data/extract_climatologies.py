@@ -116,7 +116,7 @@ def generate_per_model_dict_key(dict_cmip6: dict):
 
 
 def add_one_variable_to_dataset(
-    variable_name: str, var_datarray, modify_data: bool = False, dataset: bool = None, do_clim = True
+    variable_name: str, var_datarray, modify_data: bool = False, dataset: bool = None, do_clim = False
 ):
     """
     ### DEFINITION
@@ -278,7 +278,7 @@ def create_climatology_dict(data_path: str, data_folder_name: str, save_path: st
         # Generate or update the dataset for the given model.variant and experiment #
 
         dataset_given_exp = add_one_variable_to_dataset(
-            variable_name=var, var_datarray=var_datarray, modify_data=modify_data
+            variable_name=var, var_datarray=var_datarray, modify_data=modify_data, do_clim = True
         )
 
         # Set that now the dataset already exists #
@@ -312,6 +312,7 @@ def create_climatology_dict(data_path: str, data_folder_name: str, save_path: st
                 var_datarray=var_datarray,
                 modify_data=modify_data,
                 dataset=dataset_given_exp,
+                do_clim = True
             )
 
         ## Generate a new simpler key for dict_cmip6_clim ##
