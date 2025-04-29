@@ -4,8 +4,6 @@
 This small script is used to load the CMIP6 data used for the analysis.
 For more details on the methods employed in the script, please refer to the download_cmip6.ipynb notebook in the same folder.
 
-!!! THE SEARCH CRITERIAS ARE DEFINED GLOBALLY  WITHIN THIS SCRIPT AS THEY ARE NOT EXPECTED TO CHANGE FOR THE ANALYSIS !!!
-
 Author : GIBONI Lucas
 
 Feel free to copy, adapt and modify it under the provided license on github.
@@ -25,49 +23,218 @@ import intake_esgf  # this gives us access to the ESGF catalog to make queries
 
 import numpy as np  # to manage the pandas arrays
 
+import pandas as pd # to manage the product of the search
+
 ### HOMEMADE LIBRARIES ###
 
 from utilities.download.folders_handle.create import (
     create_dir,
 )  # function to create a cleaned downloading directory
 
-#######################
-#### INITIALISATION ###
-#######################
+#############################
+#### DEFINE CUSTOM ERRORS ###
+#############################
 
-# ================ SEARCH CRITERIAS FOR OUR ANALYSIS ================ #
+class InvalidCase(Exception):
 
-### EXPERIMENTS ###
+    ### DEFINING THE EXCEPTION PROPERTIES ###
 
-experiment_id = [
-    "piClim-control",
-    "piClim-aer",
-]
+    def __init__(self, case, error_msg="The following case is not covered for the search"):
+        self.case = case
+        self.error_msg = error_msg
+        super().__init__(self.msg) # calling the exception parent class
 
-### VARIABLES ###
+    ### DEFINING THE ERROR MESSAGE ###
 
-variable_id = [
-    "clt",
-    "rsdt",
-    "rsut",
-    "rsutcs",
-    "rsds",
-    "rsus",
-    "rsdscs",
-    "rsuscs",
-    "rlut",
-    "rlutcs",
-    "rlds",
-    "rlus",
-]
+    def __str__(self): # what happens when printing the error
+        return f'{self.case} -> {self.error_msg}'
+    
+#############################################
+#### DEFINE GLOBALLY THE SEARCH CRITERIAS ###
+#############################################
 
-### TABLE ###
+def set_search_criterias(case : str) -> dict:
+    """
 
-table_id = "Amon"
+    ### DEFINITION ###
 
-### SET THE EXPECTED NUMBER OF FILES : number_of_experiments * number_of_variables ###
+    This function allows us to define dynamically the search criterias in function of the case we are in.
 
-expected_number_of_files = np.size(experiment_id) * np.size(variable_id)
+    ### INPUTS ###
+
+    CASE : STR | str defining the case for the search :
+    
+    - SW (short-wave variables for the APRP method)
+    - ZELINKA-SW (short-wave variables for the APRP method by keeping only the models and variants present in Zelinka and al. (2023))
+
+    ### OUTPUTS ###
+
+    SEARCH : DICT | dictionnary holding the search criterias
+
+    EXPECTED_NUMBER_OF_FILES : INT | expected number of files such that on model_id and source_id couples corresponds to (number_of_variables) * (number_of_experiments)
+
+    ### REFERENCES ###
+
+    Zelinka, M. D., Smith, C. J., Qin, Y., and Taylor, K. E.: Comparison of methods to estimate aerosol effective radiative forcings in climate models, 
+    Atmos. Chem. Phys., 23, 8879–8898, https://doi.org/10.5194/acp-23-8879-2023, 2023.
+
+    """
+
+    ### SHORT-WAVE ONLY CASE ###
+
+    if case == "SW" :
+
+        # ================ SEARCH CRITERIAS FOR OUR ANALYSIS ================ #
+
+        ### EXPERIMENTS ###
+
+        experiment_id = [
+            "piClim-control",
+            "piClim-aer",
+        ]
+
+        ### VARIABLES ###
+
+        variable_id = [
+            "clt",
+            "rsdt",
+            "rsut",
+            "rsutcs",
+            "rsds",
+            "rsus",
+            "rsdscs",
+            "rsuscs",
+        ]
+
+        ### TABLE ###
+
+        table_id = "Amon"
+
+        ### DEFINE SEARCH CRITERIAS DICTIONNARY ###
+
+        search = {
+            "experiment_id" : experiment_id,
+            "variable_id" : variable_id,
+            "table_id" : table_id
+        }
+
+
+        # ================ EXPECTED NUMBER OF FILES ================ #
+
+        expected_number_of_files = 16 # 8 variables * 2 experiments
+
+        return {'search' : search, 'expected_number_of_files' : expected_number_of_files, 'filtering_by_name' : False, 'keep_only_dataframe' : None}
+    
+    elif case == "ZELINKA-SW" :
+
+        # ================ SEARCH CRITERIAS FOR OUR ANALYSIS ================ #
+
+        ### EXPERIMENTS ###
+
+        experiment_id = [
+            "piClim-control",
+            "piClim-aer",
+        ]
+
+        ### VARIABLES ###
+
+        variable_id = [
+            "clt",
+            "rsdt",
+            "rsut",
+            "rsutcs",
+            "rsds",
+            "rsus",
+            "rsdscs",
+            "rsuscs",
+        ]
+
+        ### TABLE ###
+
+        table_id = "Amon"
+
+        ### DEFINE SEARCH CRITERIAS DICTIONNARY ###
+
+        search = {
+            "experiment_id" : experiment_id,
+            "variable_id" : variable_id,
+            "table_id" : table_id
+        }
+
+
+        # ================ EXPECTED NUMBER OF FILES ================ #
+
+        expected_number_of_files = 16 # 8 variables * 2 experiments
+
+        # ================ DEFINE THE MODEL.VARIANT LIST OF ZELINKA'S ARTICLE ================ #
+
+        source_id_zelinka_2023 = [
+            "ACCESS-CM2",
+            "ACCESS-ESM1-5",
+            "BCC-ESM1",
+            "CESM2",
+            "CNRM-CM6-1",
+            "CNRM-ESM2-1",
+            "CanESM5",
+            "GFDL-CM4",
+            "GFDL-ESM4",
+            "GISS-E2-1-G",
+            "GISS-E2-1-G",
+            "GISS-E2-1-G",
+            "HadGEM3-GC31-LL",
+            "IPSL-CM6A-LR-INCA",
+            "IPSL-CM6A-LR",
+            "IPSL-CM6A-LR",
+            "IPSL-CM6A-LR",
+            "IPSL-CM6A-LR",
+            "MIROC6",
+            "MIROC6",
+            "MPI-ESM-1-2-HAM",
+            "MRI-ESM2-0",
+            "NorESM2-LM",
+            "NorESM2-LM",
+            "NorESM2-MM",
+            "UKESM1-0-LL" 
+        ]
+
+        member_id_zelinka_2023 = [
+            "r1i1p1f1",
+            "r1i1p1f1",
+            "r1i1p1f1",
+            "r1i1p1f1",
+            "r1i1p1f2",
+            "r1i1p1f2",
+            "r1i1p2f1",
+            "r1i1p1f1",
+            "r1i1p1f1",
+            "r1i1p1f1",
+            "r1i1p1f2",
+            "r1i1p3f1",
+            "r1i1p1f3",
+            "r1i1p1f1",
+            "r1i1p1f1",
+            "r2i1p1f1",
+            "r3i1p1f1",
+            "r4i1p1f1",
+            "r11i1p1f1",
+            "r1i1p1f1",
+            "r1i1p1f1",
+            "r1i1p1f1",
+            "r1i1p1f1",
+            "r1i1p2f1",
+            "r1i1p1f1",
+            "r1i1p1f4"
+        ]
+
+        zelinka_2023_model_variant_table = pd.DataFrame({"source_id" : source_id_zelinka_2023, "member_id" : member_id_zelinka_2023}, dtype = str)
+
+        return {'search' : search, 'expected_number_of_files' : expected_number_of_files, 'filtering_by_name' : True, 'keep_only_dataframe' : zelinka_2023_model_variant_table}
+
+    ### THE INPUT CASE IS NOT COVERED ###
+
+    else:
+
+        raise InvalidCase
 
 ###################################
 #### SET THE DOWNLOADING FOLDER ###
@@ -116,26 +283,82 @@ def set_downloading_folder(
 
     return
 
+########################################################################################
+#### FILTERING FUNCTION REMOVING INCOMPLETE ENTRIES AND KEEPING ONLY PROVIDED MODELS ###
+########################################################################################
 
-#######################################################
-#### FILTERING FUNCTION DEFINING INCOMPLETE ENTRIES ###
-#######################################################
 
+# ================ DEFINE THE FILTERING FUNCTION ================ #
 
-def filtering_function(model_group) -> bool:
+def filtering_function(grouped_model_entry : pd.DataFrame) -> bool:
     """
 
     ### DEFINITION ###
 
     This function allows the intake-esgf catalog to be cleaned of the entries that are not complete.
-    In this case it means entries that do not meet the expected number of files
+    In the default case it means entries that do not meet the expected number of files. 
 
+    The user can also set a condition that only the model and variant couples present in a provided pandas dataframe are kept.
+    Since the nature of this function is to be an input for the intake-esgf package, we define the optional arguments outside
+    of the function.
+
+    ### INPUTS
+
+    GROUPED_MODEL_ENTRY : Pandas DataFrame | sub dataframe containing all the variables of a given source_id, member_id and grid tuple.
+
+    ### OPTIONAL ARGUMENTS (DEFINED GLOBALLY)
+
+    FILTERING_BY_NAME : BOOL | defines if we filter the entry by source_id and member_id or not
+
+    KEEP_ONLY_DATAFRAME : Pandas DataFrame | associated dataframe holding the source_id and member_id to conserve
+    
+    ### OUTPUTS
+
+    BOOL | whether we keep this model group or not
     """
 
-    if len(model_group) == expected_number_of_files:
+    ### INITIALISATION ###
 
-        return True
+    ### TEST THE NUMBER OF VARIBALES ###
 
+    if len(grouped_model_entry) == expected_number_of_files:
+
+        ### NUMBER OF VARIABLES' TEST SUCCEEDED ###
+
+        ## Do we keep only the keep_only_dataframe model and variant couples ? ##
+
+        # NO : We keep everything that matched the variable number's test #
+
+        if not(filtering_by_name):
+
+            return True
+        
+        ### YES : KEEPING ONLY THE COUPLES PRESENT IN KEEP_ONLY_DATAFRAME ###
+
+        else :
+            
+            ## Doing the test on the grouped_model_entry's source_id and member_id ##
+
+            # Extract the grouped_model_entry data #
+
+            grouped_model_entry_source_id = grouped_model_entry.source_id.unique()[0]
+
+            grouped_model_entry_member_id = grouped_model_entry.member_id.unique()[0]
+
+            # Can we find the grouped_model_entry's source_id and member_id in one row of is_in_keep_only_dataframe ? #
+
+            is_in_keep_only_dataframe = ((keep_only_dataframe['source_id'] == grouped_model_entry_source_id) 
+            & (keep_only_dataframe['member_id'] == grouped_model_entry_member_id)).any()
+
+            # Return the result of the test #
+
+            return is_in_keep_only_dataframe
+    
+    ### NUMBER OF VARIABLES' TEST FAILED ###
+
+    else :
+
+        return False
 
 ##########################################
 #### GETTING THE AREACELLA DICTIONNARY ###
@@ -242,7 +465,7 @@ def get_areacella_apart(catalog) -> dict:
 
 
 def loading_cmip6(
-    parent_path: str, downloading_folder_name: str, do_we_clear: bool = False
+    parent_path: str, downloading_folder_name: str, case : 'str', do_we_clear: bool = False
 ) -> dict:
     """
 
@@ -255,6 +478,11 @@ def loading_cmip6(
     PARENT_PATH : STR | path of the parent directory of the download folder
 
     DOWNLOADING_FOLDER_NAME : STR | name to be given to the download folder
+
+    CASE : STR | str defining the case for the search :
+    
+    - SW (short-wave variables for the APRP method)
+    - ZELINKA-SW (short-wave variables for the APRP method by keeping only the models and variants present in Zelinka and al. (2023))
 
     DO_WE_CLEAR : BOOL | option to clear the downloading folder if it already exists
 
@@ -279,20 +507,42 @@ def loading_cmip6(
 
     catalog = intake_esgf.ESGFCatalog()
 
-    print(
-        "The search criterias are : {}\n{}\n{}\n".format(
-            experiment_id, variable_id, table_id
-        )
-    )
+    ### SET THE CHOSEN CASE ###
+
+    ## The criterias are defined module wide ##
+
+    global expected_number_of_files, filtering_by_name, keep_only_dataframe
+
+    ## Get the criterias ##
+
+    search_criterias = set_search_criterias(case) # it's a dictionnary with all the needed global search criterias to set
+
+    ## Get the search facets ##
+
+    search = search_criterias['search']
+
+    ## Get the expected number of files ##
+
+    expected_number_of_files = search_criterias['expected_number_of_files']
+
+    ## Do we filter the models we keep by source_id and member_id ? ##
+
+    # Boolean #
+
+    filtering_by_name = search_criterias['filtering_by_name']
+
+    # The associated dataframe #
+
+    keep_only_dataframe = search_criterias['keep_only_dataframe']
+
+    print("The search criterias are : {}\n".format(**search))
 
     ### SET THE SEARCH CRITERIAS (defined globally in this script) ###
 
     print("Filling the catalog with the search criterias...\n")
 
     catalog.search(
-        experiment_id=experiment_id,
-        variable_id=variable_id,
-        table_id=table_id,
+        **search,
         quiet=True,
     )
 
