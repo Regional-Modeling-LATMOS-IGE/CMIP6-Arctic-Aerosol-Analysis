@@ -468,23 +468,29 @@ def loading_cmip6(
     parent_path: str, downloading_folder_name: str, case : 'str', do_we_clear: bool = False
 ) -> dict:
     """
+    ---
 
     ### DEFINITION ###
 
+    
     This function loads the CMIP6 data ensemble under the form of a dictionnary structure.
+    
+    ---
 
     ### INPUTS ###
-
+    
     PARENT_PATH : STR | path of the parent directory of the download folder
 
     DOWNLOADING_FOLDER_NAME : STR | name to be given to the download folder
 
-    CASE : STR | str defining the case for the search :
+    CASE : STR | defines the case for the search :
     
     - SW (short-wave variables for the APRP method)
     - ZELINKA-SW (short-wave variables for the APRP method by keeping only the models and variants present in Zelinka and al. (2023))
 
     DO_WE_CLEAR : BOOL | option to clear the downloading folder if it already exists
+
+    ---
 
     ### OUTPUTS ###
 
@@ -493,6 +499,8 @@ def loading_cmip6(
     SEARCH_DATAFRAME : pandas dataframe | hold all the information about the found entries
 
     DICT_AREACELLA : dictionnary | hold an areacella xarray data array for every entry in the catalog
+
+    ---
     """
 
     ### SET THE DOWNLOADING FOLDER ###
@@ -535,7 +543,7 @@ def loading_cmip6(
 
     keep_only_dataframe = search_criterias['keep_only_dataframe']
 
-    print("The search criterias are : {}\n".format(**search))
+    print("The search criterias are : {}\n".format(search))
 
     ### SET THE SEARCH CRITERIAS (defined globally in this script) ###
 
