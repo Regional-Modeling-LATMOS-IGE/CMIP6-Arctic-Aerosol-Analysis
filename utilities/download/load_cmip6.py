@@ -56,16 +56,22 @@ class InvalidCase(Exception):
 def set_search_criterias(case : str) -> dict:
     """
 
+    ---
+
     ### DEFINITION ###
 
     This function allows us to define dynamically the search criterias in function of the case we are in.
+
+    ---
 
     ### INPUTS ###
 
     CASE : STR | str defining the case for the search :
     
-    - SW (short-wave variables for the APRP method)
-    - ZELINKA-SW (short-wave variables for the APRP method by keeping only the models and variants present in Zelinka and al. (2023))
+        - SW (short-wave variables for the APRP method)
+        - ZELINKA-SW (short-wave variables for the APRP method by keeping only the models and variants present in Zelinka and al. (2023))
+
+    ---
 
     ### OUTPUTS ###
 
@@ -73,11 +79,14 @@ def set_search_criterias(case : str) -> dict:
 
     EXPECTED_NUMBER_OF_FILES : INT | expected number of files such that on model_id and source_id couples corresponds to (number_of_variables) * (number_of_experiments)
 
+    ---
+
     ### REFERENCES ###
 
     Zelinka, M. D., Smith, C. J., Qin, Y., and Taylor, K. E.: Comparison of methods to estimate aerosol effective radiative forcings in climate models, 
     Atmos. Chem. Phys., 23, 8879–8898, https://doi.org/10.5194/acp-23-8879-2023, 2023.
 
+    ---
     """
 
     ### SHORT-WAVE ONLY CASE ###
@@ -292,6 +301,7 @@ def set_downloading_folder(
 
 def filtering_function(grouped_model_entry : pd.DataFrame) -> bool:
     """
+    ---
 
     ### DEFINITION ###
 
@@ -302,9 +312,13 @@ def filtering_function(grouped_model_entry : pd.DataFrame) -> bool:
     Since the nature of this function is to be an input for the intake-esgf package, we define the optional arguments outside
     of the function.
 
+    ---
+
     ### INPUTS
 
     GROUPED_MODEL_ENTRY : Pandas DataFrame | sub dataframe containing all the variables of a given source_id, member_id and grid tuple.
+
+    ---
 
     ### OPTIONAL ARGUMENTS (DEFINED GLOBALLY)
 
@@ -312,9 +326,13 @@ def filtering_function(grouped_model_entry : pd.DataFrame) -> bool:
 
     KEEP_ONLY_DATAFRAME : Pandas DataFrame | associated dataframe holding the source_id and member_id to conserve
     
+    ---
+
     ### OUTPUTS
 
-    BOOL | whether we keep this model group or not
+    OUTPUT : BOOL | whether we keep this model group or not
+
+    ---
     """
 
     ### INITIALISATION ###
@@ -367,18 +385,25 @@ def filtering_function(grouped_model_entry : pd.DataFrame) -> bool:
 
 def get_areacella_apart(catalog) -> dict:
     """
+    ---
 
     ### DEFINITION ###
 
     This function loads an areacella dictionnary for every single entry of the catalog.
 
+    ---
+
     ### INPUTS ###
 
     CATALOG : intake-esgf object | the catalog we defined with our search criterias
 
+    ---
+
     ### OUTPUTS ###
 
     DICT_AREACELLA : dictionnary | hold an areacella xarray data array for every entry in the catalog
+
+    ---
 
     """
 
@@ -568,7 +593,7 @@ def loading_cmip6(
 
     dict_cmip6 = catalog.to_dataset_dict(
         add_measures=False,
-        ignore_facets=["activtity_drs", "institution_id, table_id"],
+        gnore_facets=["project","mip_era","activtity_drs", "institution_id, table_id","grid_label","version"],
         quiet=True,
     )
 
