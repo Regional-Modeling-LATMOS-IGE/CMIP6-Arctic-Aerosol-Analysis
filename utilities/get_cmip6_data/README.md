@@ -14,7 +14,7 @@ This is the folder that holds the conda environment used to run the notebook.
 
 It is the submodule used to manipulate folders with bash methods from python.
 
-### load_raw_data/*
+### load_raw_data/
 
 This submodule is made to download and load the raw CMIP6 data by using methods described in *get_cmip6_data.ipynb*,
 
