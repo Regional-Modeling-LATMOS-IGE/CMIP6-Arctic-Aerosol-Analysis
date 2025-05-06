@@ -16,15 +16,15 @@ It is the submodule used to manipulate folders with bash methods within python.
 
 ### load_raw_data/
 
-This submodule is made to download and load the raw CMIP6 data by using methods described in *get_cmip6_data.ipynb*,
-
-### store_data/
-
-It is the submodule dedicated to organize the dictionaries output of the intake-esgf package into more convenient xarray datasets and save them as so.
+This submodule is made to download and load the raw CMIP6 data by using methods described in *get_cmip6_data.ipynb*.
 
 ### prepare_data/
 
 This submodule is contributing to the pre-treatment of the datasets produced by the *store_data* submodule before the analysis.
+
+### store_data/
+
+It is the submodule dedicated to organize the dictionaries output of the intake-esgf package into more convenient xarray datasets and save them as so.
 
 ## Files present in the folder :
 
