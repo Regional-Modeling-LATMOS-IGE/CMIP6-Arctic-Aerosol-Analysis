@@ -2,7 +2,7 @@
 
 ## Description of the folder :
 
-The *get_cmip6_data* is the submodule dedicated to downloading, loading and preparing the needed CMIP6 models' outputs for the analysis.
+*get_cmip6_data* is the submodule dedicated to downloading, loading and preparing the needed CMIP6 models' outputs for the analysis.
 
 ## Content of the subfolders :
 
