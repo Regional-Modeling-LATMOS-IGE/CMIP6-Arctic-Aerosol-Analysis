@@ -1,4 +1,4 @@
-# /utilities
+# ~/utilities
 
 ## Description of the folder :
 
