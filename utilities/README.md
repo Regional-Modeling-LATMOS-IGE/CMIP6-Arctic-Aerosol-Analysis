@@ -1,10 +1,6 @@
----
+# /utilities
 
-# Utilities
-
----
-
-## Description
+## Description of the folder
 
 The *utilities* module is used for the analysis. It holds different submodules explained through jupyter notebooks present on the same path. 
 
