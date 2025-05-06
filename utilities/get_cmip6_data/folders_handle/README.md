@@ -1,4 +1,4 @@
-# ~/utilities/get_cmip6_data/folders_handle/
+# ~/utilities/get_cmip6_data/folders_handle
 
 ## Description of the submodule :
 
