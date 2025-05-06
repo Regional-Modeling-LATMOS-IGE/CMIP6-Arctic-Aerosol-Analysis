@@ -1,8 +1,8 @@
 #!/usr/bin/env python3
 
 """
-This small script is used to load the CMIP6 data used for the analysis.
-For more details on the methods employed in the script, please refer to the download_cmip6.ipynb notebook in the same folder.
+This submodule is used to load the raw CMIP6 data used for the analysis.
+For more details on the methods employed in the script, please refer to the get_cmip6_data.ipynb notebook in the same folder.
 
 Author : GIBONI Lucas
 
@@ -27,7 +27,7 @@ import pandas as pd # to manage the product of the search
 
 ### HOMEMADE LIBRARIES ###
 
-from utilities.download.folders_handle.create import (
+from utilities.get_cmip6_data.folders_handle.create import (
     create_dir,
 )  # function to create a cleaned downloading directory
 
