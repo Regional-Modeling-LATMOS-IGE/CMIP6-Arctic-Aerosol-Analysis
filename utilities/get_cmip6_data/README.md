@@ -12,7 +12,7 @@ This is the folder that holds the conda environment used to run the notebook.
 
 ### folders_handle/
 
-It is the submodule used to manipulate folders with bash methods from python.
+It is the submodule used to manipulate folders with bash methods within python.
 
 ### load_raw_data/
 
