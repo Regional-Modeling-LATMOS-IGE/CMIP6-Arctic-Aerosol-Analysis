@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 
 """
-This small library is useful for the notebooks found in the download folder.
+This script contains functions to create, remove and check the existence of given folders thanks to their paths.
 
 Author : GIBONI Lucas
 
