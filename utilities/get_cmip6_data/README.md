@@ -30,7 +30,7 @@ It is the submodule dedicated to organize the dictionaries output of the intake-
 
 ### get_cmip6_data.ipynb
 
-This jupyter notebook is explaining the use of the *intake-esgf* package to download CMIP6 models' output and how we further treat this raw data. It encapsulates the functions coded in *load_raw_data* and *store_data*.
+This jupyter notebook is explaining the use of the *intake-esgf* package to download CMIP6 models' output and how we further treat this raw data to turn it into monthly climatologies xarray datasets. It encapsulates the functions coded in *load_raw_data*, *store_data* and *prepare_data*.
 
 
 
