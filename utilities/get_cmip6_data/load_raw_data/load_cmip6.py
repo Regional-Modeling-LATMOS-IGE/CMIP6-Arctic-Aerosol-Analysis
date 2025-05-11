@@ -28,8 +28,8 @@ import pandas as pd # to manage the product of the search
 ### HOMEMADE LIBRARIES ###
 
 from utilities.get_cmip6_data.folders_handle.create import (
-    create_dir,
-)  # function to create a cleaned downloading directory
+    create_dir, # function to create a cleaned downloading directory
+)  
 
 #############################
 #### DEFINE CUSTOM ERRORS ###
