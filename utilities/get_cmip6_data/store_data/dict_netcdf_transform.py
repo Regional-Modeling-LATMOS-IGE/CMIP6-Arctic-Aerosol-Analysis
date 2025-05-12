@@ -26,8 +26,8 @@ import pandas as pd  # to create and handle tables in python
 ### HOMEMADE LIBRARIES ###
 
 from utilities.get_cmip6_data.folders_handle.create import (
-    create_dir, # function to create a cleaned downloading directory
-)  
+    create_dir,  # function to create a cleaned downloading directory
+)
 
 #############################################################
 ### SAVE EVERY DATASET OF THE DICTIONNARY AS NETCDF FILES ###
@@ -38,14 +38,14 @@ def dict_to_netcdf(dataset_dict: dict, save_path: str, do_we_clear: bool = True)
     """
 
     ---
-    
+
     ### DEFINITION ###
 
     This function save every dataset entry of the dictionnary and save them as netcdf files. It also generates a pandas dataframe associating every single key
     of the dictionnary with the path of the corresponding saved netcdf file. This dataframe is saved as a pickle file.
 
     ---
-    
+
     ### INPUTS ###
 
     DATASET_DICT : DICTIONNARY OF XARRAY DATASETS | dictionnary of the datasets we want to save
@@ -55,11 +55,11 @@ def dict_to_netcdf(dataset_dict: dict, save_path: str, do_we_clear: bool = True)
     DO_WE_CLEAR : BOOL | option to clear the save folder if it already exists : default is True
 
     ---
-    
+
     ### OUTPUTS ###
 
     nothing.
-    
+
     ---
     """
 
@@ -155,20 +155,20 @@ def netcdf_to_dict(save_path: str):
     """
 
     ---
-    
+
     ### DEFINITION ###
 
     This function loads every entry identified in a pandas dataframe at the input path.
     It then loads them into a dictionnary with the keys provided by the dataframe.
 
     ---
-    
+
     ### INPUTS ###
 
     SAVE_PATH : STR | path of the directory where the data was saved
-    
+
     ---
-    
+
     ### OUTPUTS ###
 
     GENERATED_DATA_DICT : DICT | dictionnary holding the datasets saved at save_path

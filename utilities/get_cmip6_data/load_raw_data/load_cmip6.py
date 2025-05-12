@@ -23,37 +23,42 @@ import intake_esgf  # this gives us access to the ESGF catalog to make queries
 
 import numpy as np  # to manage the pandas arrays
 
-import pandas as pd # to manage the product of the search
+import pandas as pd  # to manage the product of the search
 
 ### HOMEMADE LIBRARIES ###
 
 from utilities.get_cmip6_data.folders_handle.create import (
-    create_dir, # function to create a cleaned downloading directory
-)  
+    create_dir,  # function to create a cleaned downloading directory
+)
 
 #############################
 #### DEFINE CUSTOM ERRORS ###
 #############################
 
+
 class InvalidCase(Exception):
-    
+
     ### DEFINING THE EXCEPTION PROPERTIES ###
 
-    def __init__(self, case, error_msg="The following case is not covered for the search"):
+    def __init__(
+        self, case, error_msg="The following case is not covered for the search"
+    ):
         self.case = case
         self.error_msg = error_msg
-        super().__init__(self.msg) # calling the exception parent class
+        super().__init__(self.msg)  # calling the exception parent class
 
     ### DEFINING THE ERROR MESSAGE ###
 
-    def __str__(self): # what happens when printing the error
-        return f'{self.case} -> {self.error_msg}'
-    
+    def __str__(self):  # what happens when printing the error
+        return f"{self.case} -> {self.error_msg}"
+
+
 #############################################
 #### DEFINE GLOBALLY THE SEARCH CRITERIAS ###
 #############################################
 
-def set_search_criterias(case : str) -> dict:
+
+def set_search_criterias(case: str) -> dict:
     """
 
     ---
@@ -67,7 +72,7 @@ def set_search_criterias(case : str) -> dict:
     ### INPUTS ###
 
     CASE : STR | str defining the case for the search :
-    
+
         - SW (short-wave variables for the APRP method)
         - ZELINKA-SW (short-wave variables for the APRP method by keeping only the models and variants present in Zelinka and al. (2023))
 
@@ -83,7 +88,7 @@ def set_search_criterias(case : str) -> dict:
 
     ### REFERENCES ###
 
-    Zelinka, M. D., Smith, C. J., Qin, Y., and Taylor, K. E.: Comparison of methods to estimate aerosol effective radiative forcings in climate models, 
+    Zelinka, M. D., Smith, C. J., Qin, Y., and Taylor, K. E.: Comparison of methods to estimate aerosol effective radiative forcings in climate models,
     Atmos. Chem. Phys., 23, 8879–8898, https://doi.org/10.5194/acp-23-8879-2023, 2023.
 
     ---
@@ -91,7 +96,7 @@ def set_search_criterias(case : str) -> dict:
 
     ### SHORT-WAVE ONLY CASE ###
 
-    if case == "SW" :
+    if case == "SW":
 
         # ================ SEARCH CRITERIAS FOR OUR ANALYSIS ================ #
 
@@ -122,19 +127,23 @@ def set_search_criterias(case : str) -> dict:
         ### DEFINE SEARCH CRITERIAS DICTIONARY ###
 
         search_facets = {
-            "experiment_id" : experiment_id,
-            "variable_id" : variable_id,
-            "table_id" : table_id
+            "experiment_id": experiment_id,
+            "variable_id": variable_id,
+            "table_id": table_id,
         }
-
 
         # ================ EXPECTED NUMBER OF FILES ================ #
 
-        expected_number_of_files = 16 # 8 variables * 2 experiments
+        expected_number_of_files = 16  # 8 variables * 2 experiments
 
-        return {'search_facets' : search_facets, 'expected_number_of_files' : expected_number_of_files, 'filtering_by_name' : False, 'keep_only_dataframe' : None}
-    
-    elif case == "ZELINKA-SW" :
+        return {
+            "search_facets": search_facets,
+            "expected_number_of_files": expected_number_of_files,
+            "filtering_by_name": False,
+            "keep_only_dataframe": None,
+        }
+
+    elif case == "ZELINKA-SW":
 
         # ================ SEARCH CRITERIAS FOR OUR ANALYSIS ================ #
 
@@ -165,15 +174,14 @@ def set_search_criterias(case : str) -> dict:
         ### DEFINE SEARCH CRITERIAS DICTIONARY ###
 
         search_facets = {
-            "experiment_id" : experiment_id,
-            "variable_id" : variable_id,
-            "table_id" : table_id
+            "experiment_id": experiment_id,
+            "variable_id": variable_id,
+            "table_id": table_id,
         }
-
 
         # ================ EXPECTED NUMBER OF FILES ================ #
 
-        expected_number_of_files = 16 # 8 variables * 2 experiments
+        expected_number_of_files = 16  # 8 variables * 2 experiments
 
         # ================ DEFINE THE MODEL.VARIANT LIST OF ZELINKA'S ARTICLE ================ #
 
@@ -203,7 +211,7 @@ def set_search_criterias(case : str) -> dict:
             "NorESM2-LM",
             "NorESM2-LM",
             "NorESM2-MM",
-            "UKESM1-0-LL" 
+            "UKESM1-0-LL",
         ]
 
         member_id_zelinka_2023 = [
@@ -232,12 +240,20 @@ def set_search_criterias(case : str) -> dict:
             "r1i1p1f1",
             "r1i1p2f1",
             "r1i1p1f1",
-            "r1i1p1f4"
+            "r1i1p1f4",
         ]
 
-        zelinka_2023_model_variant_table = pd.DataFrame({"source_id" : source_id_zelinka_2023, "member_id" : member_id_zelinka_2023}, dtype = str)
+        zelinka_2023_model_variant_table = pd.DataFrame(
+            {"source_id": source_id_zelinka_2023, "member_id": member_id_zelinka_2023},
+            dtype=str,
+        )
 
-        return {'search_facets' : search_facets, 'expected_number_of_files' : expected_number_of_files, 'filtering_by_name' : True, 'keep_only_dataframe' : zelinka_2023_model_variant_table}
+        return {
+            "search_facets": search_facets,
+            "expected_number_of_files": expected_number_of_files,
+            "filtering_by_name": True,
+            "keep_only_dataframe": zelinka_2023_model_variant_table,
+        }
 
     ### THE INPUT CASE IS NOT COVERED ###
 
@@ -245,19 +261,18 @@ def set_search_criterias(case : str) -> dict:
 
         raise InvalidCase
 
+
 ###################################
 #### SET THE DOWNLOADING FOLDER ###
 ###################################
 
 
 def set_downloading_folder(
-    parent_path: str, 
-    downloading_folder_name: str, 
-    do_we_clear: bool = False
+    parent_path: str, downloading_folder_name: str, do_we_clear: bool = False
 ):
     """
-    --- 
-    
+    ---
+
     ### DEFINITION ###
 
     This function prepares the downloading folder and sets it. It will create or check if a download folder exists at
@@ -265,8 +280,8 @@ def set_downloading_folder(
     This can be quite slow if the data folder is already holding some heavy data. Then, it will configure the intake-esgf catalog
     to look there for the data.
 
-    --- 
-    
+    ---
+
     ### INPUTS ###
 
     PARENT_PATH : STR | path of the parent directory of the download folder
@@ -275,13 +290,13 @@ def set_downloading_folder(
 
     DO_WE_CLEAR : BOOL | option to clear the downloading folder if it already exists
 
-    --- 
-    
+    ---
+
     ### OUTPUTS ###
 
     nothing.
 
-    --- 
+    ---
     """
 
     ### CREATE THE DIRECTORY AND EMPTY IF MAKE_A_NEW_FOLDER ###
@@ -302,6 +317,7 @@ def set_downloading_folder(
 
     return
 
+
 ########################################################################################
 #### FILTERING FUNCTION REMOVING INCOMPLETE ENTRIES AND KEEPING ONLY PROVIDED MODELS ###
 ########################################################################################
@@ -309,14 +325,15 @@ def set_downloading_folder(
 
 # ================ DEFINE THE FILTERING FUNCTION ================ #
 
-def filtering_function(grouped_model_entry : pd.DataFrame) -> bool:
+
+def filtering_function(grouped_model_entry: pd.DataFrame) -> bool:
     """
     ---
 
     ### DEFINITION ###
 
     This function allows the intake-esgf catalog to be cleaned of the entries that are not complete.
-    In the default case it means entries that do not meet the expected number of files. 
+    In the default case it means entries that do not meet the expected number of files.
 
     The user can also set a condition that only the model and variant couples present in a provided pandas dataframe are kept.
     Since the nature of this function is to be an input for the intake-esgf package, we define the optional arguments outside
@@ -335,7 +352,7 @@ def filtering_function(grouped_model_entry : pd.DataFrame) -> bool:
     FILTERING_BY_NAME : BOOL | defines if we filter the entry by source_id and member_id or not
 
     KEEP_ONLY_DATAFRAME : Pandas DataFrame | associated dataframe holding the source_id and member_id to conserve
-    
+
     ---
 
     ### OUTPUTS
@@ -357,14 +374,14 @@ def filtering_function(grouped_model_entry : pd.DataFrame) -> bool:
 
         # NO : We keep everything that matched the variable number's test #
 
-        if not(filtering_by_name):
+        if not (filtering_by_name):
 
             return True
-        
+
         ### YES : KEEPING ONLY THE COUPLES PRESENT IN KEEP_ONLY_DATAFRAME ###
 
-        else :
-            
+        else:
+
             ## Doing the test on the grouped_model_entry's source_id and member_id ##
 
             # Extract the grouped_model_entry data #
@@ -375,27 +392,28 @@ def filtering_function(grouped_model_entry : pd.DataFrame) -> bool:
 
             # Can we find the grouped_model_entry's source_id and member_id in one row of is_in_keep_only_dataframe ? #
 
-            is_in_keep_only_dataframe = ((keep_only_dataframe['source_id'] == grouped_model_entry_source_id) 
-            & (keep_only_dataframe['member_id'] == grouped_model_entry_member_id)).any()
+            is_in_keep_only_dataframe = (
+                (keep_only_dataframe["source_id"] == grouped_model_entry_source_id)
+                & (keep_only_dataframe["member_id"] == grouped_model_entry_member_id)
+            ).any()
 
             # Return the result of the test #
 
             return is_in_keep_only_dataframe
-    
+
     ### NUMBER OF VARIABLES' TEST FAILED ###
 
-    else :
+    else:
 
         return False
+
 
 #########################################
 #### GETTING THE AREACELLA DICTIONARY ###
 #########################################
 
 
-def get_areacella_apart(
-        catalog, 
-        grouped_models : pd.Series) -> dict:
+def get_areacella_apart(catalog, grouped_models: pd.Series) -> dict:
     """
     ---
 
@@ -426,7 +444,6 @@ def get_areacella_apart(
     ## Initialise the full dictionary ##
 
     dict_areacella = {}
-
 
     ## Number of rows ##
 
@@ -485,10 +502,9 @@ def get_areacella_apart(
             variable_id="areacella",
             experiment_id=only_first_exp_id,
             member_id=only_first_member_id,
-            quiet=True
+            quiet=True,
         ).to_dataset_dict(
-            add_measures=False, 
-            quiet=True
+            add_measures=False, quiet=True
         )  # silence the progress bar
 
         # Store it in dictionary #
@@ -497,29 +513,30 @@ def get_areacella_apart(
 
     return dict_areacella
 
+
 ################################################
 ### FUNCTION TO DOWNLOAD ONE ENTRY AT A TIME ###
 ################################################
 
+
 def generate_single_model_search_criterias(
-    search_facets : dict,
-    grouped_models_dataframe : pd.DataFrame, 
-    index : int,
-    ) -> tuple[dict, str] :
-    
+    search_facets: dict,
+    grouped_models_dataframe: pd.DataFrame,
+    index: int,
+) -> tuple[dict, str]:
     """
     ---
 
     ### DEFINITION ###
 
-    This function generates search_criterias for a single entry of grouped_models_dataframe precising 
+    This function generates search_criterias for a single entry of grouped_models_dataframe precising
     the (source_id, member_id, grid_label) criterias needed to download only one entry.
-    
+
     ---
 
     ### INPUTS ###
 
-    SEARCH_FACETS :  DICT | the original search facets dictionary 
+    SEARCH_FACETS :  DICT | the original search facets dictionary
 
     GROUPED_MODELS_DATAFRAME : PANDAS DATAFRAME | the entries dels that have been grouped together by source_id, member_id and grid_label
 
@@ -532,15 +549,15 @@ def generate_single_model_search_criterias(
     SEARCH_CRITERIAS_GIVEN_ROW : DICT | search criterias updated with the source_id, member_id and grid_label criterias of the given row.
 
     SINGLE_MODEL_NAME : str | name of the single model we set the download for
-    
+
     ---
 
     """
-     
+
     ### COPYING THE ORIGINAL SEARCH CRITERIAS DICTIONARY ###
 
     search_criterias_given_row = search_facets.copy()
-    
+
     ## Get the row information ##
 
     # Source_id #
@@ -571,9 +588,16 @@ def generate_single_model_search_criterias(
 
     ## Generate the single model name ##
 
-    single_model_name = source_id_to_download + "." + member_id_to_download + "." + grid_label_to_download
-    
+    single_model_name = (
+        source_id_to_download
+        + "."
+        + member_id_to_download
+        + "."
+        + grid_label_to_download
+    )
+
     return search_criterias_given_row, single_model_name
+
 
 ##########################################################################
 ### FUNCTION TO UPDATE THE KEYS OF THE DOWNLOADED ONE ENTRY DICTIONARY ###
@@ -581,12 +605,11 @@ def generate_single_model_search_criterias(
 
 
 def update_single_entry_keys(
-        single_model_dictionary : dict,
-        single_model_name : str,
+    single_model_dictionary: dict,
+    single_model_name: str,
 ) -> dict:
-    
     """
-    
+
     ---
 
     ### DEFINITION ###
@@ -594,7 +617,7 @@ def update_single_entry_keys(
     This function updates the single entry keys of the downloaded one entry dictionary to allow to concatenate all dictionaries together :
 
     (experiment.variable) -> (source_id.member_id.grid_label.experiment.variable)
-    
+
     ---
 
     ### INPUTS ###
@@ -608,7 +631,7 @@ def update_single_entry_keys(
     ### OUTPUTS ###
 
     SINGLE_MODEL_DICTIONARY : DICT | the updated single_model_dictionary with its keys under the form (source_id.member_id.grid_label.experiment.variable)
-    
+
     ---
 
     """
@@ -623,7 +646,7 @@ def update_single_entry_keys(
 
     ### UPDATING THE KEYS ###
 
-    for experiment_dot_variable in old_keys :
+    for experiment_dot_variable in old_keys:
 
         ## Changing from (experiment.variable) to (source_id.member_id.grid_label.experiment.variable) ##
 
@@ -631,7 +654,9 @@ def update_single_entry_keys(
 
         ## Updating the keys ##
 
-        single_model_dictionary[new_key] = single_model_dictionary.pop(experiment_dot_variable)
+        single_model_dictionary[new_key] = single_model_dictionary.pop(
+            experiment_dot_variable
+        )
 
     return single_model_dictionary
 
@@ -642,30 +667,30 @@ def update_single_entry_keys(
 
 
 def loading_cmip6(
-    parent_path: str, 
-    downloading_folder_name: str, 
-    case : 'str', 
+    parent_path: str,
+    downloading_folder_name: str,
+    case: "str",
     do_we_clear: bool = False,
-    remove_ensembles : bool = False
+    remove_ensembles: bool = False,
 ) -> dict:
     """
     ---
 
     ### DEFINITION ###
 
-    
+
     This function loads the CMIP6 data ensemble under the form of a dictionary structure.
-    
+
     ---
 
     ### INPUTS ###
-    
+
     PARENT_PATH : STR | path of the parent directory of the download folder
 
     DOWNLOADING_FOLDER_NAME : STR | name to be given to the download folder
 
     CASE : STR | defines the case for the search :
-    
+
     - SW (short-wave variables for the APRP method)
     - ZELINKA-SW (short-wave variables for the APRP method by keeping only the models and variants present in Zelinka and al. (2023))
 
@@ -702,7 +727,9 @@ def loading_cmip6(
 
     ## Looking at all the available nodes ##
 
-    with intake_esgf.conf.set(all_indices=True) : # with statement needed to make it work when the function is called
+    with intake_esgf.conf.set(
+        all_indices=True
+    ):  # with statement needed to make it work when the function is called
 
         ### SET THE CHOSEN CASE ###
 
@@ -714,25 +741,27 @@ def loading_cmip6(
 
         ## Get the criterias ##
 
-        search_criterias = set_search_criterias(case) # it's a dictionary with all the needed global search criterias to set
+        search_criterias = set_search_criterias(
+            case
+        )  # it's a dictionary with all the needed global search criterias to set
 
         ## Get the search facets ##
 
-        search_facets = search_criterias['search_facets']
+        search_facets = search_criterias["search_facets"]
 
         ## Get the expected number of files ##
 
-        expected_number_of_files = search_criterias['expected_number_of_files']
+        expected_number_of_files = search_criterias["expected_number_of_files"]
 
         ## Do we filter the models we keep by source_id and member_id ? ##
 
         # Boolean #
 
-        filtering_by_name = search_criterias['filtering_by_name']
+        filtering_by_name = search_criterias["filtering_by_name"]
 
         # The associated dataframe #
 
-        keep_only_dataframe = search_criterias['keep_only_dataframe']
+        keep_only_dataframe = search_criterias["keep_only_dataframe"]
 
         print("The search criterias are : {}\n".format(search_facets))
 
@@ -754,7 +783,7 @@ def loading_cmip6(
 
         ### DO WE KEEP ONLY ONE VARIANT PER MODEL ? ###
 
-        if remove_ensembles :
+        if remove_ensembles:
 
             catalog = catalog.remove_ensembles()
 
@@ -778,7 +807,11 @@ def loading_cmip6(
 
         # We remove the duplicates to only keep one row per tuple #
 
-        grouped_models_dataframe = selected_entries_full_dataframe[["source_id","member_id","grid_label"]].drop_duplicates().reset_index(drop = True)
+        grouped_models_dataframe = (
+            selected_entries_full_dataframe[["source_id", "member_id", "grid_label"]]
+            .drop_duplicates()
+            .reset_index(drop=True)
+        )
 
         ### DOWNLOAD EVERY SINGLE ENTRY AND COMBINE THEM INTO A DICTIONARY ###
 
@@ -790,20 +823,22 @@ def loading_cmip6(
 
         print("Downloading and/or loading the data one entry at a time...\n")
 
-        for index in grouped_models_dataframe.index :
+        for index in grouped_models_dataframe.index:
 
             ## Reset the catalog ##
 
             catalog = intake_esgf.ESGFCatalog()
 
             ## Generate the associated search criterias ##
-            
-            search_criterias_given_row, single_model_name = generate_single_model_search_criterias(
-                search_facets = search_facets, 
-                grouped_models_dataframe = grouped_models_dataframe,
-                index = index
+
+            search_criterias_given_row, single_model_name = (
+                generate_single_model_search_criterias(
+                    search_facets=search_facets,
+                    grouped_models_dataframe=grouped_models_dataframe,
+                    index=index,
                 )
-            
+            )
+
             ## Generate the single model's output name ##
 
             print("\nDownloading {} ...\n".format(single_model_name))
@@ -811,20 +846,29 @@ def loading_cmip6(
             ## Apply the search criterias ##
 
             catalog.search(
-                    **search_criterias_given_row,
-                )
-        
+                **search_criterias_given_row,
+            )
+
             ## Downloading the output... ##
 
             single_model_dictionary = catalog.to_dataset_dict(
-                    add_measures=False,
-                    ignore_facets=["project","mip_era","activtity_drs", "institution_id, table_id","grid_label","version"],
-                    quiet=True,
-                )
-            
+                add_measures=False,
+                ignore_facets=[
+                    "project",
+                    "mip_era",
+                    "activtity_drs",
+                    "institution_id, table_id",
+                    "grid_label",
+                    "version",
+                ],
+                quiet=True,
+            )
+
             ## Updating its keys ##
 
-            single_model_dictionary = update_single_entry_keys(single_model_dictionary, single_model_name)
+            single_model_dictionary = update_single_entry_keys(
+                single_model_dictionary, single_model_name
+            )
 
             ## Updating the full dictionary ##
 
@@ -834,7 +878,9 @@ def loading_cmip6(
 
         print("Downloading and/or loading the areacella dictionary...\n")
 
-        areacella_dict = get_areacella_apart(catalog, grouped_models = series_grouped_models)
+        areacella_dict = get_areacella_apart(
+            catalog, grouped_models=series_grouped_models
+        )
 
     return full_cmip6_dict, areacella_dict
 

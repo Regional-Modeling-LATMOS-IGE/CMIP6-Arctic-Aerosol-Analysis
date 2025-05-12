@@ -27,11 +27,13 @@ import xcdat as xc  # to handle climate model outputs with xarray
 
 ### HOMEMADE LIBRARIES ###
 
-from utilities.get_cmip6_data.load_raw_data.load_cmip6 import loading_cmip6  # function to load the raw data
+from utilities.get_cmip6_data.load_raw_data.load_cmip6 import (
+    loading_cmip6,
+)  # function to load the raw data
 
 from utilities.get_cmip6_data.store_data.dict_netcdf_transform import (
-    dict_to_netcdf, # function to save the generated climatology
-)  
+    dict_to_netcdf,  # function to save the generated climatology
+)
 
 #######################################################
 ### GENERATE dictionary KEYS WITHOUT THE VARIABLES ###
@@ -193,7 +195,12 @@ def add_one_variable_to_dataset(
 
 
 def create_climatology_dict(
-    data_path: str, data_folder_name: str, save_path: str, selected_case : str, remove_ensembles : bool = False, do_we_clear: bool = True
+    data_path: str,
+    data_folder_name: str,
+    save_path: str,
+    selected_case: str,
+    remove_ensembles: bool = False,
+    do_we_clear: bool = True,
 ) -> dict:
     """
     ---
@@ -233,12 +240,12 @@ def create_climatology_dict(
     ## Load the raw data ##
 
     full_cmip6_dict, dict_areacella = loading_cmip6(
-    parent_path=data_path,
-    downloading_folder_name=data_folder_name,
-    case = selected_case,
-    remove_ensembles = remove_ensembles,
-    do_we_clear=False,   
-    ) 
+        parent_path=data_path,
+        downloading_folder_name=data_folder_name,
+        case=selected_case,
+        remove_ensembles=remove_ensembles,
+        do_we_clear=False,
+    )
 
     print("Data dictionary loaded\n")
 
@@ -362,11 +369,11 @@ def create_climatology_dict(
         """
 
         add_one_variable_to_dataset(
-                variable_name="areacella",
-                var_datarray=areacella_datarray,
-                modify_data=modify_data,
-                dataset=dataset_given_exp,
-            )
+            variable_name="areacella",
+            var_datarray=areacella_datarray,
+            modify_data=modify_data,
+            dataset=dataset_given_exp,
+        )
 
         ## Add the dataset to the output dictionary ##
 
