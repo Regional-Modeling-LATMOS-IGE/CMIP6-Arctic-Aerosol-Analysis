@@ -26,12 +26,6 @@ This submodule is contributing to the pre-treatment of the datasets produced by 
 
 It is the submodule dedicated to organize the dictionaries output of the intake-esgf package into more convenient xarray datasets and save them as so.
 
-## Files present in the folder :
-
-### get_cmip6_data.ipynb
-
-This jupyter notebook is explaining the use of the *intake-esgf* package to download CMIP6 models' output and how we further treat this raw data to turn it into monthly climatologies xarray datasets. It encapsulates the functions coded in *load_raw_data*, *store_data* and *prepare_data*.
-
 
 
 
