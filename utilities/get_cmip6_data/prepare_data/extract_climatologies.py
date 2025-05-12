@@ -27,17 +27,11 @@ import xcdat as xc  # to handle climate model outputs with xarray
 
 ### HOMEMADE LIBRARIES ###
 
-from utilities.download.load_cmip6 import loading_cmip6  # function to load the raw data
+from utilities.get_cmip6_data.load_raw_data.load_cmip6 import loading_cmip6  # function to load the raw data
 
-from utilities.store_data.save_and_load_data import (
-    dict_to_netcdf,
-)  # function to save the generated climatology
-
-# ================ SEARCH CRITERIAS FOR OUR ANALYSIS ================ #
-
-from utilities.download.load_cmip6 import (
-    variable_id,
-)  # variable search criteria globally defined in load_cmip6
+from utilities.get_cmip6_data.store_data.dict_netcdf_transform import (
+    dict_to_netcdf, # function to save the generated climatology
+)  
 
 #######################################################
 ### GENERATE DICTIONNARY KEYS WITHOUT THE VARIABLES ###
@@ -99,7 +93,7 @@ def generate_per_model_dict_key(dict_cmip6: dict):
 
         ## Remove the variable and replace it with a * ##
 
-        splitted_key_without_var[-2] = "*"
+        splitted_key_without_var[-1] = "*"
 
         ## Save it into the output numpy array ##
 
