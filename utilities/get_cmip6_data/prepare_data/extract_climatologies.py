@@ -399,7 +399,7 @@ def create_climatology_dict(
 ####################################################
 
 
-def get_model_entries__only_from_clim(key_with_exp: str) -> str:
+def get_entries__only_from_clim_dict(key_with_exp: str) -> str:
     """
     ---
     ### DEFINITION ###
