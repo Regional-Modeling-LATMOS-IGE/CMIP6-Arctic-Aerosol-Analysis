@@ -1,6 +1,18 @@
 [![Code style: black](https://img.shields.io/badge/code%20style-black-000000.svg)](https://github.com/psf/black)
 
-# Models' outputs used for both experiments :
+# CMIP6-Arctic-Aerosol-Analysis
+
+## utilities/ 
+
+The utilities module is used for the analysis. It holds different submodules explained through jupyter notebooks present on the same path.
+
+## Notebooks present in this folder :
+
+### get_cmip6_data.ipynb
+
+This jupyter notebook is explaining the use of the *intake-esgf* package to download CMIP6 models' output and how we further treat this raw data to turn it into monthly climatologies xarray datasets. It encapsulates the functions coded in *folders_handle*, *load_raw_data*, *store_data* and *prepare_data*.
+
+## Models' outputs used for both experiments :
 
 |    | source_id         | member_id   | grid_label   |
 |---:|:------------------|:------------|:-------------|
