@@ -1,6 +1,35 @@
 [![Code style: black](https://img.shields.io/badge/code%20style-black-000000.svg)](https://github.com/psf/black)
 
-# Models' outputs used for both experiments :
+# CMIP6-Arctic-Aerosol-Analysis
+
+This repository regroups a bunch of modules and notebooks for a computation of the aerosol-cloud's interaction effective radiative forcing in the Arctic.
+This is done using a subset of the CMIP6 model ensemble and using the APRP method devised by *Taylor and al. (2007)* and whose implementation was done by *Zelinka (2023)* (https://github.com/mzelinka).
+
+## References : 
+
+### APRP method
+
+Taylor, K. E., M. Crucifix, P. Braconnot, C. D. Hewitt, C. Doutriaux, A. J. Broccoli, J. F. B. Mitchell, and M. J. Webb, 2007: Estimating Shortwave Radiative Forcing and Response in Climate Models. J. Climate, 20, 2530–2543, https://doi.org/10.1175/JCLI4143.1. 
+
+### APRP module used for our analysis
+
+https://github.com/mzelinka/aprp
+
+Zelinka, M. D., Smith, C. J., Qin, Y., and Taylor, K. E.: Comparison of methods to estimate aerosol effective radiative forcings in climate models, Atmos. Chem. Phys., 23, 8879–8898, https://doi.org/10.5194/acp-23-8879-2023, 2023. 
+
+## Content of the subfolders :
+
+### utilities/
+
+The utilities module is used for the analysis. It holds different submodules explained through jupyter notebooks present on the same path.
+
+## Notebooks present in this folder :
+
+### get_cmip6_data.ipynb
+
+This jupyter notebook is explaining the use of the *intake-esgf* package to download CMIP6 models' output and how we further treat this raw data to turn it into monthly climatologies xarray datasets. It encapsulates the functions coded in *folders_handle*, *load_raw_data*, *store_data* and *prepare_data*.
+
+## Models' outputs used for both experiments :
 
 |    | source_id         | member_id   | grid_label   |
 |---:|:------------------|:------------|:-------------|
@@ -17,9 +46,9 @@
 | 10 | GISS-E2-1-G       | r1i1p3f1    | gn           |
 | 11 | HadGEM3-GC31-LL   | r1i1p1f3    | gn           |
 | 12 | IPSL-CM6A-LR      | r1i1p1f1    | gr           |
-| 13 | IPSL-CM6A-LR      | r3i1p1f1    | gr           |
-| 14 | IPSL-CM6A-LR      | r4i1p1f1    | gr           |
-| 15 | IPSL-CM6A-LR      | r2i1p1f1    | gr           |
+| 13 | IPSL-CM6A-LR      | r2i1p1f1    | gr           |
+| 14 | IPSL-CM6A-LR      | r3i1p1f1    | gr           |
+| 15 | IPSL-CM6A-LR      | r4i1p1f1    | gr           |
 | 16 | IPSL-CM6A-LR-INCA | r1i1p1f1    | gr           |
 | 17 | MIROC6            | r11i1p1f1   | gn           |
 | 18 | MIROC6            | r1i1p1f1    | gn           |
