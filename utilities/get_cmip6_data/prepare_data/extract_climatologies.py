@@ -173,7 +173,7 @@ def add_one_variable_to_dataset(
 
         dataset[variable_name] = (
             ("time", "lat", "lon"),
-            var_to_add[variable_name].values,
+            var_to_add[variable_name].data,
         )
 
     ### DIFFERENT CORRECTIONS ###
