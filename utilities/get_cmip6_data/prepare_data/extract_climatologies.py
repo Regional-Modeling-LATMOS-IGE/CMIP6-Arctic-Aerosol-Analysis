@@ -34,24 +34,24 @@ from utilities.get_cmip6_data.store_data.dict_netcdf_transform import (
 )  
 
 #######################################################
-### GENERATE DICTIONNARY KEYS WITHOUT THE VARIABLES ###
+### GENERATE dictionary KEYS WITHOUT THE VARIABLES ###
 #######################################################
 
 
-def generate_per_model_dict_key(dict_cmip6: dict):
+def generate_per_model_dict_key(full_cmip6_dict: dict):
     """
     ---
 
     ### DEFINITION ###
 
-    This function receives the dictionnary keys from the raw loaded data dictionnary and change the variables with a *.
+    This function receives the dictionary keys from the raw loaded data dictionary and change the variables with a *.
     It thens proceeds to make a unique key per model.variant couple and save them into a numpy array.
 
     ---
 
     ### INPUTS ###
 
-    DICT_CMIP6 : DICT | dictionnary holding the raw loaded data
+    full_cmip6_dict : DICT | dictionary holding the raw loaded data
 
     ---
 
@@ -67,7 +67,7 @@ def generate_per_model_dict_key(dict_cmip6: dict):
 
     ## List of the keys ##
 
-    list_keys = list(dict_cmip6.keys())
+    list_keys = list(full_cmip6_dict.keys())
 
     ## Number of keys ##
 
@@ -79,7 +79,7 @@ def generate_per_model_dict_key(dict_cmip6: dict):
         n_keys, dtype=object
     )  # dtype = object otherwise it truncates the str
 
-    ### LOOP OVER THE DICTIONNARY KEYS ###
+    ### LOOP OVER THE dictionary KEYS ###
 
     for ii, key in enumerate(list_keys):
 
@@ -188,19 +188,19 @@ def add_one_variable_to_dataset(
 
 
 ##########################################
-### CREATE THE CLIMATOLOGY DICTIONNARY ###
+### CREATE THE CLIMATOLOGY DICTIONARY ###
 ##########################################
 
 
 def create_climatology_dict(
-    data_path: str, data_folder_name: str, save_path: str, do_we_clear: bool = True
+    data_path: str, data_folder_name: str, save_path: str, selected_case : str, remove_ensembles : bool = False, do_we_clear: bool = True
 ) -> dict:
     """
     ---
 
     ### DEFINITION
 
-    This function generates the dictionnary of the xarray datasets holding every monthly climatology of the loaded raw variables.
+    This function generates the dictionary of the xarray datasets holding every monthly climatology of the loaded raw variables.
     It then saves it as netcdf files for the provided save_path within the folder named save_folder_name.
 
     ---
@@ -212,6 +212,10 @@ def create_climatology_dict(
     DATA_FOLDER_NAME : STR | name of the raw data folder
 
     SAVE_PATH : STR | path of the directory of the save folder
+
+    SELECTED_CASE : STR | case selected for the loading of the raw data
+
+    REMOVE_ENSEMBLE : BOOL | option to keep only one variant per model
 
     DO_WE_CLEAR : BOOL | option to clear the save folder if it already exists : default is True
 
@@ -228,23 +232,25 @@ def create_climatology_dict(
 
     ## Load the raw data ##
 
-    dict_cmip6, dict_areacella = loading_cmip6(
-        parent_path=data_path,
-        downloading_folder_name=data_folder_name,
-        do_we_clear=False,
-    )
+    full_cmip6_dict, dict_areacella = loading_cmip6(
+    parent_path=data_path,
+    downloading_folder_name=data_folder_name,
+    case = selected_case,
+    remove_ensembles = remove_ensembles,
+    do_we_clear=False,   
+    ) 
 
-    print("Data dictionnary loaded\n")
+    print("Data dictionary loaded\n")
 
-    ## Create the dictionnary ##
+    ## Create the dictionary ##
 
-    print("Generating the climatologies' dictionnary\n")
+    print("Generating the climatologies' dictionary\n")
 
-    dict_cmip6_clim = {}
+    full_cmip6_dict_clim = {}
 
     ## Generate the general key associated to each model.variant and experiment ##
 
-    keys_without_variable_unique = generate_per_model_dict_key(dict_cmip6)
+    keys_without_variable_unique = generate_per_model_dict_key(full_cmip6_dict)
 
     ### GO THROUGH EACH MODEL.VARIANT AND EXPERIMENT ###
 
@@ -274,7 +280,7 @@ def create_climatology_dict(
 
         # Retrieve the variable data array #
 
-        var_datarray = dict_cmip6[key_with_var_full]
+        var_datarray = full_cmip6_dict[key_with_var_full]
 
         # Generate or update the dataset for the given model.variant and experiment #
 
@@ -307,7 +313,7 @@ def create_climatology_dict(
 
             # Retrieve the variable data array #
 
-            var_datarray = dict_cmip6[key_with_var_full]
+            var_datarray = full_cmip6_dict[key_with_var_full]
 
             # Update the dataset with the climatology of this variable #
 
@@ -319,7 +325,7 @@ def create_climatology_dict(
                 do_clim=True,
             )
 
-        ## Generate a new simpler key for dict_cmip6_clim ##
+        ## Generate a new simpler key for full_cmip6_dict_clim ##
 
         # Retrieving the key information #
 
@@ -362,17 +368,17 @@ def create_climatology_dict(
                 dataset=dataset_given_exp,
             )
 
-        ## Add the dataset to the output dictionnary ##
+        ## Add the dataset to the output dictionary ##
 
-        dict_cmip6_clim[new_simpler_key_given_exp] = dataset_given_exp
+        full_cmip6_dict_clim[new_simpler_key_given_exp] = dataset_given_exp
 
-        ### SAVE THE GENERATED DICTIONNARY ###
+        ### SAVE THE GENERATED dictionary ###
 
         dict_to_netcdf(
-            dataset_dict=dict_cmip6_clim, save_path=save_path, do_we_clear=True
+            dataset_dict=full_cmip6_dict_clim, save_path=save_path, do_we_clear=True
         )
 
-    print("Saving the climatologies' dictionnary\n")
+    print("Saving the climatologies' dictionary\n")
 
     return
 
@@ -387,12 +393,12 @@ def get_model_entries__only_from_clim(key_with_exp: str) -> str:
     ---
     ### DEFINITION ###
 
-    This function receives a key from the climatology dictionnary and removes the experiment at the end to generate an only model and variants list.
+    This function receives a key from the climatology dictionary and removes the experiment at the end to generate an only model and variants list.
 
     ---
     ### INPUTS ###
 
-    KEY_WITH_EXP : STR | key of the climatology dictionnary holding the experiment specification at the end.
+    KEY_WITH_EXP : STR | key of the climatology dictionary holding the experiment specification at the end.
 
     ---
     ### OUTPUTS ###
