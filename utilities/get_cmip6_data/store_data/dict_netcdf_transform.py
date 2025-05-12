@@ -34,7 +34,7 @@ from utilities.get_cmip6_data.folders_handle.create import (
 #############################################################
 
 
-def dict_to_netcdf(dataset_dict: dict, save_path: str, do_we_clear: bool = True):
+def dict_to_netcdf(dataset_dict: dict, parent_path_for_save: str, do_we_clear: bool = True):
     """
 
     ---
@@ -50,7 +50,7 @@ def dict_to_netcdf(dataset_dict: dict, save_path: str, do_we_clear: bool = True)
 
     DATASET_DICT : DICTIONNARY OF XARRAY DATASETS | dictionnary of the datasets we want to save
 
-    SAVE_PATH : STR | path of the parent directory of the save folder
+    PARENT_PATH_FOR_SAVE : STR | path of the parent directory of the save folder
 
     DO_WE_CLEAR : BOOL | option to clear the save folder if it already exists : default is True
 
@@ -102,7 +102,7 @@ def dict_to_netcdf(dataset_dict: dict, save_path: str, do_we_clear: bool = True)
         ## Create the directory associated to the entry and keep its path ##
 
         saving_path_given_entry = create_dir(
-            parent_path=save_path, name=full_name, clear=do_we_clear
+            parent_path= parent_path_for_save, name=full_name, clear=do_we_clear
         )
 
         ## Generate the full path with the filename ##
@@ -136,7 +136,7 @@ def dict_to_netcdf(dataset_dict: dict, save_path: str, do_we_clear: bool = True)
     # Create the table folder to hold it #
 
     saving_path_table = create_dir(
-        parent_path=save_path, name="table", clear=do_we_clear
+        parent_path=parent_path_for_save, name="table", clear=do_we_clear
     )
 
     # Save it #
@@ -151,7 +151,7 @@ def dict_to_netcdf(dataset_dict: dict, save_path: str, do_we_clear: bool = True)
 ####################################################
 
 
-def netcdf_to_dict(save_path: str):
+def netcdf_to_dict(parent_path_for_save: str):
     """
 
     ---
@@ -165,13 +165,13 @@ def netcdf_to_dict(save_path: str):
 
     ### INPUTS ###
 
-    SAVE_PATH : STR | path of the directory where the data was saved
+    PARENT_PATH_FOR_SAVE : STR | path of the directory where the data was saved
 
     ---
 
     ### OUTPUTS ###
 
-    GENERATED_DATA_DICT : DICT | dictionnary holding the datasets saved at save_path
+    GENERATED_DATA_DICT : DICT | dictionnary holding the datasets saved at parent_path_for_save
     ---
     """
 
@@ -181,11 +181,11 @@ def netcdf_to_dict(save_path: str):
 
     generated_data_dict = {}
 
-    ## Retrieve the paths and keys from the dataframe located at save_path ##
+    ## Retrieve the paths and keys from the dataframe located at parent_path_for_save ##
 
     # Load the dataframe #
 
-    key_paths_table = pd.read_pickle(save_path + "/table/" + "key_paths_table.pkl")
+    key_paths_table = pd.read_pickle(parent_path_for_save + "/table/" + "key_paths_table.pkl")
 
     # Extract the keys #
 
