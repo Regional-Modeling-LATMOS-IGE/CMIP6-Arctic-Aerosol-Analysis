@@ -384,14 +384,13 @@ def create_climatology_dict(
 
         full_cmip6_dict_clim[new_simpler_key_given_exp] = dataset_given_exp
 
-        ### SAVE THE GENERATED dictionary ###
-
-        dict_to_netcdf(
-            dataset_dict=full_cmip6_dict_clim, save_path=save_path, do_we_clear=True
-        )
+    ### SAVE THE GENERATED DICTIONARY ###
 
     print("Saving the climatologies' dictionary\n")
 
+    dict_to_netcdf(
+        dataset_dict=full_cmip6_dict_clim, save_path=save_path, do_we_clear=True
+    )
     return
 
 
