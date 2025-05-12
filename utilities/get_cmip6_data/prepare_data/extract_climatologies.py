@@ -375,20 +375,10 @@ def create_climatology_dict(
 
         # Update the dataset of the given model.variant and experiment with the associated areacella #
 
-        # test wether this works ?
-        """
         dataset_given_exp["areacella"] = (
-            ("lat", "lon"),
-            areacella_datarray["areacella"].values,
-        )
-        """
-
-        add_one_variable_to_dataset(
-            variable_name="areacella",
-            var_datarray=areacella_datarray,
-            modify_data=modify_data,
-            dataset=dataset_given_exp,
-        )
+        ("lat", "lon"),
+        areacella_datarray["areacella"].values,
+    )
 
         ## Add the dataset to the output dictionary ##
 
