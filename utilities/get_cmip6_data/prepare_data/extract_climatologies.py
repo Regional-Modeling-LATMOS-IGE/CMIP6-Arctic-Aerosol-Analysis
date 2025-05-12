@@ -28,7 +28,8 @@ import xcdat as xc  # to handle climate model outputs with xarray
 ### HOMEMADE LIBRARIES ###
 
 from utilities.get_cmip6_data.load_raw_data.load_cmip6 import (
-    loading_cmip6,
+    loading_cmip6, # to load the raw data and areacella
+    set_search_criterias, # to access the chosen search criteria
 )  # function to load the raw data
 
 from utilities.get_cmip6_data.store_data.dict_netcdf_transform import (
@@ -249,6 +250,20 @@ def create_climatology_dict(
 
     print("Data dictionary loaded\n")
 
+    ## Retrieve the given search criterias to know the variables we have loaded ##
+
+    search_criterias = set_search_criterias(
+            case=selected_case,
+        )  # it's a dictionary with all the needed global search criterias to set
+
+    # Get the search facets #
+
+    search_facets = search_criterias["search_facets"]
+    
+    # Get the variables we are looking for #
+
+    variable_id = search_facets["variable_id"]
+    
     ## Create the dictionary ##
 
     print("Generating the climatologies' dictionary\n")
