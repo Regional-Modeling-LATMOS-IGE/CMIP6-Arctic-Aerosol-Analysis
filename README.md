@@ -2,7 +2,9 @@
 
 # CMIP6-Arctic-Aerosol-Analysis
 
-## utilities/ 
+## Content of the subfolders :
+
+### utilities/
 
 The utilities module is used for the analysis. It holds different submodules explained through jupyter notebooks present on the same path.
 
