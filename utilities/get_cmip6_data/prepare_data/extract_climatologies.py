@@ -361,7 +361,7 @@ def create_climatology_dict(
 
         # Create the new key #
 
-        new_simpler_key_given_exp = ".".join([source_id, member_id, experiment_id])
+        new_key_given_exp = ".".join([source_id, member_id, experiment_id])
 
         ## Use the gathered information to get the areacella entry of the given model.variant and experiment ##
 
@@ -382,7 +382,7 @@ def create_climatology_dict(
 
         ## Add the dataset to the output dictionary ##
 
-        full_cmip6_dict_clim[new_simpler_key_given_exp] = dataset_given_exp
+        full_cmip6_dict_clim[new_key_given_exp] = dataset_given_exp
 
     ### SAVE THE GENERATED DICTIONARY ###
 
