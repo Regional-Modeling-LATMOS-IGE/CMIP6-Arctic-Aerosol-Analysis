@@ -36,10 +36,15 @@ class FileExistsError(Exception):
 
 def create_dir(parent_path: str, name: str, clear: bool = True) -> str:
     """
+
+    --- 
+    
     ### DEFINITION ###
 
     Create the entire chain of folders and optionally empty the contents of the last one or delete the file with this name.
 
+    --- 
+    
     ### INPUTS ###
 
     PARENT_PATH : STR | path of the parent directory of the to be created structure
@@ -49,10 +54,14 @@ def create_dir(parent_path: str, name: str, clear: bool = True) -> str:
 
     CLEAR : STR | boolean to define if we clear the structure if it already exists.
     default : True
-
+    
+    --- 
+    
     ### OUTPUT ###
 
     PATH : STR | the full path of the folders and maybe subfolders created.
+    
+    --- 
     """
 
     ### CREATE THE FULL PATH ###

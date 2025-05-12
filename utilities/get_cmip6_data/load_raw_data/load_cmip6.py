@@ -36,7 +36,7 @@ from utilities.get_cmip6_data.folders_handle.create import (
 #############################
 
 class InvalidCase(Exception):
-
+    
     ### DEFINING THE EXCEPTION PROPERTIES ###
 
     def __init__(self, case, error_msg="The following case is not covered for the search"):
@@ -256,6 +256,8 @@ def set_downloading_folder(
     do_we_clear: bool = False
 ):
     """
+    --- 
+    
     ### DEFINITION ###
 
     This function prepares the downloading folder and sets it. It will create or check if a download folder exists at
@@ -263,6 +265,8 @@ def set_downloading_folder(
     This can be quite slow if the data folder is already holding some heavy data. Then, it will configure the intake-esgf catalog
     to look there for the data.
 
+    --- 
+    
     ### INPUTS ###
 
     PARENT_PATH : STR | path of the parent directory of the download folder
@@ -271,9 +275,13 @@ def set_downloading_folder(
 
     DO_WE_CLEAR : BOOL | option to clear the downloading folder if it already exists
 
+    --- 
+    
     ### OUTPUTS ###
 
     nothing.
+
+    --- 
     """
 
     ### CREATE THE DIRECTORY AND EMPTY IF MAKE_A_NEW_FOLDER ###
@@ -506,6 +514,7 @@ def generate_single_model_search_criterias(
 
     This function generates search_criterias for a single entry of grouped_models_dataframe precising 
     the (source_id, member_id, grid_label) criterias needed to download only one entry.
+    
     ---
 
     ### INPUTS ###
@@ -523,6 +532,7 @@ def generate_single_model_search_criterias(
     SEARCH_CRITERIAS_GIVEN_ROW : DICT | search criterias updated with the source_id, member_id and grid_label criterias of the given row.
 
     SINGLE_MODEL_NAME : str | name of the single model we set the download for
+    
     ---
 
     """
@@ -576,6 +586,7 @@ def update_single_entry_keys(
 ) -> dict:
     
     """
+    
     ---
 
     ### DEFINITION ###
@@ -583,6 +594,7 @@ def update_single_entry_keys(
     This function updates the single entry keys of the downloaded one entry dictionary to allow to concatenate all dictionaries together :
 
     (experiment.variable) -> (source_id.member_id.grid_label.experiment.variable)
+    
     ---
 
     ### INPUTS ###
@@ -596,6 +608,7 @@ def update_single_entry_keys(
     ### OUTPUTS ###
 
     SINGLE_MODEL_DICTIONARY : DICT | the updated single_model_dictionary with its keys under the form (source_id.member_id.grid_label.experiment.variable)
+    
     ---
 
     """
