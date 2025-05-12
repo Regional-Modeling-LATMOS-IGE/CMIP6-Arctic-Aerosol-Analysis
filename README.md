@@ -46,9 +46,9 @@ This jupyter notebook is explaining the use of the *intake-esgf* package to down
 | 10 | GISS-E2-1-G       | r1i1p3f1    | gn           |
 | 11 | HadGEM3-GC31-LL   | r1i1p1f3    | gn           |
 | 12 | IPSL-CM6A-LR      | r1i1p1f1    | gr           |
-| 13 | IPSL-CM6A-LR      | r3i1p1f1    | gr           |
-| 14 | IPSL-CM6A-LR      | r4i1p1f1    | gr           |
-| 15 | IPSL-CM6A-LR      | r2i1p1f1    | gr           |
+| 13 | IPSL-CM6A-LR      | r2i1p1f1    | gr           |
+| 14 | IPSL-CM6A-LR      | r3i1p1f1    | gr           |
+| 15 | IPSL-CM6A-LR      | r4i1p1f1    | gr           |
 | 16 | IPSL-CM6A-LR-INCA | r1i1p1f1    | gr           |
 | 17 | MIROC6            | r11i1p1f1   | gn           |
 | 18 | MIROC6            | r1i1p1f1    | gn           |
