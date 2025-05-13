@@ -25,6 +25,7 @@ import xarray as xr  # to manage the data
 
 import xcdat as xc  # to handle climate model outputs with xarray
 
+
 ### HOMEMADE LIBRARIES ###
 
 from utilities.get_cmip6_data.load_raw_data.load_cmip6 import (
