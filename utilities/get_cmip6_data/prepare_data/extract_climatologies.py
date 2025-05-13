@@ -202,7 +202,7 @@ def create_climatology_dict(
     save_path: str,
     selected_case: str,
     remove_ensembles: bool = False,
-    do_we_clear: bool = True,
+    do_we_clear: bool = False,
 ) -> dict:
     """
     ---
@@ -246,7 +246,7 @@ def create_climatology_dict(
         downloading_folder_name=data_folder_name,
         case=selected_case,
         remove_ensembles=remove_ensembles,
-        do_we_clear=False,
+        do_we_clear = do_we_clear,
     )
 
     print("Data dictionary loaded\n")
@@ -390,7 +390,7 @@ def create_climatology_dict(
     print("Saving the climatologies' dictionary\n")
 
     dict_to_netcdf(
-        dataset_dict=full_cmip6_dict_clim, save_path=save_path, do_we_clear=True
+        dataset_dict=full_cmip6_dict_clim, save_path=save_path, do_we_clear = do_we_clear
     )
     return
 
