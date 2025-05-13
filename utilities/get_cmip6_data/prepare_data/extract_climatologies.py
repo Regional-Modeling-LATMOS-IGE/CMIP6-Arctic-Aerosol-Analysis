@@ -185,7 +185,7 @@ def add_one_variable_to_dataset(
 
         # If not a fraction turn it into a fraction #
 
-        if np.max(dataset["clt"]) > 1.0:
+        if np.mean(dataset["clt"]) > 1.0: # mean to consider the whole variable and not odd points
             dataset["clt"] = dataset["clt"] / 100.0
 
     return dataset
