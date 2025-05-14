@@ -7,15 +7,17 @@ This is done using a subset of the CMIP6 model ensemble and using the APRP metho
 
 ## References : 
 
-### APRP method
+### APRP method theory and use
 
-Taylor, K. E., M. Crucifix, P. Braconnot, C. D. Hewitt, C. Doutriaux, A. J. Broccoli, J. F. B. Mitchell, and M. J. Webb, 2007: Estimating Shortwave Radiative Forcing and Response in Climate Models. J. Climate, 20, 2530–2543, https://doi.org/10.1175/JCLI4143.1. 
+- Taylor, K. E. et al. (2007), [Estimating shortwave radiative forcing and response in climate models](https://journals.ametsoc.org/doi/10.1175/JCLI4143.1), J. Clim., 20(11), 2530-2543, doi:10.1175/JCLI4143.1.
+
+- Zelinka, M. D., T. Andrews, P. M. Forster, and K. E. Taylor, 2014: [Quantifying Components of Aerosol-Cloud-Radiation Interactions in Climate Models](http://onlinelibrary.wiley.com/doi/10.1002/2014JD021710/abstract), _J. Geophys. Res._, 119, 7599-7615, doi:10.1002/2014JD021710.
 
 ### APRP module used for our analysis
 
-https://github.com/mzelinka/aprp
+- https://github.com/mzelinka/aprp
 
-Zelinka, M. D., Smith, C. J., Qin, Y., and Taylor, K. E.: Comparison of methods to estimate aerosol effective radiative forcings in climate models, Atmos. Chem. Phys., 23, 8879–8898, https://doi.org/10.5194/acp-23-8879-2023, 2023. 
+- Zelinka, M. D., Smith, C. J., Qin, Y., and Taylor, K. E.: [Comparison of methods to estimate aerosol effective radiative forcings in climate models](https://acp.copernicus.org/articles/23/8879/2023/), Atmos. Chem. Phys., 23, 8879–8898, https://doi.org/10.5194/acp-23-8879-2023, 2023. 
 
 ## Content of the subfolders :
 
