@@ -12,4 +12,4 @@ This is the submodule dedicated to downloading, loading and preparing the needed
 
 ### aprp_library/
 
-It is the submodule used for the APRP method computations, directly linked to the github repository of **mzelinka**.
+It is the submodule used for the APRP method computations, directly linked to my fork of the github repository of **mzelinka**.
