@@ -9,11 +9,25 @@ Author : GIBONI Lucas
 Feel free to copy, adapt and modify it under the provided license on github.
 """
 
+#############################
+#### ENVIRONMENT VARIABLE ###
+#############################
+
+
+
 ##################################
 ### IMPORTATION OF THE MODULES ###
 ##################################
 
 # ================ IMPORTATIONS ================ #
+
+### TO HANDLE ENVIRONMENT VARIABLES ###
+
+import os
+
+### TO IMPROVE WITH VERBOSE OPTION !!!!
+
+os.environ["TQDM_DISABLE"] = "1" # to have before the importation of intake-esgf
 
 ### LOAD AND NAVIGATE THROUGH THE DATA ###
 
@@ -30,6 +44,7 @@ import pandas as pd  # to manage the product of the search
 from utilities.get_cmip6_data.folders_handle.create import (
     create_dir,  # function to create a cleaned downloading directory
 )
+
 
 #############################
 #### DEFINE CUSTOM ERRORS ###
