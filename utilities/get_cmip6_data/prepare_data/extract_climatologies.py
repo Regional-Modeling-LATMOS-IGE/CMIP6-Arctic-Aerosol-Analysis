@@ -25,6 +25,9 @@ import xarray as xr  # to manage the data
 
 import xcdat as xc  # to handle climate model outputs with xarray
 
+### PROGRESS BAR ###
+
+from tqdm import tqdm
 
 ### HOMEMADE LIBRARIES ###
 
@@ -279,9 +282,19 @@ def create_climatology_dict(
 
     keys_without_variable_unique = generate_per_model_dict_key(full_cmip6_dict)
 
-    ### GO THROUGH EACH MODEL.VARIANT AND EXPERIMENT ###
+    ## Define the number of unique entry and experiments couples ##
 
-    for key in keys_without_variable_unique:
+    n_entry_and_exp = len(keys_without_variable_unique)
+
+    ### GO THROUGH EACH MODEL.VARIANT.GRID AND EXPERIMENT ###
+
+    ## Define a progress bar while we go through the unique entry keys ##
+
+    for index in tqdm (range(n_entry_and_exp), desc="Generating the climatologies' dictionnary..."):
+
+        ## Retrieve the key ##
+
+        key = keys_without_variable_unique[index]
 
         ## Initialize the dataset with the first variable ##
 
@@ -299,7 +312,7 @@ def create_climatology_dict(
 
         # Add the variable name #
 
-        key_with_var[-2] = var
+        key_with_var[-1] = var
 
         # Generate the key by joining the str list with "." #
 
@@ -332,7 +345,7 @@ def create_climatology_dict(
 
             # Add the variable name #
 
-            key_with_var[-2] = var
+            key_with_var[-1] = var
 
             # Generate the key by joining the str list with "." #
 
@@ -352,21 +365,23 @@ def create_climatology_dict(
                 do_clim=True,
             )
 
-        ## Generate a new simpler key for full_cmip6_dict_clim ##
+        ## Generate the key for full_cmip6_dict_clim ##
 
         # Retrieving the key information #
 
-        source_id = key[2]
+        # key =  [source_id, member_id, grid, experiment_id, '*']
+
+        source_id = key[0]
+
+        member_id = key[1]
+
+        grid_label = key[2]
 
         experiment_id = key[3]
 
-        member_id = key[4]
-
-        grid_label = key[-1]
-
         # Create the new key #
 
-        new_key_given_exp = ".".join([source_id, member_id, experiment_id])
+        new_simpler_key_given_exp = ".".join([source_id, member_id, grid_label, experiment_id])
 
         ## Use the gathered information to get the areacella entry of the given model.variant and experiment ##
 
@@ -379,15 +394,15 @@ def create_climatology_dict(
         areacella_datarray = dict_areacella[key_areacella]
 
         # Update the dataset of the given model.variant and experiment with the associated areacella #
-
+        
         dataset_given_exp["areacella"] = (
-        ("lat", "lon"),
-        areacella_datarray["areacella"].values,
-    )
+            ("lat", "lon"),
+            areacella_datarray["areacella"].values,
+        )
+        
+        ## Add the dataset to the output dictionnary ##
 
-        ## Add the dataset to the output dictionary ##
-
-        full_cmip6_dict_clim[new_key_given_exp] = dataset_given_exp
+        full_cmip6_dict_clim[new_simpler_key_given_exp] = dataset_given_exp
 
     ### SAVE THE GENERATED DICTIONARY ###
 
