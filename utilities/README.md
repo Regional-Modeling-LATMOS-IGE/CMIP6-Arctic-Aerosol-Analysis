@@ -10,6 +10,6 @@ The *utilities* module is used for the analysis. It holds different submodules e
 
 This is the submodule dedicated to downloading, loading and preparing the needed CMIP6 models' outputs for the analysis.
 
-### aprp_library/
+### aprp/
 
 It is the submodule used for the APRP method computations, directly linked to my fork of the github repository of **mzelinka**.
