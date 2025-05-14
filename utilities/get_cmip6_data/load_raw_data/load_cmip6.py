@@ -9,25 +9,11 @@ Author : GIBONI Lucas
 Feel free to copy, adapt and modify it under the provided license on github.
 """
 
-#############################
-#### ENVIRONMENT VARIABLE ###
-#############################
-
-
-
 ##################################
 ### IMPORTATION OF THE MODULES ###
 ##################################
 
 # ================ IMPORTATIONS ================ #
-
-### TO HANDLE ENVIRONMENT VARIABLES ###
-
-import os
-
-### TO IMPROVE WITH VERBOSE OPTION !!!!
-
-os.environ["TQDM_DISABLE"] = "1" # to have before the importation of intake-esgf
 
 ### LOAD AND NAVIGATE THROUGH THE DATA ###
 
@@ -39,12 +25,15 @@ import numpy as np  # to manage the pandas arrays
 
 import pandas as pd  # to manage the product of the search
 
+### WARNINGS HANDLING ###
+
+import warnings
+
 ### HOMEMADE LIBRARIES ###
 
 from utilities.get_cmip6_data.folders_handle.create import (
     create_dir,  # function to create a cleaned downloading directory
 )
-
 
 #############################
 #### DEFINE CUSTOM ERRORS ###
@@ -687,6 +676,7 @@ def loading_cmip6(
     case: "str",
     do_we_clear: bool = False,
     remove_ensembles: bool = False,
+    verbose : bool = False
 ) -> dict:
     """
     ---
@@ -858,26 +848,57 @@ def loading_cmip6(
 
             print("\nDownloading {} ...\n".format(single_model_name))
 
-            ## Apply the search criterias ##
+            ## Display or not warnings for servers' connections ##
 
-            catalog.search(
-                **search_criterias_given_row,
-            )
+            if not verbose : 
 
-            ## Downloading the output... ##
+                with warnings.catch_warnings():
+            
+                    ## Apply the search criterias ##
 
-            single_model_dictionary = catalog.to_dataset_dict(
-                add_measures=False,
-                ignore_facets=[
-                    "project",
-                    "mip_era",
-                    "activtity_drs",
-                    "institution_id, table_id",
-                    "grid_label",
-                    "version",
-                ],
-                quiet=True,
-            )
+                    catalog.search(
+                        **search_criterias_given_row,
+                    )
+
+                    ## Downloading the output... ##
+
+                    single_model_dictionary = catalog.to_dataset_dict(
+                        add_measures=False,
+                        ignore_facets=[
+                            "project",
+                            "mip_era",
+                            "activtity_drs",
+                            "institution_id, table_id",
+                            "grid_label",
+                            "version",
+                        ],
+                        quiet=True,
+                    )
+
+            ## We keep the warnings ##
+
+            else :
+
+                ## Apply the search criterias ##
+
+                    catalog.search(
+                        **search_criterias_given_row,
+                    )
+
+                    ## Downloading the output... ##
+
+                    single_model_dictionary = catalog.to_dataset_dict(
+                        add_measures=False,
+                        ignore_facets=[
+                            "project",
+                            "mip_era",
+                            "activtity_drs",
+                            "institution_id, table_id",
+                            "grid_label",
+                            "version",
+                        ],
+                        quiet=True,
+                    )
 
             ## Updating its keys ##
 
