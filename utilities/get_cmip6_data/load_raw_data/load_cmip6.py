@@ -852,7 +852,7 @@ def loading_cmip6(
 
             if not verbose : 
 
-                with warnings.catch_warnings():
+                with warnings.catch_warnings(action="ignore", category=UserWarning):
             
                     ## Apply the search criterias ##
 
