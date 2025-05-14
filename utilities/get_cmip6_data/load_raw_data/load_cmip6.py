@@ -29,6 +29,10 @@ import pandas as pd  # to manage the product of the search
 
 import warnings
 
+### TO CLEAN THE OUTPUTS OF THE JUPYTER CELL REGULARLY ###
+
+from IPython.display import clear_output
+
 ### HOMEMADE LIBRARIES ###
 
 from utilities.get_cmip6_data.folders_handle.create import (
@@ -457,6 +461,10 @@ def get_areacella_apart(catalog, grouped_models: pd.Series) -> dict:
 
     for ii in range(n_rows):
 
+        ## Clear the cell output ##
+
+        clear_output(wait=True)
+
         ## Get the SOURCE_ID | MEMBER_ID | GRID_LABEL of the row ##
 
         # Retrieve the row ##
@@ -831,6 +839,10 @@ def loading_cmip6(
         print("Downloading and/or loading the data one entry at a time...\n")
 
         for index in grouped_models_dataframe.index:
+
+            ## Clear the cell output ##
+
+            clear_output(wait=True)
 
             ## Reset the catalog ##
 
