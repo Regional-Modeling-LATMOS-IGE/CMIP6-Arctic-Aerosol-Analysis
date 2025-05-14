@@ -13,3 +13,7 @@ This is the submodule dedicated to downloading, loading and preparing the needed
 ### aprp/
 
 It is the submodule used for the APRP method computations, directly linked to my fork of the github repository of **mzelinka**.
+
+### regridding/
+
+This submodule is dedicated to the regridding techniques applied to the ensemble to generate ensemble maps.
