@@ -203,6 +203,7 @@ def create_climatology_dict(
     selected_case: str,
     remove_ensembles: bool = False,
     do_we_clear: bool = False,
+    verbose : bool = False
 ) -> dict:
     """
     ---
@@ -247,6 +248,7 @@ def create_climatology_dict(
         case=selected_case,
         remove_ensembles=remove_ensembles,
         do_we_clear = do_we_clear,
+        verbose = verbose,
     )
 
     print("Data dictionary loaded\n")
