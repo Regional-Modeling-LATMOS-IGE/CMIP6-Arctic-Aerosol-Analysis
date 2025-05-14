@@ -703,6 +703,8 @@ def loading_cmip6(
 
     REMOVE_ENSEMBLES : BOOL | option to keep only one variant per model
 
+    VERBOSE : BOOL | option to keep the warnings regarding connection failures to esgf servers
+    
     ---
 
     ### OUTPUTS ###

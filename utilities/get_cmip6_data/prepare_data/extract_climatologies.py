@@ -229,6 +229,8 @@ def create_climatology_dict(
 
     DO_WE_CLEAR : BOOL | option to clear the save folder if it already exists : default is True
 
+    VERBOSE : BOOL | option to keep the warnings regarding connection failures to esgf servers
+
     ---
 
     ### OUTPUTS
