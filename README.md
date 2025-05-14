@@ -60,3 +60,7 @@ This jupyter notebook is explaining the use of the *intake-esgf* package to down
 | 22 | NorESM2-LM        | r1i1p1f1    | gn           |
 | 23 | NorESM2-MM        | r1i1p1f1    | gn           |
 | 24 | UKESM1-0-LL       | r1i1p1f4    | gn           |
+
+## Packages needed :
+
+to write...
