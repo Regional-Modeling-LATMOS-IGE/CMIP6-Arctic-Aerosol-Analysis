@@ -124,7 +124,7 @@ def generate_per_model_dict_key(full_cmip6_dict: dict) -> NDArray[object]:
 
 def add_one_variable_to_dataset(
     variable_name: str,
-    var_datarray,
+    var_datarray : xr.DataArray,
     modify_data: bool = False,
     dataset : xr.Dataset = None,
     do_clim=False,
@@ -181,7 +181,7 @@ def add_one_variable_to_dataset(
 
         dataset[variable_name] = (
             ("time", "lat", "lon"),
-            var_to_add[variable_name].data,
+            var_datarray.data,
         )
 
     ### DIFFERENT CORRECTIONS ###
