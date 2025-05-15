@@ -274,8 +274,6 @@ def create_climatology_dict(
     
     ## Create the dictionary ##
 
-    print("Generating the climatologies' dictionary\n")
-
     full_cmip6_dict_clim = {}
 
     ## Generate the general key associated to each model.variant and experiment ##
