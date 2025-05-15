@@ -29,6 +29,10 @@ import xcdat as xc  # to handle climate model outputs with xarray
 
 from tqdm import tqdm
 
+### TYPE HINTS FOR FUNCTIONS ###
+
+from numpy.typing import NDArray
+
 ### HOMEMADE LIBRARIES ###
 
 from utilities.get_cmip6_data.load_raw_data.load_cmip6 import (
@@ -45,7 +49,7 @@ from utilities.get_cmip6_data.store_data.dict_netcdf_transform import (
 #######################################################
 
 
-def generate_per_model_dict_key(full_cmip6_dict: dict):
+def generate_per_model_dict_key(full_cmip6_dict: dict) -> NDArray[object]:
     """
     ---
 
@@ -124,7 +128,7 @@ def add_one_variable_to_dataset(
     modify_data: bool = False,
     dataset : xr.Dataset = None,
     do_clim=False,
-):
+) -> xr.Dataset:
     """
     ### DEFINITION
 

@@ -26,15 +26,15 @@ import xcdat as xc  # to handle climate model outputs with xarray
 
 from math import floor # to get the int part of a division
 
-### DATA TYPES ###
+### TYPE HINTS FOR FUNCTIONS ###
 
-import numpy.typing as npt
+from numpy.typing import NDArray
 
 #############################################
 ### GENERATE THE STEPS OF THE COORDINATES ###
 #############################################
 
-def get_step(coordinate_array: npt.NDArray[np.float64]) -> float:
+def get_step(coordinate_array: NDArray[np.float64]) -> float:
     """
 
     ---
@@ -67,7 +67,7 @@ def get_step(coordinate_array: npt.NDArray[np.float64]) -> float:
 ### COMPUTE THE CLOSEST STEP THAT DIVIDES THE DOMAIN WITH AN INT ###
 ####################################################################
 
-def make_a_regular_grid_step(not_regular_step : float, domain_extent = float) -> float :
+def make_a_regular_grid_step(not_regular_step : float, domain_extent : float) -> float :
 
     """
 
@@ -113,7 +113,7 @@ def make_a_regular_grid_step(not_regular_step : float, domain_extent = float) ->
 ### GENERATE THE COARSER STEP FOR A DICTIONARY OF DATASETS ###
 ##############################################################
 
-def get_coarsest_regular_steps(dict_outputs : dict[xr.Dataset]) -> tuple[float, float]:
+def get_coarsest_regular_steps(dict_outputs : dict[str, xr.Dataset]) -> tuple[float, float]:
 
     """
 
@@ -182,7 +182,7 @@ def get_coarsest_regular_steps(dict_outputs : dict[xr.Dataset]) -> tuple[float, 
 ### GENERATE THE COMMON COARSEST GRID ###
 #########################################
 
-def generate_the_common_coarse_grid(dict_outputs : dict[xr.Dataset]) -> xr.Dataset:
+def generate_the_common_coarse_grid(dict_outputs : dict[str, xr.Dataset]) -> xr.Dataset:
 
     """
 

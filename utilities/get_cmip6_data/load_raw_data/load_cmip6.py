@@ -423,7 +423,7 @@ def filtering_function(grouped_model_entry: pd.DataFrame) -> bool:
 #########################################
 
 
-def get_areacella_apart(catalog, grouped_models: pd.Series) -> dict:
+def get_areacella_apart(catalog, grouped_models: pd.Series) -> dict[str, xr.Dataset]:
     """
     ---
 
@@ -537,7 +537,7 @@ def generate_single_model_search_criterias(
     search_facets: dict,
     grouped_models_dataframe: pd.DataFrame,
     index: int,
-) -> tuple[dict, str]:
+) -> tuple[dict[str, str], str]:
     """
     ---
 
@@ -621,7 +621,7 @@ def generate_single_model_search_criterias(
 def update_single_entry_keys(
     single_model_dictionary: dict,
     single_model_name: str,
-) -> dict:
+) -> dict[str, str]:
     """
 
     ---
@@ -683,11 +683,11 @@ def update_single_entry_keys(
 def loading_cmip6(
     parent_path: str,
     downloading_folder_name: str,
-    case: "str",
+    case: str,
     do_we_clear: bool = False,
     remove_ensembles: bool = False,
     verbose : bool = False
-) -> tuple[dict[str, xr.Dataset],dict[str, xr.Dataset]]:
+) -> tuple[dict[str, xr.Dataset], dict[str, xr.Dataset]]:
     """
     ---
 
