@@ -288,7 +288,7 @@ def create_climatology_dict(
 
     ## Define a progress bar while we go through the unique entry keys ##
 
-    for index in tqdm (range(n_entry_and_exp), desc="Generating the climatologies' dictionnary..."):
+    for index in tqdm (range(n_entry_and_exp), desc="Generating the climatologies' dictionary..."):
 
         ## Retrieve the key ##
 
@@ -404,7 +404,7 @@ def create_climatology_dict(
 
     ### SAVE THE GENERATED DICTIONARY ###
 
-    print("Saving the climatologies' dictionary\n")
+    print("\nSaving the climatologies' dictionary...\n")
 
     dict_to_netcdf(
         dataset_dict=full_cmip6_dict_clim, parent_path_for_save = parent_path_for_save, do_we_clear = do_we_clear
