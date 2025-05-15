@@ -25,6 +25,8 @@ import numpy as np  # to manage the pandas arrays
 
 import pandas as pd  # to manage the product of the search
 
+import xarray as xr # to manages xarray datasets 
+
 ### WARNINGS HANDLING ###
 
 import warnings
@@ -53,7 +55,7 @@ class InvalidCase(Exception):
     ):
         self.case = case
         self.error_msg = error_msg
-        super().__init__(self.msg)  # calling the exception parent class
+        super().__init__(self.error_msg)  # calling the exception parent class
 
     ### DEFINING THE ERROR MESSAGE ###
 
@@ -685,7 +687,7 @@ def loading_cmip6(
     do_we_clear: bool = False,
     remove_ensembles: bool = False,
     verbose : bool = False
-) -> dict:
+) -> tuple[dict[str, xr.Dataset],dict[str, xr.Dataset]]:
     """
     ---
 
@@ -932,7 +934,7 @@ def loading_cmip6(
             catalog, grouped_models=series_grouped_models
         )
 
-    return full_cmip6_dict, areacella_dict
+    return (full_cmip6_dict, areacella_dict)
 
 
 ######################

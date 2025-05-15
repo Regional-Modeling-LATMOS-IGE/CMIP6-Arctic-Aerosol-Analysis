@@ -122,7 +122,7 @@ def add_one_variable_to_dataset(
     variable_name: str,
     var_datarray,
     modify_data: bool = False,
-    dataset: bool = None,
+    dataset : xr.Dataset = None,
     do_clim=False,
 ):
     """
@@ -207,7 +207,7 @@ def create_climatology_dict(
     remove_ensembles: bool = False,
     do_we_clear: bool = False,
     verbose : bool = False
-) -> dict:
+):
     """
     ---
 
@@ -409,9 +409,9 @@ def create_climatology_dict(
     print("Saving the climatologies' dictionary\n")
 
     dict_to_netcdf(
-        dataset_dict=full_cmip6_dict_clim, save_path=save_path, do_we_clear = do_we_clear
+        dataset_dict=full_cmip6_dict_clim, parent_path_for_save = save_path, do_we_clear = do_we_clear
     )
-    return
+    return 
 
 
 ####################################################
