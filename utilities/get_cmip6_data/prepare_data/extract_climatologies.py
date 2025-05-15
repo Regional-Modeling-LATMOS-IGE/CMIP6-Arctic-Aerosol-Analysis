@@ -202,7 +202,7 @@ def add_one_variable_to_dataset(
 def create_climatology_dict(
     data_path: str,
     data_folder_name: str,
-    save_path: str,
+    parent_path_for_save: str,
     selected_case: str,
     remove_ensembles: bool = False,
     do_we_clear: bool = False,
@@ -224,7 +224,7 @@ def create_climatology_dict(
 
     DATA_FOLDER_NAME : STR | name of the raw data folder
 
-    SAVE_PATH : STR | path of the directory of the save folder
+    PARENT_PATH_FOR_SAVE : STR | path of the directory of the save folder
 
     SELECTED_CASE : STR | case selected for the loading of the raw data
 
@@ -409,7 +409,7 @@ def create_climatology_dict(
     print("Saving the climatologies' dictionary\n")
 
     dict_to_netcdf(
-        dataset_dict=full_cmip6_dict_clim, parent_path_for_save = save_path, do_we_clear = do_we_clear
+        dataset_dict=full_cmip6_dict_clim, parent_path_for_save = parent_path_for_save, do_we_clear = do_we_clear
     )
     return 
 
