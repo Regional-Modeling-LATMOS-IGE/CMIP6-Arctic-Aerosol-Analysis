@@ -15,8 +15,6 @@ Feel free to copy, adapt and modify it under the provided license on github.
 ### IMPORTATION OF THE MODULES ###
 ##################################
 
-# ================ IMPORTATIONS ================ #
-
 ### DATA OBJECTS AND ASSOCIATED COMPUTATION ###
 
 import numpy as np  # to handle numpy arrays and the associated tools
