@@ -39,7 +39,7 @@ from utilities.get_cmip6_data.store_data.dict_netcdf_transform import (
 )
 
 #######################################################
-### GENERATE dictionary KEYS WITHOUT THE VARIABLES ###
+### GENERATE DICTIONARY KEYS WITHOUT THE VARIABLES ####
 #######################################################
 
 
