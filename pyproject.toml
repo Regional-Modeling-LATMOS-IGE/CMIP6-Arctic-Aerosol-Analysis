@@ -1,0 +1,24 @@
+[project]
+name = "CMIP6-Arctic-Aerosol-Analysis"
+authors = [
+  { name="Giboni Lucas"},
+]
+description = "Computation of the aerosol-cloud's interaction effective radiative forcing for a subset of the CMIP6 model ensemble for the Arctic. "
+readme = "README.md"
+requires-python = ">=3.13.2"
+classifiers = [
+    "Programming Language :: Python :: 3",
+    "Operating System :: OS Independent",
+]
+license = "GNU General Public License v3.0 or later"
+license-files = ["LICEN[CS]E*"]
+
+[project.urls]
+Homepage = "https://github.com/Regional-Modeling-LATMOS-IGE/CMIP6-Arctic-Aerosol-Analysis"
+Issues = "https://github.com/Regional-Modeling-LATMOS-IGE/CMIP6-Arctic-Aerosol-Analysis/issues"
+
+[tool.pytest.ini_options]
+pythonpath = "."
+addopts = [
+    "--import-mode=importlib",
+]
