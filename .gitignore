@@ -182,6 +182,12 @@ archive.tar
 
 .pytest_cache
 
+# Ignore coverage config file
+
+.coveragerc
+
 # Ignore vscode folder 
 
 .vscode
+
+
