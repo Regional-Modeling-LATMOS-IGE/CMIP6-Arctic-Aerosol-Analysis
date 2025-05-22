@@ -3,7 +3,7 @@
 # CMIP6-Arctic-Aerosol-Analysis
 
 This repository regroups a bunch of modules and notebooks for a computation of the aerosol-cloud's interaction effective radiative forcing in the Arctic.
-This is done using a subset of the CMIP6 model ensemble and using the APRP method devised by *Taylor and al. (2007)* and whose implementation was done by *Zelinka (2023)* (https://github.com/mzelinka).
+This is done using a subset of the CMIP6 model ensemble and using the APRP method devised by *Taylor and al. (2007)* and whose implementation was done by *Zelinka (2023)* (https://zenodo.org/records/8206763).
 
 ## References : 
 
@@ -15,7 +15,7 @@ This is done using a subset of the CMIP6 model ensemble and using the APRP metho
 
 ### APRP module used for our analysis
 
-- https://github.com/mzelinka/aprp
+- https://zenodo.org/records/8206763
 
 - Zelinka, M. D., Smith, C. J., Qin, Y., and Taylor, K. E.: [Comparison of methods to estimate aerosol effective radiative forcings in climate models](https://acp.copernicus.org/articles/23/8879/2023/), Atmos. Chem. Phys., 23, 8879–8898, https://doi.org/10.5194/acp-23-8879-2023, 2023. 
 
