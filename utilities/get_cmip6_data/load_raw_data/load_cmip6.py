@@ -25,7 +25,7 @@ import numpy as np  # to manage the pandas arrays
 
 import pandas as pd  # to manage the product of the search
 
-import xarray as xr # to manages xarray datasets 
+import xarray as xr  # to manages xarray datasets
 
 ### WARNINGS HANDLING ###
 
@@ -686,8 +686,8 @@ def loading_cmip6(
     case: "str",
     do_we_clear: bool = False,
     remove_ensembles: bool = False,
-    verbose : bool = False
-) -> tuple[dict[str, xr.Dataset],dict[str, xr.Dataset]]:
+    verbose: bool = False,
+) -> tuple[dict[str, xr.Dataset], dict[str, xr.Dataset]]:
     """
     ---
 
@@ -714,7 +714,7 @@ def loading_cmip6(
     REMOVE_ENSEMBLES : BOOL | option to keep only one variant per model
 
     VERBOSE : BOOL | option to keep the warnings regarding connection failures to esgf servers
-    
+
     ---
 
     ### OUTPUTS ###
@@ -866,10 +866,10 @@ def loading_cmip6(
 
             ## Display or not warnings for servers' connections ##
 
-            if not verbose : 
+            if not verbose:
 
                 with warnings.catch_warnings(action="ignore", category=UserWarning):
-            
+
                     ## Apply the search criterias ##
 
                     catalog.search(
@@ -893,28 +893,28 @@ def loading_cmip6(
 
             ## We keep the warnings ##
 
-            else :
+            else:
 
                 ## Apply the search criterias ##
 
-                    catalog.search(
-                        **search_criterias_given_row,
-                    )
+                catalog.search(
+                    **search_criterias_given_row,
+                )
 
-                    ## Downloading the output... ##
+                ## Downloading the output... ##
 
-                    single_model_dictionary = catalog.to_dataset_dict(
-                        add_measures=False,
-                        ignore_facets=[
-                            "project",
-                            "mip_era",
-                            "activtity_drs",
-                            "institution_id, table_id",
-                            "grid_label",
-                            "version",
-                        ],
-                        quiet=True,
-                    )
+                single_model_dictionary = catalog.to_dataset_dict(
+                    add_measures=False,
+                    ignore_facets=[
+                        "project",
+                        "mip_era",
+                        "activtity_drs",
+                        "institution_id, table_id",
+                        "grid_label",
+                        "version",
+                    ],
+                    quiet=True,
+                )
 
             ## Updating its keys ##
 

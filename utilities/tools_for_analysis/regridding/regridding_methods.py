@@ -24,7 +24,7 @@ import xcdat as xc  # to handle climate model outputs with xarray
 
 ### MATHEMATIC FUNCTIONS ###
 
-from math import floor # to get the int part of a division
+from math import floor  # to get the int part of a division
 
 ### TYPE HINTS FOR FUNCTIONS ###
 
@@ -33,6 +33,7 @@ from numpy.typing import NDArray
 #############################################
 ### GENERATE THE STEPS OF THE COORDINATES ###
 #############################################
+
 
 def get_step(coordinate_array: NDArray[np.float64]) -> float:
     """
@@ -63,12 +64,13 @@ def get_step(coordinate_array: NDArray[np.float64]) -> float:
 
     return max_step
 
+
 ####################################################################
 ### COMPUTE THE CLOSEST STEP THAT DIVIDES THE DOMAIN WITH AN INT ###
 ####################################################################
 
-def make_a_regular_grid_step(not_regular_step : float, domain_extent : float) -> float :
 
+def make_a_regular_grid_step(not_regular_step: float, domain_extent: float) -> float:
     """
 
     ---
@@ -100,7 +102,9 @@ def make_a_regular_grid_step(not_regular_step : float, domain_extent : float) ->
 
     ### COMPUTING THE CLOSEST INT NUMBER OF INTERVALS FOR A REGULAR GRID ###
 
-    n_steps_closest = floor(domain_extent / not_regular_step)  # bc we want a step greater than not_regular_step
+    n_steps_closest = floor(
+        domain_extent / not_regular_step
+    )  # bc we want a step greater than not_regular_step
 
     ### OBTAIN THE REGULAR_GRID_STEP VALUE ###
 
@@ -113,8 +117,10 @@ def make_a_regular_grid_step(not_regular_step : float, domain_extent : float) ->
 ### GENERATE THE COARSER STEP FOR A DICTIONARY OF DATASETS ###
 ##############################################################
 
-def get_coarsest_regular_steps(dict_outputs : dict[str, xr.Dataset]) -> tuple[float, float]:
 
+def get_coarsest_regular_steps(
+    dict_outputs: dict[str, xr.Dataset],
+) -> tuple[float, float]:
     """
 
     ---
@@ -169,21 +175,25 @@ def get_coarsest_regular_steps(dict_outputs : dict[str, xr.Dataset]) -> tuple[fl
 
     ## Longitude ##
 
-    regular_coarse_step_lon = make_a_regular_grid_step(not_regular_step = max_step_lon, domain_extent = 360)
+    regular_coarse_step_lon = make_a_regular_grid_step(
+        not_regular_step=max_step_lon, domain_extent=360
+    )
 
     ## Latitude ##
 
-    regular_coarse_step_lat = make_a_regular_grid_step(not_regular_step = max_step_lat, domain_extent = 180)
+    regular_coarse_step_lat = make_a_regular_grid_step(
+        not_regular_step=max_step_lat, domain_extent=180
+    )
 
-    return  (regular_coarse_step_lon, regular_coarse_step_lat)
+    return (regular_coarse_step_lon, regular_coarse_step_lat)
 
 
 #########################################
 ### GENERATE THE COMMON COARSEST GRID ###
 #########################################
 
-def generate_the_common_coarse_grid(dict_outputs : dict[str, xr.Dataset]) -> xr.Dataset:
 
+def generate_the_common_coarse_grid(dict_outputs: dict[str, xr.Dataset]) -> xr.Dataset:
     """
 
     ---
@@ -211,7 +221,9 @@ def generate_the_common_coarse_grid(dict_outputs : dict[str, xr.Dataset]) -> xr.
 
     ### GENERATE THE STEPS OF THE GRID ###
 
-    regular_coarse_step_lon, regular_coarse_step_lat = get_coarsest_regular_steps(dict_outputs)
+    regular_coarse_step_lon, regular_coarse_step_lat = get_coarsest_regular_steps(
+        dict_outputs
+    )
 
     ### GENERATE THE AXIS ###
 
@@ -225,11 +237,16 @@ def generate_the_common_coarse_grid(dict_outputs : dict[str, xr.Dataset]) -> xr.
     # of intervals we may center its bounds on -90 / 90.
 
     lat_axis = xc.create_axis(
-        "lat", np.arange(-90 + regular_coarse_step_lat / 2, 90 + regular_coarse_step_lat / 2, regular_coarse_step_lat)
+        "lat",
+        np.arange(
+            -90 + regular_coarse_step_lat / 2,
+            90 + regular_coarse_step_lat / 2,
+            regular_coarse_step_lat,
+        ),
     )
 
     ### CREATE THE OUTPUT GRID ###
 
-    common_coarse_grid = xc.create_grid(x = lon_axis, y = lat_axis)
+    common_coarse_grid = xc.create_grid(x=lon_axis, y=lat_axis)
 
     return common_coarse_grid

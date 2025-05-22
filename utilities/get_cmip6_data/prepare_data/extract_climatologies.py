@@ -30,8 +30,8 @@ from tqdm import tqdm
 ### HOMEMADE LIBRARIES ###
 
 from utilities.get_cmip6_data.load_raw_data.load_cmip6 import (
-    loading_cmip6, # to load the raw data and areacella
-    set_search_criterias, # to access the chosen search criteria
+    loading_cmip6,  # to load the raw data and areacella
+    set_search_criterias,  # to access the chosen search criteria
 )  # function to load the raw data
 
 from utilities.get_cmip6_data.store_data.dict_netcdf_transform import (
@@ -120,7 +120,7 @@ def add_one_variable_to_dataset(
     variable_name: str,
     var_datarray,
     modify_data: bool = False,
-    dataset : xr.Dataset = None,
+    dataset: xr.Dataset = None,
     do_clim=False,
 ):
     """
@@ -186,7 +186,9 @@ def add_one_variable_to_dataset(
 
         # If not a fraction turn it into a fraction #
 
-        if np.mean(dataset["clt"]) > 1.0: # mean to consider the whole variable and not odd points
+        if (
+            np.mean(dataset["clt"]) > 1.0
+        ):  # mean to consider the whole variable and not odd points
             dataset["clt"] = dataset["clt"] / 100.0
 
     return dataset
@@ -204,7 +206,7 @@ def create_climatology_dict(
     selected_case: str,
     remove_ensembles: bool = False,
     do_we_clear: bool = False,
-    verbose : bool = False
+    verbose: bool = False,
 ):
     """
     ---
@@ -250,8 +252,8 @@ def create_climatology_dict(
         downloading_folder_name=data_folder_name,
         case=selected_case,
         remove_ensembles=remove_ensembles,
-        do_we_clear = do_we_clear,
-        verbose = verbose,
+        do_we_clear=do_we_clear,
+        verbose=verbose,
     )
 
     print("Data dictionary loaded\n")
@@ -259,17 +261,17 @@ def create_climatology_dict(
     ## Retrieve the given search criterias to know the variables we have loaded ##
 
     search_criterias = set_search_criterias(
-            case=selected_case,
-        )  # it's a dictionary with all the needed global search criterias to set
+        case=selected_case,
+    )  # it's a dictionary with all the needed global search criterias to set
 
     # Get the search facets #
 
     search_facets = search_criterias["search_facets"]
-    
+
     # Get the variables we are looking for #
 
     variable_id = search_facets["variable_id"]
-    
+
     ## Create the dictionary ##
 
     print("Generating the climatologies' dictionary\n")
@@ -288,7 +290,9 @@ def create_climatology_dict(
 
     ## Define a progress bar while we go through the unique entry keys ##
 
-    for index in tqdm (range(n_entry_and_exp), desc="Generating the climatologies' dictionnary..."):
+    for index in tqdm(
+        range(n_entry_and_exp), desc="Generating the climatologies' dictionnary..."
+    ):
 
         ## Retrieve the key ##
 
@@ -379,7 +383,9 @@ def create_climatology_dict(
 
         # Create the new key #
 
-        new_simpler_key_given_exp = ".".join([source_id, member_id, grid_label, experiment_id])
+        new_simpler_key_given_exp = ".".join(
+            [source_id, member_id, grid_label, experiment_id]
+        )
 
         ## Use the gathered information to get the areacella entry of the given model.variant and experiment ##
 
@@ -392,12 +398,12 @@ def create_climatology_dict(
         areacella_datarray = dict_areacella[key_areacella]
 
         # Update the dataset of the given model.variant and experiment with the associated areacella #
-        
+
         dataset_given_exp["areacella"] = (
             ("lat", "lon"),
             areacella_datarray["areacella"].values,
         )
-        
+
         ## Add the dataset to the output dictionnary ##
 
         full_cmip6_dict_clim[new_simpler_key_given_exp] = dataset_given_exp
@@ -407,9 +413,11 @@ def create_climatology_dict(
     print("Saving the climatologies' dictionary\n")
 
     dict_to_netcdf(
-        dataset_dict=full_cmip6_dict_clim, parent_path_for_save = save_path, do_we_clear = do_we_clear
+        dataset_dict=full_cmip6_dict_clim,
+        parent_path_for_save=save_path,
+        do_we_clear=do_we_clear,
     )
-    return 
+    return
 
 
 ####################################################
