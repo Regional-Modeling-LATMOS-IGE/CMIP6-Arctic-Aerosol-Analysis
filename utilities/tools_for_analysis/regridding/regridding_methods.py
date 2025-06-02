@@ -2,8 +2,6 @@
 
 """
 This script is used to perform regridding on a common grid for a bunch of the CMIP6 outputs.
-We create a common grid based on the coarser resolutions accessible in the ensemble and transform all the intensive
-variables into extensive variables upon regridding thanks to the areacella variable present in the datasets.
 
 Author : GIBONI Lucas
 
@@ -250,3 +248,60 @@ def generate_the_common_coarse_grid(dict_outputs: dict[str, xr.Dataset]) -> xr.D
     common_coarse_grid = xc.create_grid(x=lon_axis, y=lat_axis)
 
     return common_coarse_grid
+
+#######################################################
+### COMPUTE THE AREACELLA VARIABLE FOR A GIVEN GRID ###
+#######################################################
+
+def compute_grid_areacella(grid : xr.Dataset) -> NDArray[np.float64] :
+    """
+    """
+    ### INITIALIZATION ###
+
+    ## Define the radius of the earth ##
+    
+    R_earth = 6371.0 * 10**3 # in m
+
+    ## Define the lat and lon arrays ##
+
+    latitude = grid.lat
+
+    longitude = grid.lon
+
+    ## Define the steps in radians ##
+
+    # In degreees #
+
+    dlon = np.mean(np.diff(longitude))
+
+    dlat = np.mean(np.diff(latitude))
+
+    # In rad #
+    
+    dlon_rad = np.deg2rad(dlon)
+    
+    dlat_rad = np.deg2rad(dlat)
+
+    print(dlon, dlat)
+
+    ## Define the shape of the grid ##
+
+    n_lat = grid.lat.size
+
+    n_lon = grid.lon.size
+
+    ### COMPUTATION OF AREACELLA FOR ONE MODEL ###
+
+    ## Definition ##
+    
+    areacella = np.zeros((n_lat,n_lon))
+
+    ## Cycle for ##
+    
+    for ii_lat,lat in enumerate(latitude):
+
+        for ii_lon,lon in enumerate(longitude):
+
+            areacella[ii_lat,ii_lon] = (R_earth*dlat_rad)*(R_earth*np.cos(np.deg2rad(lat))*dlon_rad)
+
+    return areacella
