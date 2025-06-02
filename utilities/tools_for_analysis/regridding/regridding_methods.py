@@ -352,6 +352,11 @@ def regrid_field(dataset : xr.Dataset, field: str, output_grid : xr.Dataset) -> 
 
     This function takes a xarray dataset as an input and regrids a given field on a provided output_grid.
 
+    Why do we use regrid 2 ?
+
+    If performing conservative regridding from a high/medium resolution lat/lon grid to a coarse lat/lon target, Regrid2 may provide better results as it assumes grid cells with constant latitudes 
+    and longitudes while xESMF assumes the cells are connected by Great Circles (source : https://xcdat.readthedocs.io/en/latest/generated/xarray.Dataset.regridder.horizontal.html)
+
     ---
 
     ### INPUTS ###
