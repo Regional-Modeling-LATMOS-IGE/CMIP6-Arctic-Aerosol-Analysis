@@ -255,6 +255,27 @@ def generate_the_common_coarse_grid(dict_outputs: dict[str, xr.Dataset]) -> xr.D
 
 def compute_grid_areacella(grid : xr.Dataset) -> NDArray[np.float64] :
     """
+
+    ---
+
+    ### DEFINITION ###
+
+    This function takes as an input a 2D grid and generates the area for every grid cell. The result will be
+    a map holding the area for every grid point.
+
+    ---
+
+    ### INPUTS ###
+
+    GRID : XR DATASET | the dictionary holding the models' outputs
+
+    ---
+
+    ### OUTPUTS ###
+
+    AREACELLA : NDArray[np.float64] | the areacella variable on the 2D grid given as an input
+    ---
+
     """
     ### INITIALIZATION ###
 
@@ -305,3 +326,14 @@ def compute_grid_areacella(grid : xr.Dataset) -> NDArray[np.float64] :
             areacella[ii_lat,ii_lon] = (R_earth*dlat_rad)*(R_earth*np.cos(np.deg2rad(lat))*dlon_rad)
 
     return areacella
+
+################################
+### REGRID A GIVEN VARIABLE  ###
+################################
+
+def regrid_field(dataset : xr.Dataset, field: str, output_grid : xr.Dataset):
+    """ """
+
+    field_regridded = dataset.regridder.horizontal(field, output_grid, tool="regrid2")
+
+    return field_regridded
