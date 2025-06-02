@@ -24,9 +24,21 @@ import xcdat as xc  # to handle climate model outputs with xarray
 
 from math import floor  # to get the int part of a division
 
+### TO DISPLAY A PROGRESS BAR ###
+
+from tqdm import tqdm # progress bar handler 
+
 ### TYPE HINTS FOR FUNCTIONS ###
 
-from numpy.typing import NDArray
+from numpy.typing import NDArray # type hints for numpy
+
+### HOMEMADE LIBRARIES ###
+
+## Handle the climatology dictionary ##
+
+from utilities.get_cmip6_data.prepare_data.extract_climatologies import (
+    add_one_variable_to_dataset, # to add one variable to the full dataset
+)
 
 #############################################
 ### GENERATE THE STEPS OF THE COORDINATES ###
@@ -362,3 +374,160 @@ def regrid_field(dataset : xr.Dataset, field: str, output_grid : xr.Dataset) -> 
     field_regridded = dataset.regridder.horizontal(field, output_grid, tool="regrid2")
 
     return field_regridded
+
+########################################
+### ADD AREACELLA TO A GIVEN DATASET ###
+########################################
+
+def add_areacella_to_dataset(
+        dataset : xr.Dataset, 
+        areacella : xr.Dataset
+        ) -> xr.Dataset:
+    
+    """
+
+    ---
+
+    ### DEFINITION ###
+
+    This functions adds the areacella variable to a given dataset.
+
+    ---
+
+    ### INPUTS ###
+
+    DATASET : XR DATASET | the dataset to which add areacella
+
+    AREACELLA : XR DATASET | the areacella variable
+
+    ---
+
+    ### OUTPUTS ###
+
+    DATASET : XR.DATASET | the dataset with areacella added in place
+    ---
+
+    """
+
+    ### ADD AREACELLA TO THE DATASET ###
+
+    dataset["areacella"] = (
+            ("lat", "lon"),
+            areacella,
+            )
+        
+    return dataset
+    
+
+################################################################
+### REGRID A LIST OF FIELDS AND GENERATE A REGRIDDED DATASET ###
+################################################################
+
+def regridding_a_dictionary(
+        dictionary_to_be_regridded :  dict[str, xr.Dataset], 
+        fields_to_be_regridded : list[str],
+        output_grid : xr.Dataset
+        ) -> dict[str, xr.Dataset]:
+    
+    """
+
+    ---
+
+    ### DEFINITION ###
+
+    This function takes as an input a 2D grid and generates the area for every grid cell. The result will be
+    a map holding the area for every grid point.
+
+    ---
+
+    ### INPUTS ###
+
+    GRID : XR DATASET | the dictionary holding the models' outputs
+
+    ---
+
+    ### OUTPUTS ###
+
+    AREACELLA : NDArray[np.float64] | the areacella variable on the 2D grid given as an input
+    ---
+
+    """
+    
+    ### GET THE DICTIONARY KEYS ###
+
+    keys_dict = list(dictionary_to_be_regridded.keys())
+    
+    ### INITIALIZE THE REGRIDDING WITH THE FIRST VARIABLE ###
+
+    print("Initialize with one variable...\n")
+
+    ## Extract the first field to initialize the new datasets ##
+
+    field = fields_to_be_regridded[0]
+
+    ## Initialize the new dictionary ##
+
+    dict_regridded = {key : regrid_field(dataset = dictionary_to_be_regridded[key],
+                                                field = field,
+                                                output_grid = output_grid
+                                                )
+                                                for key in keys_dict
+                                                }
+
+    ### REGRID THE REMAINING FIELDS ###
+
+    ## Get the remaining fields to be regridded ##
+
+    # Get the list #
+
+    remaining_fields = fields_to_be_regridded[1:]
+
+    # Get the number of remaining fields #
+
+    n_fields = len(remaining_fields)
+
+    ## Loop over the remaining fields ##
+
+    for index in tqdm (range(n_fields), desc="Regridding all the variables..."):
+
+        # Extract the field #
+
+        field = remaining_fields[index]
+
+        # Generate the dictionary of all models for one field #
+
+        dict_regridded_given_field = {key : regrid_field(dataset = dictionary_to_be_regridded[key],
+                                                field = field,
+                                                output_grid = output_grid
+                                                )
+                                                for key in keys_dict
+                                                }
+
+        # Add this one field to the full dictionnary #
+
+        dict_regridded = {
+            key: add_one_variable_to_dataset(
+                variable_name=field,
+                var_datarray=dict_regridded_given_field[key],
+                modify_data=True,
+                dataset=dict_regridded[key],
+            )
+            for key in keys_dict
+        }
+
+    ### ADD THE AREACELLA VARIABLE TO EVERY REGRIDDED DATASET ###
+
+    ## Generate the areacella variable for the output grid ##
+
+    output_areacella = compute_grid_areacella(output_grid)
+
+    ## Add the areacella variable to every regridded dataset ##
+
+    print("Adding areacella...\n")
+
+    dict_regridded = {
+            key: add_areacella_to_dataset(dataset = dict_regridded[key], areacella = output_areacella)
+            for key in keys_dict
+        }
+    
+    return dict_regridded
