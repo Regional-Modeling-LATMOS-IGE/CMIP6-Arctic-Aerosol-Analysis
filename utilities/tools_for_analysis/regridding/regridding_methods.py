@@ -265,7 +265,7 @@ def generate_the_common_coarse_grid(dict_outputs: dict[str, xr.Dataset]) -> xr.D
 ### COMPUTE THE AREACELLA VARIABLE FOR A GIVEN GRID ###
 #######################################################
 
-def compute_grid_areacella(grid : xr.Dataset) -> NDArray[np.float64] :
+def compute_grid_areacella(grid : xr.Dataset, verbose : bool = False) -> NDArray[np.float64] :
     """
 
     ---
@@ -280,6 +280,8 @@ def compute_grid_areacella(grid : xr.Dataset) -> NDArray[np.float64] :
     ### INPUTS ###
 
     GRID : XR DATASET | the dictionary holding the models' outputs
+    
+    VERBOSE : BOOL | do we display the steps of the grid ?
 
     ---
 
@@ -314,8 +316,10 @@ def compute_grid_areacella(grid : xr.Dataset) -> NDArray[np.float64] :
     dlon_rad = np.deg2rad(dlon)
     
     dlat_rad = np.deg2rad(dlat)
-
-    print(dlon, dlat)
+    
+    if verbose :
+        
+        print(dlon, dlat)
 
     ## Define the shape of the grid ##
 
@@ -352,7 +356,7 @@ def regrid_field(dataset : xr.Dataset, field: str, output_grid : xr.Dataset) -> 
 
     This function takes a xarray dataset as an input and regrids a given field on a provided output_grid.
 
-    Why do we use regrid 2 ?
+    Why do we use regrid2 ?
 
     If performing conservative regridding from a high/medium resolution lat/lon grid to a coarse lat/lon target, Regrid2 may provide better results as it assumes grid cells with constant latitudes 
     and longitudes while xESMF assumes the cells are connected by Great Circles (source : https://xcdat.readthedocs.io/en/latest/generated/xarray.Dataset.regridder.horizontal.html)
