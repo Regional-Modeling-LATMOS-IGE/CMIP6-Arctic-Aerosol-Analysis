@@ -327,12 +327,37 @@ def compute_grid_areacella(grid : xr.Dataset) -> NDArray[np.float64] :
 
     return areacella
 
-################################
-### REGRID A GIVEN VARIABLE  ###
-################################
+###############################
+### REGRID A GIVEN VARIABLE ###
+###############################
 
-def regrid_field(dataset : xr.Dataset, field: str, output_grid : xr.Dataset):
-    """ """
+def regrid_field(dataset : xr.Dataset, field: str, output_grid : xr.Dataset) -> xr.Dataset:
+    """ 
+
+    ---
+
+    ### DEFINITION ###
+
+    This function takes a xarray dataset as an input and regrids a given field on a provided output_grid.
+
+    ---
+
+    ### INPUTS ###
+
+    DATASET : XR DATASET | the dataset holding the field to be regridded
+
+    FIELD : STR | the name of the field to be regridded
+
+    OUTPUT_GRID : XR DATASET | the grid on which the regridding will be performed
+
+    ---
+
+    ### OUTPUTS ###
+
+    FIELD_REGRIDDED : XR DATASET | the regridded field
+    ---
+    
+    """
 
     field_regridded = dataset.regridder.horizontal(field, output_grid, tool="regrid2")
 
