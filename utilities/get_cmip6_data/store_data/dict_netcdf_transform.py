@@ -34,7 +34,9 @@ from utilities.get_cmip6_data.folders_handle.create import (
 #############################################################
 
 
-def dict_to_netcdf(dataset_dict: dict, parent_path_for_save: str, do_we_clear: bool = True):
+def dict_to_netcdf(
+    dataset_dict: dict, parent_path_for_save: str, do_we_clear: bool = True
+):
     """
 
     ---
@@ -102,7 +104,7 @@ def dict_to_netcdf(dataset_dict: dict, parent_path_for_save: str, do_we_clear: b
         ## Create the directory associated to the entry and keep its path ##
 
         saving_path_given_entry = create_dir(
-            parent_path= parent_path_for_save, name=full_name, clear=do_we_clear
+            parent_path=parent_path_for_save, name=full_name, clear=do_we_clear
         )
 
         ## Generate the full path with the filename ##
@@ -185,7 +187,9 @@ def netcdf_to_dict(parent_path_for_save: str):
 
     # Load the dataframe #
 
-    key_paths_table = pd.read_pickle(parent_path_for_save + "/table/" + "key_paths_table.pkl")
+    key_paths_table = pd.read_pickle(
+        parent_path_for_save + "/table/" + "key_paths_table.pkl"
+    )
 
     # Extract the keys #
 

@@ -177,3 +177,17 @@ cython_debug/
 # Ignore the archives made to locally share the utilities folder
 
 archive.tar
+
+# Ignore pytest
+
+.pytest_cache
+
+# Ignore coverage config file
+
+.coveragerc
+
+# Ignore vscode folder 
+
+.vscode
+
+
