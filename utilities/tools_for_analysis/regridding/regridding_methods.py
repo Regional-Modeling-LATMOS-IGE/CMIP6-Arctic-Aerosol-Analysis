@@ -539,4 +539,6 @@ def regridding_a_dictionary(
             for key in keys_dict
         }
     
+    print("Done !")
+    
     return dict_regridded
