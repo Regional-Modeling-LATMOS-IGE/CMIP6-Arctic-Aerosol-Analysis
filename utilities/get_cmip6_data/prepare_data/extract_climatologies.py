@@ -143,7 +143,7 @@ def add_one_variable_to_dataset(
 
     DATASET : XARRAY DATASET | dataset without the new variable
 
-    DO_CLIM : BOOL | bool defining if we compute the climatology or not by default set to True
+    DO_CLIM : BOOL | bool defining if we compute the climatology or not by default set to False
 
     ### OUTPUTS
 
