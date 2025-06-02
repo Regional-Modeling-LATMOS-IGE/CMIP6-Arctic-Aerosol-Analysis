@@ -26,18 +26,18 @@ from math import floor  # to get the int part of a division
 
 ### TO DISPLAY A PROGRESS BAR ###
 
-from tqdm import tqdm # progress bar handler 
+from tqdm import tqdm  # progress bar handler
 
 ### TYPE HINTS FOR FUNCTIONS ###
 
-from numpy.typing import NDArray # type hints for numpy
+from numpy.typing import NDArray  # type hints for numpy
 
 ### HOMEMADE LIBRARIES ###
 
 ## Handle the climatology dictionary ##
 
 from utilities.get_cmip6_data.prepare_data.extract_climatologies import (
-    add_one_variable_to_dataset, # to add one variable to the full dataset
+    add_one_variable_to_dataset,  # to add one variable to the full dataset
 )
 
 #############################################
@@ -261,11 +261,15 @@ def generate_the_common_coarse_grid(dict_outputs: dict[str, xr.Dataset]) -> xr.D
 
     return common_coarse_grid
 
+
 #######################################################
 ### COMPUTE THE AREACELLA VARIABLE FOR A GIVEN GRID ###
 #######################################################
 
-def compute_grid_areacella(grid : xr.Dataset, verbose : bool = False) -> NDArray[np.float64] :
+
+def compute_grid_areacella(
+    grid: xr.Dataset, verbose: bool = False
+) -> NDArray[np.float64]:
     """
 
     ---
@@ -280,7 +284,7 @@ def compute_grid_areacella(grid : xr.Dataset, verbose : bool = False) -> NDArray
     ### INPUTS ###
 
     GRID : XR DATASET | the dictionary holding the models' outputs
-    
+
     VERBOSE : BOOL | do we display the steps of the grid ?
 
     ---
@@ -294,8 +298,8 @@ def compute_grid_areacella(grid : xr.Dataset, verbose : bool = False) -> NDArray
     ### INITIALIZATION ###
 
     ## Define the radius of the earth ##
-    
-    R_earth = 6371.0 * 10**3 # in m
+
+    R_earth = 6371.0 * 10**3  # in m
 
     ## Define the lat and lon arrays ##
 
@@ -312,13 +316,13 @@ def compute_grid_areacella(grid : xr.Dataset, verbose : bool = False) -> NDArray
     dlat = np.mean(np.diff(latitude))
 
     # In rad #
-    
+
     dlon_rad = np.deg2rad(dlon)
-    
+
     dlat_rad = np.deg2rad(dlat)
-    
-    if verbose :
-        
+
+    if verbose:
+
         print(dlon, dlat)
 
     ## Define the shape of the grid ##
@@ -330,25 +334,31 @@ def compute_grid_areacella(grid : xr.Dataset, verbose : bool = False) -> NDArray
     ### COMPUTATION OF AREACELLA FOR ONE MODEL ###
 
     ## Definition ##
-    
-    areacella = np.zeros((n_lat,n_lon))
+
+    areacella = np.zeros((n_lat, n_lon))
 
     ## Cycle for ##
-    
-    for ii_lat,lat in enumerate(latitude):
 
-        for ii_lon,lon in enumerate(longitude):
+    for ii_lat, lat in enumerate(latitude):
 
-            areacella[ii_lat,ii_lon] = (R_earth*dlat_rad)*(R_earth*np.cos(np.deg2rad(lat))*dlon_rad)
+        for ii_lon, lon in enumerate(longitude):
+
+            areacella[ii_lat, ii_lon] = (R_earth * dlat_rad) * (
+                R_earth * np.cos(np.deg2rad(lat)) * dlon_rad
+            )
 
     return areacella
+
 
 ###############################
 ### REGRID A GIVEN VARIABLE ###
 ###############################
 
-def regrid_field(dataset : xr.Dataset, field: str, output_grid : xr.Dataset) -> xr.Dataset:
-    """ 
+
+def regrid_field(
+    dataset: xr.Dataset, field: str, output_grid: xr.Dataset
+) -> xr.Dataset:
+    """
 
     ---
 
@@ -358,7 +368,7 @@ def regrid_field(dataset : xr.Dataset, field: str, output_grid : xr.Dataset) -> 
 
     Why do we use regrid2 ?
 
-    If performing conservative regridding from a high/medium resolution lat/lon grid to a coarse lat/lon target, Regrid2 may provide better results as it assumes grid cells with constant latitudes 
+    If performing conservative regridding from a high/medium resolution lat/lon grid to a coarse lat/lon target, Regrid2 may provide better results as it assumes grid cells with constant latitudes
     and longitudes while xESMF assumes the cells are connected by Great Circles (source : https://xcdat.readthedocs.io/en/latest/generated/xarray.Dataset.regridder.horizontal.html)
 
     ---
@@ -377,22 +387,20 @@ def regrid_field(dataset : xr.Dataset, field: str, output_grid : xr.Dataset) -> 
 
     FIELD_REGRIDDED : XR DATASET | the regridded field
     ---
-    
+
     """
 
     field_regridded = dataset.regridder.horizontal(field, output_grid, tool="regrid2")
 
     return field_regridded
 
+
 ########################################
 ### ADD AREACELLA TO A GIVEN DATASET ###
 ########################################
 
-def add_areacella_to_dataset(
-        dataset : xr.Dataset, 
-        areacella : xr.Dataset
-        ) -> xr.Dataset:
-    
+
+def add_areacella_to_dataset(dataset: xr.Dataset, areacella: xr.Dataset) -> xr.Dataset:
     """
 
     ---
@@ -421,23 +429,23 @@ def add_areacella_to_dataset(
     ### ADD AREACELLA TO THE DATASET ###
 
     dataset["areacella"] = (
-            ("lat", "lon"),
-            areacella,
-            )
-        
+        ("lat", "lon"),
+        areacella,
+    )
+
     return dataset
-    
+
 
 ################################################################
 ### REGRID A LIST OF FIELDS AND GENERATE A REGRIDDED DATASET ###
 ################################################################
 
+
 def regridding_a_dictionary(
-        dictionary_to_be_regridded :  dict[str, xr.Dataset], 
-        fields_to_be_regridded : list[str],
-        output_grid : xr.Dataset
-        ) -> dict[str, xr.Dataset]:
-    
+    dictionary_to_be_regridded: dict[str, xr.Dataset],
+    fields_to_be_regridded: list[str],
+    output_grid: xr.Dataset,
+) -> dict[str, xr.Dataset]:
     """
 
     ---
@@ -461,11 +469,11 @@ def regridding_a_dictionary(
     ---
 
     """
-    
+
     ### GET THE DICTIONARY KEYS ###
 
     keys_dict = list(dictionary_to_be_regridded.keys())
-    
+
     ### INITIALIZE THE REGRIDDING WITH THE FIRST VARIABLE ###
 
     print("Initialize with one variable...\n")
@@ -476,12 +484,14 @@ def regridding_a_dictionary(
 
     ## Initialize the new dictionary ##
 
-    dict_regridded = {key : regrid_field(dataset = dictionary_to_be_regridded[key],
-                                                field = field,
-                                                output_grid = output_grid
-                                                )
-                                                for key in keys_dict
-                                                }
+    dict_regridded = {
+        key: regrid_field(
+            dataset=dictionary_to_be_regridded[key],
+            field=field,
+            output_grid=output_grid,
+        )
+        for key in keys_dict
+    }
 
     ### REGRID THE REMAINING FIELDS ###
 
@@ -497,7 +507,7 @@ def regridding_a_dictionary(
 
     ## Loop over the remaining fields ##
 
-    for index in tqdm (range(n_fields), desc="Regridding all the variables..."):
+    for index in tqdm(range(n_fields), desc="Regridding all the variables..."):
 
         # Extract the field #
 
@@ -505,12 +515,14 @@ def regridding_a_dictionary(
 
         # Generate the dictionary of all models for one field #
 
-        dict_regridded_given_field = {key : regrid_field(dataset = dictionary_to_be_regridded[key],
-                                                field = field,
-                                                output_grid = output_grid
-                                                )
-                                                for key in keys_dict
-                                                }
+        dict_regridded_given_field = {
+            key: regrid_field(
+                dataset=dictionary_to_be_regridded[key],
+                field=field,
+                output_grid=output_grid,
+            )
+            for key in keys_dict
+        }
 
         # Add this one field to the full dictionnary #
 
@@ -535,10 +547,12 @@ def regridding_a_dictionary(
     print("Adding areacella...\n")
 
     dict_regridded = {
-            key: add_areacella_to_dataset(dataset = dict_regridded[key], areacella = output_areacella)
-            for key in keys_dict
-        }
-    
+        key: add_areacella_to_dataset(
+            dataset=dict_regridded[key], areacella=output_areacella
+        )
+        for key in keys_dict
+    }
+
     print("Done !")
-    
+
     return dict_regridded

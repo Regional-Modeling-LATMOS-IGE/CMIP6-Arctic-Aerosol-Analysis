@@ -269,7 +269,7 @@ def set_search_criterias(case: str) -> dict:
 
     else:
 
-        raise InvalidCase(case = case)
+        raise InvalidCase(case=case)
 
 
 ###################################

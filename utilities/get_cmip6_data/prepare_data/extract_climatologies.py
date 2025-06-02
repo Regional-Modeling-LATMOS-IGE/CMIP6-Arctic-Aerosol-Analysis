@@ -122,7 +122,7 @@ def generate_per_model_dict_key(full_cmip6_dict: dict) -> NDArray[object]:
 
 def add_one_variable_to_dataset(
     variable_name: str,
-    var_datarray : xr.DataArray,
+    var_datarray: xr.DataArray,
     modify_data: bool = False,
     dataset: xr.Dataset = None,
     do_clim=False,
@@ -292,13 +292,9 @@ def create_climatology_dict(
 
     ## Define a progress bar while we go through the unique entry keys ##
 
-<<<<<<< HEAD
-    for index in tqdm (range(n_entry_and_exp), desc="Generating the climatologies' dictionary..."):
-=======
     for index in tqdm(
         range(n_entry_and_exp), desc="Generating the climatologies' dictionnary..."
     ):
->>>>>>> regridding-to-fit-zelinkas-article
 
         ## Retrieve the key ##
 
@@ -419,15 +415,12 @@ def create_climatology_dict(
     print("\nSaving the climatologies' dictionary...\n")
 
     dict_to_netcdf(
-<<<<<<< HEAD
-        dataset_dict=full_cmip6_dict_clim, parent_path_for_save = parent_path_for_save, do_we_clear = do_we_clear
-=======
         dataset_dict=full_cmip6_dict_clim,
-        parent_path_for_save=save_path,
+        parent_path_for_save=parent_path_for_save,
         do_we_clear=do_we_clear,
->>>>>>> regridding-to-fit-zelinkas-article
     )
     return
+
 
 ######################
 ### USED FOR TESTS ###
