@@ -32,6 +32,12 @@ def get_entries_only_from_clim_dict(key_with_exp: str) -> str:
     ---
     """
 
+    ### CHECK INPUT TYPE ###
+
+    if not isinstance(key_with_exp, str):
+
+        raise TypeError("expected a string")
+
     ### REMOVE THE EXPERIMENT ###
 
     ## Split the key into a list of str ##
