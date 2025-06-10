@@ -35,7 +35,7 @@ def adapt_for_spatial_avgd(dataset : xr.Dataset) -> xr.Dataset :
 
     ### DEFINITION ###
 
-    This function changes the attributes of the axes in a dataset. This is mandatory to use the spatial averaging techniques of xcdat.
+    This function changes the attributes of the axes in a dataset and adds missing bounds. This is mandatory to use the spatial averaging techniques of xcdat.
 
     ---
 
@@ -68,9 +68,47 @@ def adapt_for_spatial_avgd(dataset : xr.Dataset) -> xr.Dataset :
 
     return dataset
 
+########################################################################
+### ADAPT THE FULL DICTIONARY FOR DOING A SPATIAL AVERAGE WITH XCDAT ###
+########################################################################
+
+def adapt_full_dict_for_spatial_average(dictionary : dict[str, xr.Dataset]) -> dict[str, xr.Dataset]:
+    """
+
+    ---
+
+    ### DEFINITION ###
+
+    This function changes the attributes of the axes of all the datasets in a dictionary and adds their missing bounds. 
+    This is mandatory to use the spatial averaging techniques of xcdat.
+
+    ---
+
+    ### INPUTS ###
+
+    DICTIONARY : DICTIONARY OF XR DATASET | dictionary of datasets that will get its attributes and bounds updated
+
+    ---
+
+    ### OUTPUTS ###
+
+    DICTIONARY: DICTIONARY OF XR DATASET | dataset with its attributes and bounds updated
+    ---
+    """
+
+    ### UPDATE THE DICTIONARY ###
+
+    dictionary = {
+    key: adapt_for_spatial_avgd(dictionary[key])
+    for key in dictionary.keys()
+}
+
+    return dictionary
+
 ########################################
 ### SPATIAL AVERAGE OF A GIVEN FIELD ###
 ########################################
+
 
 def spatial_average_given_field(field : str, dataset : xr.Dataset) -> NDArray[np.float64]:
 
@@ -94,19 +132,34 @@ def spatial_average_given_field(field : str, dataset : xr.Dataset) -> NDArray[np
 
     ### OUTPUTS ###
 
-    SPATIAL_AVG : NUMPY ARRAY OF FLOAT 64 | the spatial average of the dataset fields.Its dimensions depends of the time dimension of the dataset.
+    SPATIAL_AVG : NUMPY ARRAY OF FLOAT 64 | the spatial average of the dataset fields. Its dimensions depends of the time dimension of the dataset.
 
     ---
     """
 
-    ### COMPUTE THE SPATIAL AVERAGE ###
+    ### RUNNING THE PROCEDURE EXCEPT IF ADAPT FOR SPATIAL AVERAGE WAS NOT RUN ###
 
-    ## Generate the spatial average ##
+    try :
 
-    spatial_avg = dataset.spatial.average(field, axis=["X", "Y"])[field].values
+        ### COMPUTE THE SPATIAL AVERAGE ###
 
-    ## Round it to 2 digits after the comma ##
+        ## Generate the spatial average ##
 
-    spatial_avg = np.round(spatial_avg, 2)
+        spatial_avg = dataset.spatial.average(field, axis=["X", "Y"])[field].values
 
-    return spatial_avg
+        ## Round it to 2 digits after the comma ##
+
+        spatial_avg = np.round(spatial_avg, 2)
+
+        ## Return ##
+
+        return spatial_avg
+
+    except KeyError:
+
+        print('You need to run the function adapt_full_dict_for_spatial_average on the ensemble dictionary.')
+
+        raise KeyError
+
+
+    
