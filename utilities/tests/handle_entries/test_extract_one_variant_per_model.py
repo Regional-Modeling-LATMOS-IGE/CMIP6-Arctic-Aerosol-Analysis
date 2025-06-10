@@ -14,7 +14,7 @@ Feel free to copy, adapt and modify it under the provided license on github.
 
 ### MODULE TO BE TESTED ###
 
-from utilities.tools_for_analysis.handle_data.extract_one_variant_per_model import (
+from utilities.tools_for_analysis.handle_entries.extract_one_variant_per_model import (
     extract_source_id_from_str,  # to extract the source id from a key
     get_source_id_from_keys_list,  # to generate the source_id list
     find_first_index_for_given_source_id,  # finds the first index corresponding to a given source_id in a source_id list

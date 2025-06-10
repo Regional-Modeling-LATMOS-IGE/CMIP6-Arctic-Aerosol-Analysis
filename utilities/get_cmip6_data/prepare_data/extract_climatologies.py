@@ -49,6 +49,7 @@ from utilities.get_cmip6_data.store_data.dict_netcdf_transform import (
 
 def generate_per_model_dict_key(full_cmip6_dict: dict) -> NDArray[object]:
     """
+
     ---
 
     ### DEFINITION ###
@@ -128,10 +129,14 @@ def add_one_variable_to_dataset(
     do_clim=False,
 ) -> xr.Dataset:
     """
+    ---
+
     ### DEFINITION
 
     This function adds the variable_name variable to a xarray dataset with the var_datarray data array.
     If no datasets are provided, it will initialize them provided that modify_data is set to True.
+
+    ---
 
     ### INPUTS
 
@@ -143,12 +148,15 @@ def add_one_variable_to_dataset(
 
     DATASET : XARRAY DATASET | dataset without the new variable
 
-    DO_CLIM : BOOL | bool defining if we compute the climatology or not by default set to True
+    DO_CLIM : BOOL | bool defining if we compute the climatology or not by default set to False
+
+    ---
 
     ### OUTPUTS
 
     DATASET : XARRAY DATASET | dataset with the new variable
 
+    ---
     """
 
     ### PREPARE THE VARIABLE TO ADD ###
@@ -179,7 +187,7 @@ def add_one_variable_to_dataset(
 
         dataset[variable_name] = (
             ("time", "lat", "lon"),
-            var_datarray.values,
+            var_datarray[variable_name].values,
         )
 
     ### DIFFERENT CORRECTIONS ###
