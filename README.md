@@ -33,7 +33,7 @@ This jupyter notebook is explaining the use of the *intake-esgf* package to down
 
 ## Models' outputs used for both experiments :
 
-| source_id         | member_id   | grid_label   |
+|    | source_id         | member_id   | grid_label   |
 |---:|:------------------|:------------|:-------------|
 |  0 | ACCESS-CM2        | r1i1p1f1    | gn           |
 |  1 | ACCESS-ESM1-5     | r1i1p1f1    | gn           |
