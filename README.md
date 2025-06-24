@@ -43,6 +43,10 @@ This jupyter notebook aims at showing that our scripts are reproducing the resul
 
 This jupyter notebook is my current work notebook. It is expected to be messier than the rest of the notebook as I'm making progress from what I'm coding there. Its goal is to explore the results induced by the APRP method and develop my own methods.
 
+### bar_plots_of_aprp.ipynb
+
+This jupyter notebook exhibits some of our APRP products in the Arctic through bar plots. It is handful to show the ensemble spread.
+
 ## Models' outputs used for both experiments :
 
 |    | source_id         | member_id   | grid_label   |
