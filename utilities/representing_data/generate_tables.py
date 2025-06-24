@@ -147,7 +147,7 @@ def compute_needed_spatial_avg_for_tables(
 
     dict_sum_aci_ari = {
         key : {
-            "ACI + ARI " : sum_aci_ari
+            "ACI+ARI" : sum_aci_ari
         }
     }
 
