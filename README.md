@@ -25,6 +25,10 @@ This is done using a subset of the CMIP6 model ensemble and using the APRP metho
 
 The utilities module is used for the analysis. It holds different submodules used through the different jupyter notebooks.
 
+### environment/
+
+The environment folder is useful if you wish to replicate my work. It holds the conda environment holding all the dependencies of the repository.
+
 ## Notebooks present in this folder :
 
 ### get_cmip6_data.ipynb
