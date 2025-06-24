@@ -15,7 +15,7 @@ Feel free to copy, adapt and modify it under the provided license on github.
 
 import pandas as pd  # to manage the product of the search
 
-import xarray as xr # to manage the data
+import xarray as xr  # to manage the data
 
 import numpy as np  # to handle numpy arrays and the associated tools
 
@@ -26,21 +26,19 @@ from numpy.typing import NDArray  # type hints for numpy
 ### HOMEMADE LIBRARIES ###
 
 from utilities.tools_for_analysis.statistical_tools.spatial_average import (
-    spatial_average_given_field, # to generate the spatial average of a given field for a dataset
-    adapt_full_dict_for_spatial_average, # to make sure that the datasets are ready for spatial average
+    spatial_average_given_field,  # to generate the spatial average of a given field for a dataset
+    adapt_full_dict_for_spatial_average,  # to make sure that the datasets are ready for spatial average
 )
 
 ###############################
 ### GENERATE THE TABLES ROW ###
 ###############################
 
-def compute_needed_spatial_avg_for_tables(
-        key : str, 
-        dataset : xr.Dataset,
-        ) -> tuple[dict[str, np.float64], 
-                   dict[str, np.float64], 
-                   dict[str, np.float64]]: 
 
+def compute_needed_spatial_avg_for_tables(
+    key: str,
+    dataset: xr.Dataset,
+) -> tuple[dict[str, np.float64], dict[str, np.float64], dict[str, np.float64]]:
     """
 
     ---
@@ -51,9 +49,9 @@ def compute_needed_spatial_avg_for_tables(
     The dimensions of the arrays found in every single table cell depend of the time dimension. Therefore, the function checks if the dataset
     has undergone a time average otherwise it raises an error.
 
-    Reference : 
+    Reference :
 
-    Zelinka, M. D., Smith, C. J., Qin, Y., and Taylor, K. E.: Comparison of methods to estimate aerosol effective radiative forcings 
+    Zelinka, M. D., Smith, C. J., Qin, Y., and Taylor, K. E.: Comparison of methods to estimate aerosol effective radiative forcings
     in climate models, Atmos. Chem. Phys., 23, 8879–8898, https://doi.org/10.5194/acp-23-8879-2023, 2023.
 
     ---
@@ -84,56 +82,58 @@ def compute_needed_spatial_avg_for_tables(
     if not isinstance(key, str):
 
         raise TypeError("expected a string")
-    
+
     ### COMPUTE THE ARI PART OF THE ROW ###
 
     ### TEST IF THE ARRAY HAS NO TIME DIMENSION ###
 
     ## Compute a value that will be used afterwards ##
 
-    noncld_scat = spatial_average_given_field(field = "noncld_scat", dataset = dataset)
+    noncld_scat = spatial_average_given_field(field="noncld_scat", dataset=dataset)
 
     ## Test the length of the size of the numpy array (need to be 1) ##
 
-    if noncld_scat.size != 1 :
+    if noncld_scat.size != 1:
 
-        raise ValueError("The size of the spatially averaged values needs to be one. Check if the input dataset has undergone a time average.")
+        raise ValueError(
+            "The size of the spatially averaged values needs to be one. Check if the input dataset has undergone a time average."
+        )
 
     ## Compute the rest of the values ##
 
-    noncld_abs = spatial_average_given_field(field = "noncld_abs", dataset = dataset)
+    noncld_abs = spatial_average_given_field(field="noncld_abs", dataset=dataset)
 
     sum_ari = noncld_scat + noncld_abs
 
     ## Set the dictionary ##
 
-    dict_ari = {key :
-                {
-        'scat' : noncld_scat,
-        'abs' : noncld_abs,
-        'sum' : sum_ari,
-                }
+    dict_ari = {
+        key: {
+            "scat": noncld_scat,
+            "abs": noncld_abs,
+            "sum": sum_ari,
+        }
     }
 
     ### COMPUTE THE ACI PART OF THE ROW ###
-    
+
     ## Compute the spatial averages ##
 
-    cld_scat = spatial_average_given_field(field = "cld_scat", dataset = dataset)
+    cld_scat = spatial_average_given_field(field="cld_scat", dataset=dataset)
 
-    cld_abs = spatial_average_given_field(field = "cld_abs", dataset = dataset)
+    cld_abs = spatial_average_given_field(field="cld_abs", dataset=dataset)
 
-    cld_amt = spatial_average_given_field(field = "cld_amt", dataset = dataset)
+    cld_amt = spatial_average_given_field(field="cld_amt", dataset=dataset)
 
     sum_aci = cld_scat + cld_abs + cld_amt
 
     ## Set the dictionary ##
-    dict_aci = { 
-        key : {
-        'scat' : cld_scat,
-        'abs' : cld_abs,
-        'cld_amt' : cld_amt,
-        'sum' : sum_aci,
+    dict_aci = {
+        key: {
+            "scat": cld_scat,
+            "abs": cld_abs,
+            "cld_amt": cld_amt,
+            "sum": sum_aci,
         }
     }
 
@@ -145,23 +145,20 @@ def compute_needed_spatial_avg_for_tables(
 
     ## Set the dictionary ##
 
-    dict_sum_aci_ari = {
-        key : {
-            "ACI+ARI" : sum_aci_ari
-        }
-    }
+    dict_sum_aci_ari = {key: {"ACI+ARI": sum_aci_ari}}
 
     return dict_ari, dict_aci, dict_sum_aci_ari
- 
+
+
 ########################################################################################
 ### CREATE A PANDAS DATAFRAME OF NEEDED SPATIAL AVERAGES TO GENERATE THE TABLE'S ROW ###
 ########################################################################################
 
-def from_dict_to_dataframe_rows(
-        key : str, 
-        dataset : xr.Dataset,
-        ) -> pd.DataFrame :
 
+def from_dict_to_dataframe_rows(
+    key: str,
+    dataset: xr.Dataset,
+) -> pd.DataFrame:
     """
 
     ---
@@ -174,9 +171,9 @@ def from_dict_to_dataframe_rows(
     The dimensions of the arrays found in every single table cell depend of the time dimension. Therefore, the function compute_needed_spatial_avg_for_tables
     checks if the dataset has undergone a time average otherwise it raises an error.
 
-    Reference : 
+    Reference :
 
-    Zelinka, M. D., Smith, C. J., Qin, Y., and Taylor, K. E.: Comparison of methods to estimate aerosol effective radiative forcings 
+    Zelinka, M. D., Smith, C. J., Qin, Y., and Taylor, K. E.: Comparison of methods to estimate aerosol effective radiative forcings
     in climate models, Atmos. Chem. Phys., 23, 8879–8898, https://doi.org/10.5194/acp-23-8879-2023, 2023.
 
     ---
@@ -191,7 +188,7 @@ def from_dict_to_dataframe_rows(
 
     ### OUTPUTS ###
 
-    DATAFRAME_ROW : PD.DATAFRAME | row of the table 
+    DATAFRAME_ROW : PD.DATAFRAME | row of the table
 
 
     ---
@@ -200,8 +197,10 @@ def from_dict_to_dataframe_rows(
 
     ### GENERATE THE THREE DICTIONARIES FROM THE KEY AND DATASET ###
 
-    dict_ari, dict_aci, dict_sum_aci_ari = compute_needed_spatial_avg_for_tables(key = key, dataset =  dataset)
-    
+    dict_ari, dict_aci, dict_sum_aci_ari = compute_needed_spatial_avg_for_tables(
+        key=key, dataset=dataset
+    )
+
     ### COMBINE THE DICTIONARIES INTO A SINGLE DATAFRAME ###
 
     ## Convert the dictionaries into pandas dataframes ##
@@ -214,22 +213,23 @@ def from_dict_to_dataframe_rows(
 
     ## Generate a dictionary structure made of the dataframes ##
 
-    dict_to_be_dfd = {'ARI' : df_ari, 'ACI' : df_aci, '' : df_ari_plus_aci}
+    dict_to_be_dfd = {"ARI": df_ari, "ACI": df_aci, "": df_ari_plus_aci}
 
     ## We generate the row from this dictionary by concatenating it ##
 
-    dataframe_row = pd.concat(dict_to_be_dfd).T # transposition to have the entry's key as an index
+    dataframe_row = pd.concat(
+        dict_to_be_dfd
+    ).T  # transposition to have the entry's key as an index
 
     return dataframe_row
-
 
 
 #############################
 ### CREATE THE FULL TABLE ###
 #############################
 
-def make_full_table(dataset_dictionary : dict[str, xr.Dataset]) -> pd.DataFrame:
 
+def make_full_table(dataset_dictionary: dict[str, xr.Dataset]) -> pd.DataFrame:
     """
 
     ---
@@ -238,9 +238,9 @@ def make_full_table(dataset_dictionary : dict[str, xr.Dataset]) -> pd.DataFrame:
 
     This function will generate Table 2 found in Zelinka and al. (2023) with the provided dataset dictionary entries.
 
-    Reference : 
+    Reference :
 
-    Zelinka, M. D., Smith, C. J., Qin, Y., and Taylor, K. E.: Comparison of methods to estimate aerosol effective radiative forcings 
+    Zelinka, M. D., Smith, C. J., Qin, Y., and Taylor, K. E.: Comparison of methods to estimate aerosol effective radiative forcings
     in climate models, Atmos. Chem. Phys., 23, 8879–8898, https://doi.org/10.5194/acp-23-8879-2023, 2023.
 
     ---
@@ -272,13 +272,17 @@ def make_full_table(dataset_dictionary : dict[str, xr.Dataset]) -> pd.DataFrame:
 
     ## Extract the first row ##
 
-    full_table = from_dict_to_dataframe_rows(key = key_00, dataset = dataset_dictionary[key_00])
+    full_table = from_dict_to_dataframe_rows(
+        key=key_00, dataset=dataset_dictionary[key_00]
+    )
 
     ### GENERATE THE REST OF THE TABLE ###
 
-    for key in keys_list[1:] :
+    for key in keys_list[1:]:
 
-        row_given_key = from_dict_to_dataframe_rows(key = key, dataset = dataset_dictionary[key])
+        row_given_key = from_dict_to_dataframe_rows(
+            key=key, dataset=dataset_dictionary[key]
+        )
 
         full_table = pd.concat([full_table, row_given_key])
 

@@ -27,8 +27,8 @@ from numpy.typing import NDArray  # type hints for numpy
 ### ADAPT THE ARRAYS FOR DOING A SPATIAL AVERAGE WITH XCDAT ###
 ###############################################################
 
-def adapt_for_spatial_avgd(dataset : xr.Dataset) -> xr.Dataset :
 
+def adapt_for_spatial_avgd(dataset: xr.Dataset) -> xr.Dataset:
     """
 
     ---
@@ -68,18 +68,22 @@ def adapt_for_spatial_avgd(dataset : xr.Dataset) -> xr.Dataset :
 
     return dataset
 
+
 ########################################################################
 ### ADAPT THE FULL DICTIONARY FOR DOING A SPATIAL AVERAGE WITH XCDAT ###
 ########################################################################
 
-def adapt_full_dict_for_spatial_average(dictionary : dict[str, xr.Dataset]) -> dict[str, xr.Dataset]:
+
+def adapt_full_dict_for_spatial_average(
+    dictionary: dict[str, xr.Dataset],
+) -> dict[str, xr.Dataset]:
     """
 
     ---
 
     ### DEFINITION ###
 
-    This function changes the attributes of the axes of all the datasets in a dictionary and adds their missing bounds. 
+    This function changes the attributes of the axes of all the datasets in a dictionary and adds their missing bounds.
     This is mandatory to use the spatial averaging techniques of xcdat.
 
     ---
@@ -99,19 +103,18 @@ def adapt_full_dict_for_spatial_average(dictionary : dict[str, xr.Dataset]) -> d
     ### UPDATE THE DICTIONARY ###
 
     dictionary = {
-    key: adapt_for_spatial_avgd(dictionary[key])
-    for key in dictionary.keys()
-}
+        key: adapt_for_spatial_avgd(dictionary[key]) for key in dictionary.keys()
+    }
 
     return dictionary
+
 
 ########################################
 ### SPATIAL AVERAGE OF A GIVEN FIELD ###
 ########################################
 
 
-def spatial_average_given_field(field : str, dataset : xr.Dataset) -> NDArray[np.float64]:
-
+def spatial_average_given_field(field: str, dataset: xr.Dataset) -> NDArray[np.float64]:
     """
 
     ---
@@ -124,7 +127,7 @@ def spatial_average_given_field(field : str, dataset : xr.Dataset) -> NDArray[np
 
     ### INPUTS ###
 
-    FIELD : STR | field to be averaged 
+    FIELD : STR | field to be averaged
 
     DATASET : XR DATASET | dataset holding the variable to average
 
@@ -139,7 +142,7 @@ def spatial_average_given_field(field : str, dataset : xr.Dataset) -> NDArray[np
 
     ### RUNNING THE PROCEDURE EXCEPT IF ADAPT FOR SPATIAL AVERAGE WAS NOT RUN ###
 
-    try :
+    try:
 
         ### COMPUTE THE SPATIAL AVERAGE ###
 
@@ -157,9 +160,8 @@ def spatial_average_given_field(field : str, dataset : xr.Dataset) -> NDArray[np
 
     except KeyError:
 
-        print('You need to run the function adapt_full_dict_for_spatial_average on the ensemble dictionary.')
+        print(
+            "You need to run the function adapt_full_dict_for_spatial_average on the ensemble dictionary."
+        )
 
         raise KeyError
-
-
-    
