@@ -31,7 +31,13 @@ The utilities module is used for the analysis. It holds different submodules use
 
 This jupyter notebook is explaining the use of the *intake-esgf* package to download CMIP6 models' output and how we further treat this raw data to turn it into monthly climatologies xarray datasets. It encapsulates the functions coded in *folders_handle*, *load_raw_data*, *store_data* and *prepare_data*.
 
-### 
+### demonstrate_reproducibility_of_zelinkas_results.ipynb
+
+This jupyter notebook aims at showing that our scripts are reproducing the results found in [Comparison of methods to estimate aerosol effective radiative forcings in climate models](https://acp.copernicus.org/articles/23/8879/2023/).
+
+### sw_analysis_aprp_arctic.ipynb
+
+This jupyter notebook is my current work notebook. It is expected to be messier than the rest of the notebook as I'm making progress from what I'm coding there. Its goal is to explore the results induced by the APRP method and develop my own methods.
 
 ## Models' outputs used for both experiments :
 
